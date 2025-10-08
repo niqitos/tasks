@@ -8,8 +8,8 @@
         :label=" $t('app.name')"
         icon='i-lucide:square-kanban'
         :ui="{
-          base: 'text-2xl font-bold',
-          leadingIcon: 'size-8'
+          base: 'text-2xl font-bold text-default',
+          leadingIcon: 'size-8 text-primary'
         }"
       />
     </template>
