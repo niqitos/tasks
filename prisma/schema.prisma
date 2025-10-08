@@ -1,0 +1,163 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WorkspaceRole {
+  GUEST
+  MAINTAINER
+  ADMIN
+}
+
+model User {
+  id         String      @id @default(uuid())
+  name       String
+  lastname   String?
+  email      String      @unique
+  password   String
+  salt       String
+  avatar     String?
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now()) @updatedAt
+  deletedAt  DateTime?
+
+  workspacesCreated  Workspace[]        @relation("WorkspaceCreator")
+  boardsCreated      Board[]            @relation("BoardCreator")
+  tasksCreated       Task[]             @relation("TaskCreator")
+  comments           Comment[]          @relation("AuthorComments")
+  workspaceMembers   WorkspaceMember[]
+  taskAssignees      TaskAssignee[]
+  invitedMembers     WorkspaceMember[]  @relation("WorkspaceInviter")
+}
+
+model Workspace {
+  id          String             @id @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @default(now()) @updatedAt
+  deletedAt   DateTime?
+
+  creatorId   String
+  creator     User               @relation("WorkspaceCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  boards      Board[]            @relation("WorkspaceBoards")
+  members     WorkspaceMember[]
+}
+
+model WorkspaceMember {
+  id           Int            @id @default(autoincrement())
+  workspace    Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId  String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  role         WorkspaceRole  @default(GUEST)
+  invitedAt    DateTime?
+  joinedAt     DateTime?
+  invitedById  String?
+  invitedBy    User?          @relation("WorkspaceInviter", fields: [invitedById], references: [id])
+  deletedAt    DateTime?
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+  @@index([workspaceId])
+}
+
+model Board {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  position    Float      @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
+  deletedAt   DateTime?
+
+  workspaceId String
+  workspace   Workspace  @relation("WorkspaceBoards", fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  creatorId   String
+  creator     User       @relation("BoardCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  tasks       Task[]     @relation("BoardTasks")
+
+  @@index([workspaceId, position])
+}
+
+model Task {
+  id          String          @id @default(uuid())
+  name        String
+  description String?
+  position    Float           @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @default(now()) @updatedAt
+  deletedAt   DateTime?
+
+  boardId     String
+  board       Board           @relation("BoardTasks", fields: [boardId], references: [id], onDelete: Cascade)
+
+  creatorId   String
+  creator     User            @relation("TaskCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  assignees   TaskAssignee[]
+  files       File[]
+  comments    Comment[]
+
+  @@index([boardId, position])
+}
+
+model TaskAssignee {
+  id         Int        @id @default(autoincrement())
+  task       Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  assignedAt DateTime   @default(now())
+  deletedAt  DateTime?
+
+  @@unique([taskId, userId])
+  @@index([userId])
+  @@index([taskId])
+}
+
+model File {
+  id        String     @id @default(uuid())
+  filename  String
+  url       String
+  mimeType  String?
+  size      Int?
+  createdAt DateTime   @default(now())
+  deletedAt DateTime?
+
+  task      Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId    String
+
+  @@index([taskId])
+}
+
+model Comment {
+  id        String     @id @default(uuid())
+  content   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  task      Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId    String
+
+  author    User?      @relation("AuthorComments", fields: [authorId], references: [id], onDelete: SetNull)
+  authorId  String?
+
+  parentId  String?
+  parent    Comment?   @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[]  @relation("CommentReplies")
+}

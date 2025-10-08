@@ -58,5 +58,9 @@ export default defineNuxtConfig({
     }
   },
 
-  compatibilityDate: '2025-10-08'
+  compatibilityDate: '2025-10-08',
+
+  runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET
+  }
 })

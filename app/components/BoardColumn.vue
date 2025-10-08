@@ -1,3 +1,84 @@
+<template>
+  <UCard
+    :ui="{
+      root: 'flex-1 rounded bg-elevated min-w-80',
+      body: 'sm:p-4'
+    }"
+    draggable="true"
+    @dragstart.self="pickupColumn($event, columnIndex)"
+    @dragenter.prevent
+    @dragover.prevent
+    @drop.stop="dropItem($event, { toColumnIndex: columnIndex })"
+  >
+    <div class="flex items-center justify-between font-bold mb-4">
+      <div>
+        <UInput
+          v-if="editNameState"
+          type="text"
+          v-model="column.name"
+        />
+
+        <h2
+          v-else
+          v-text="column.name"
+        />
+      </div>
+
+      <div>
+        <UButton
+          icon="i-lucide:square-pen"
+          class="mr-2"
+          @click="editNameState = !editNameState"
+        />
+
+        <UButton
+          icon="i-lucide:trash"
+          color="error"
+          @click="deleteColumn(columnIndex)"
+        />
+      </div>
+    </div>
+
+    <ul>
+      <li
+        v-for="(task, taskIndex) in column.tasks"
+        :key="task.id"
+      >
+        <UCard
+          class="mb-4"
+          @click="goToTask(task.id)"
+          draggable="true"
+          @dragstart="pickupTask($event, {
+            fromColumnIndex: columnIndex,
+            fromTaskIndex: taskIndex
+          })"
+          @drop.stop="dropItem($event, {
+            toColumnIndex: columnIndex,
+            toTaskIndex: taskIndex
+          })"
+        >
+          <strong v-text="task.name" />
+
+          <p v-text="task.description" />
+        </UCard>
+      </li>
+    </ul>
+
+    <UTextarea
+      v-model="newTaskName"
+      size="xl"
+      rows="1"
+      autoresize
+      :placeholder="$t('task.create')"
+      icon="i-lucide:circle-plus"
+      :ui="{
+        root: 'w-full'
+      }"
+      @keyup.enter="addTask"
+    />
+  </UCard>
+</template>
+
 <script setup lang="ts">
 const props = defineProps({
   column: {
@@ -68,82 +149,3 @@ const pickupTask = (event: any, { fromColumnIndex, fromTaskIndex }: any) => {
   event.dataTransfer.setData('from-task-index', fromTaskIndex)
 }
 </script>
-
-<template>
-  <UCard
-    :ui="{
-      root: 'flex-1 rounded bg-elevated min-w-80',
-      body: 'sm:p-4'
-    }"
-    draggable="true"
-    @dragstart.self="pickupColumn($event, columnIndex)"
-    @dragenter.prevent
-    @dragover.prevent
-    @drop.stop="dropItem($event, { toColumnIndex: columnIndex })"
-  >
-    <div class="flex items-center justify-between font-bold mb-4">
-      <div>
-        <UInput
-          v-if="editNameState"
-          type="text"
-          v-model="column.name"
-        />
-
-        <h2
-          v-else
-          v-text="column.name"
-        />
-      </div>
-
-      <div>
-        <UButton
-          icon="i-lucide:square-pen"
-          class="mr-2"
-          @click="editNameState = !editNameState"
-        />
-
-        <UButton
-          icon="i-lucide:trash"
-          color="red"
-          @click="deleteColumn(columnIndex)"
-        />
-      </div>
-    </div>
-
-    <ul>
-      <li
-        v-for="(task, taskIndex) in column.tasks"
-        :key="task.id"
-      >
-        <UCard
-          class="mb-4"
-          @click="goToTask(task.id)"
-          draggable="true"
-          @dragstart="pickupTask($event, {
-            fromColumnIndex: columnIndex,
-            fromTaskIndex: taskIndex
-          })"
-          @drop.stop="dropItem($event, {
-            toColumnIndex: columnIndex,
-            toTaskIndex: taskIndex
-          })"
-        >
-          <strong v-text="task.name" />
-
-          <p v-text="task.description" />
-        </UCard>
-      </li>
-    </ul>
-
-    <UTextarea
-      v-model="newTaskName"
-      size="xl"
-      :placeholder="$t('task.create')"
-      icon="i-lucide:circle-plus"
-      :ui="{
-        root: 'w-full'
-      }"
-      @keyup.enter="addTask"
-    />
-  </UCard>
-</template>

@@ -1,79 +1,116 @@
 <template>
-  <UHeader>
+  <UHeader
+    :ui="{
+      container: 'max-w-full'
+    }"
+  >
     <template #left>
-      <UButton
-        variant="link"
-        color="neutral"
-        :to="localePath('index')"
-        :label=" $t('app.name')"
-        icon='i-lucide:square-kanban'
-        :ui="{
-          base: 'text-2xl font-bold text-default',
-          leadingIcon: 'size-8 text-primary'
-        }"
-      />
+      <Logo />
     </template>
 
-    <UNavigationMenu
+    <!-- <UNavigationMenu
       variant="link"
-      :items="menu"
-    />
+      :items="items"
+    /> -->
 
     <template #right>
       <ULocaleSelect
         v-model="locale"
         variant="none"
-        :locales="locales.map((l: LocaleObject) => ({
-          name: l.name?.substring(0, 3),
-          code: l.code,
-          dir: l.dir
-        }))"
+        :locales="locales"
         :ui="{
-          base: 'text-muted hover:!text-default cursor-pointer',
-          trailingIcon: 'text-inherit'
+          base: 'cursor-pointer hidden sm:block',
         }"
         @update:model-value="setLocale($event as SupportedLocale)"
       />
 
-      <UColorModeSelect variant="none" />
+      <UColorModeSelect
+        variant="none"
+        class="cursor-pointer hidden sm:block"
+      />
+
+      <UDropdownMenu
+        v-if="userStore.user"
+        :items="dropdownItems"
+        class="hidden lg:block"
+      >
+        <UButton
+          :avatar="{
+            src: userStore.user.avatar, // 'https://avatar.iran.liara.run/public/39',
+            alt: `${userStore.user.name}${userStore.user.lastname ? ` ${userStore.user.lastname}` : ''}`,
+            icon: userStore.user.name || userStore.user.lastname ? '' : 'i-lucide:user'
+          }"
+          color="neutral"
+          variant="link"
+          :ui="{
+            base: 'p-0',
+            leadingAvatar: 'size-8',
+            leadingAvatarSize: 'md'
+          }"
+        />
+      </UDropdownMenu>
     </template>
 
     <template #body>
       <UNavigationMenu
         orientation="vertical"
-        :items="menu"
+        :items="navigationItems"
         class="-mx-2.5"
-      />
-
-      <UContentNavigation
-        highlight
-        :navigation="navigation"
-        :type="'single'"
-        :default-open="true"
       />
     </template>
   </UHeader>
 </template>
 
 <script lang="ts" setup>
-import type { NavigationMenuItem } from '@nuxt/ui'
+import type { NavigationMenuItem, DropdownMenuItem } from '@nuxt/ui'
 import type { LocaleObject } from '@nuxtjs/i18n'
 
-const { t, locale, locales, setLocale: setI18nLocale } = useI18n()
+const { t, locale, locales: i18nLocales, setLocale: setI18nLocale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const localePath = useLocalePath()
+const jwtCookie = useCookie('TasksJWT')
+const userStore = useUserStore()
 
-const menu = ref<NavigationMenuItem[]>([
+const navigationItems = ref<NavigationMenuItem[]>([
+  // {
+  //   label: t('home.title'),
+  //   to: localePath('index'),
+  //   icon: 'i-lucide:house'
+  // },
   {
-    label: t('home.title'),
-    to: localePath('index'),
-    icon: 'i-lucide:house'
+    label: t('logout.title'),
+    icon: 'i-lucide:log-out',
+    onSelect: ((e: Event) => {
+      jwtCookie.value = null
+      return navigateTo('/login')
+    })
   }
 ])
 
+const dropdownItems = ref<DropdownMenuItem[]>([
+  // {
+  //   label: t('home.title'),
+  //   to: localePath('index'),
+  //   icon: 'i-lucide:house'
+  // },
+  {
+    label: t('logout.title'),
+    icon: 'i-lucide:log-out',
+    onSelect: ((e: Event) => {
+      jwtCookie.value = null
+      return navigateTo('/login')
+    })
+  }
+])
+
+const locales = ref<any>(i18nLocales.value.map((l: LocaleObject) => ({
+  name: l.name?.substring(0, 3),
+  code: l.code,
+  dir: l.dir
+})))
 
 const setLocale = (value: SupportedLocale) => {
-  if (locales.value.filter((i: LocaleObject) => i.code !== value)) {
+  if (i18nLocales.value.filter((i: LocaleObject) => i.code !== value)) {
     setI18nLocale(value)
 
     location.href = switchLocalePath(value)

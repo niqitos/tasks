@@ -2,8 +2,6 @@
   <UApp :locale="locales[locale]">
     <NuxtLoadingIndicator />
 
-    <AppHeader />
-
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

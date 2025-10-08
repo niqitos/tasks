@@ -1,6 +1,4 @@
 <template>
-  <AppHeader />
-
   <UMain>
     <slot />
   </UMain>

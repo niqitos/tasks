@@ -5,6 +5,7 @@ import boardData from '@/data/board.json'
 
 export const useBoardStore = defineStore('boardStore', () => {
   const board = useStorage('board', boardData)
+  const workspaces = ref<any[]>([])
 
   /**
    * Tasks
@@ -12,7 +13,8 @@ export const useBoardStore = defineStore('boardStore', () => {
   const getTask = computed(() => {
     return (taskId: any) => {
       for (const column of board.value.columns) {
-        const task = column.tasks.find(task => task.id === taskId)
+        const task = column.tasks.find((task: any) => task.id === taskId)
+
         if (task) return task
       }
     }
@@ -28,10 +30,11 @@ export const useBoardStore = defineStore('boardStore', () => {
 
   const deleteTask = (taskId: any) => {
     for (const column of board.value.columns) {
-      const taskIndex = column.tasks.findIndex(task => task.id === taskId)
+      const taskIndex = column.tasks.findIndex((task: any) => task.id === taskId)
 
       if (taskIndex !== -1) {
         column.tasks.splice(taskIndex, 1)
+
         return
       }
     }
@@ -74,6 +77,7 @@ export const useBoardStore = defineStore('boardStore', () => {
   return {
     /* State */
     board,
+    workspaces,
     /* Getters */
     getTask,
     /* Actions*/
