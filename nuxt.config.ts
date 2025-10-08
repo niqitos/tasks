@@ -50,6 +50,7 @@ export default defineNuxtConfig({
     ],
     baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
     defaultLocale: process.env.DEFAULT_LOCALE as 'uk' | 'ru' | 'en' | undefined,
+    strategy: 'no_prefix',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
