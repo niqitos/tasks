@@ -8,21 +8,33 @@
     @update:open="close"
   >
     <template #body>
-      <div class="flex items-center gap-2 mb-4">
+      <div class="flex justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <UAvatar
+            :src="task?.creator.avatar || ''"
+            :alt="fullName"
+            :icon="fullName ? '' : 'i-lucide:user'"
+          />
 
+          <div class="text-xs">
+            <div
+              class="text-muted"
+              v-text="$t('task.createdBy')"
+            />
 
-        <UAvatar
-          :src="task?.creator.avatar || ''"
-          :alt="fullName"
-          :icon="fullName ? '' : 'i-lucide:user'"
-        />
+            <div v-text="fullName" />
+          </div>
+        </div>
 
-        <div class="text-xs">
+        <div class="flex flex-col items-end text-xs">
           <div
             class="text-muted"
-            v-text="$t('task.createdBy')"
+            v-text="$t('task.createdAt')"
           />
-          <div v-text="fullName" />
+
+          <div
+            v-text="createdAt"
+          />
         </div>
       </div>
 
@@ -128,6 +140,21 @@ const loading = ref<boolean>(false)
 const fullName = computed(() => `${task?.creator.name}${task?.creator.lastname ? ` ${task?.creator.lastname}` : ''}`)
 
 const open = computed<boolean>(() => route.path === localePath('index-tasks-id') && !!task)
+
+const createdAt = computed(() => {
+  const date = new Date(task?.createdAt)
+
+  return date.toLocaleDateString([], {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  })
+})
 
 const submit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true

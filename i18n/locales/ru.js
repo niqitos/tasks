@@ -145,6 +145,7 @@ export default {
     },
     404: 'Задача не найдена.',
     createdBy: 'Автор',
+    createdAt: 'Дата создания',
     name: {
       label: 'Название',
       required: 'Название обязательно'

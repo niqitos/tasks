@@ -145,6 +145,7 @@ export default {
     },
     404: 'Task not found.',
     createdBy: 'Created By',
+    createdAt: 'Created At',
     name: {
       label: 'Name',
       required: 'Name is required'
