@@ -55,6 +55,9 @@ export default defineNuxtConfig({
       useCookie: true,
       cookieKey: 'i18n_redirected',
       redirectOn: 'root'
+    },
+    experimental: {
+      localeDetector: 'localeDetector.ts'
     }
   },
 

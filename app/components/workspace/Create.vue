@@ -62,7 +62,9 @@ import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
 const { t } = useI18n()
+const toast = useToast()
 
+const workspaceStore = useWorkspaceStore()
 const boardStore = useBoardStore()
 
 const schema = z.object({
@@ -77,11 +79,9 @@ const state = reactive<Partial<Schema>>({
   description: ''
 })
 
-const toast = useToast()
-
 const loading = ref<boolean>(false)
 
-async function submit(event: FormSubmitEvent<Schema>) {
+const submit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true
 
   try {
@@ -90,11 +90,15 @@ async function submit(event: FormSubmitEvent<Schema>) {
       body: event.data
     })
 
-    boardStore.workspaces.push(workspace)
+    workspaceStore.workspaces.push(workspace)
+
+    workspaceStore.current = workspace
+
+    boardStore.boards = workspaceStore.current.boards
 
     toast.add({
       title: t('success.title'),
-      description: t('workspaces.success.description'),
+      description: t('workspaces.create.success.description'),
       icon: 'i-lucide:circle-check',
       color: 'success',
       duration: 3000

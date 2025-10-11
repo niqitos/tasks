@@ -1,5 +1,104 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+const prismaClientSingleton = () => {
+  const prisma = new PrismaClient()
+
+  const softDeleteModels: string[] = [
+    'User',
+    'Workspace',
+    'WorkspaceMember',
+    'Board',
+    'Task',
+    'TaskAssignee',
+    'File',
+    'Comment'
+  ]
+
+  const extensions: any = {}
+
+  softDeleteModels.forEach((model: string) => {
+    extensions[model.toLowerCase()] = {
+      async delete({ args }: any) {
+        const prismaModel = prisma[model.toLowerCase() as keyof typeof prisma] as any
+        return prismaModel.update({
+          ...args,
+          data: {
+            deletedAt: new Date()
+          }
+        })
+      },
+      async deleteMany({ args }: any) {
+        const prismaModel = prisma[model.toLowerCase() as keyof typeof prisma] as any
+        return prismaModel.updateMany({
+          ...args,
+          data: {
+            deletedAt: new Date()
+          }
+        })
+      },
+      async findUnique({ args, query }: any) {
+        return query({
+          ...args,
+          where: {
+            ...args.where,
+            deletedAt: null
+          }
+        })
+      },
+      async findUniqueOrThrow({ args, query }: any) {
+        return query({
+          ...args,
+          where: {
+            ...args.where,
+            deletedAt: null
+          }
+        })
+      },
+      async findFirst({ args, query }: any) {
+        return query({
+          ...args,
+          where: {
+            ...args.where,
+            deletedAt: null
+          }
+        })
+      },
+      async findMany({ args, query }: any) {
+        return query({
+          ...args,
+          where: {
+            ...args.where,
+            deletedAt: null
+          }
+        })
+      },
+      async count({ args, query }: any) {
+        return query({
+          ...args,
+          where: {
+            ...args.where,
+            deletedAt: null
+          }
+        })
+      }
+    }
+  })
+
+  return prisma.$extends({
+    query: extensions
+  })
+}
+
+type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClientSingleton | undefined
+}
+
+let prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 
 export default prisma
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma
+}

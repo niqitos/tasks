@@ -20,27 +20,27 @@ export default defineEventHandler(async (event) => {
 
     const decodedToken = await jwt.verify(token, config.jwtSecret)
 
-    const taskTryingToUpdate = await prisma.task.findUnique({
+    const boardTryingToUpdate = await prisma.board.findUnique({
       where: {
         id
       }
     })
 
-    if (!taskTryingToUpdate) {
+    if (!boardTryingToUpdate) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Task does not exist',
+        statusMessage: 'Board does not exist',
       })
     }
 
-    if (taskTryingToUpdate.creatorId !== decodedToken.id) {
+    if (boardTryingToUpdate.creatorId !== decodedToken.id) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Does not have permission to update task'
+        statusMessage: 'Does not have permission to update board'
       })
     }
 
-    await prisma.task.update({
+    await prisma.board.update({
       where: {
         id
       },

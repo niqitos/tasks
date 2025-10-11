@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
-import { getQuery, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -25,7 +24,7 @@ export default defineEventHandler(async (event) => {
             }
           }
         ],
-        deletedAt: null,
+        deletedAt: null
       },
       orderBy: {
         createdAt: 'asc'
@@ -47,25 +46,60 @@ export default defineEventHandler(async (event) => {
                 position: 'asc'
               },
               include: {
-                creator: true,
+                creator: {
+                  select: {
+                    id: true,
+                    name: true,
+                    lastname: true,
+                    avatar: true
+                  }
+                },
                 assignees: {
                   include: {
-                    user: true
+                    user: {
+                      select: {
+                        id: true,
+                        name: true,
+                        lastname: true,
+                        avatar: true
+                      }
+                    }
                   }
                 },
                 comments: true,
                 files: true
               }
             },
-            creator: true
+            creator: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                avatar: true
+              }
+            }
           }
         },
         members: {
           include: {
-            user: true
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                avatar: true
+              }
+            }
           }
         },
-        creator: true
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            lastname: true,
+            avatar: true
+          }
+        }
       }
     })
 

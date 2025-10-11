@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-dvh w-full bg-[url('https://images.unsplash.com/photo-1634307449380-3137f7902d30')] bg-cover bg-center">
+  <div class="flex h-dvh w-full bg-[url('https://images.unsplash.com/photo-1502462456379-a6dbfdd0faef')] bg-cover bg-center">
     <div class="bg-default w-[516px] mx-auto md:mx-0 p-4 sm:p-12 flex flex-col justify-center">
       <Logo class="mb-6" />
 
@@ -99,7 +99,7 @@ const loading = ref<boolean>(false)
 
 const submit = async (payload: FormSubmitEvent<Schema>) => {
   try {
-    await $fetch('/api/user', {
+    await $fetch('/api/users', {
       method: 'POST',
       body: {
         name: payload.data.name,

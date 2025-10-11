@@ -33,6 +33,10 @@
         v-if="userStore.user"
         :items="dropdownItems"
         class="hidden lg:block"
+        :ui="{
+          link: '!cursor-pointer',
+          itemLeadingIcon: 'text-inherit group-hover:!text-inherit'
+        }"
       >
         <UButton
           :avatar="{
@@ -56,6 +60,10 @@
         orientation="vertical"
         :items="navigationItems"
         class="-mx-2.5"
+        :ui="{
+          link: '!cursor-pointer',
+          linkLeadingIcon: 'text-inherit group-hover:text-inherit'
+        }"
       />
     </template>
   </UHeader>
@@ -78,8 +86,16 @@ const navigationItems = ref<NavigationMenuItem[]>([
   //   icon: 'i-lucide:house'
   // },
   {
+    label: t('user.edit.button'),
+    icon: 'i-lucide:user-round-pen',
+    onSelect: ((e: Event) => {
+      userStore.edit = true
+    })
+  },
+  {
     label: t('logout.title'),
     icon: 'i-lucide:log-out',
+    class: 'text-error hover:!text-error data-highlighted:text-error data-[state=open]:text-error',
     onSelect: ((e: Event) => {
       jwtCookie.value = null
       return navigateTo('/login')
@@ -94,8 +110,16 @@ const dropdownItems = ref<DropdownMenuItem[]>([
   //   icon: 'i-lucide:house'
   // },
   {
+    label: t('user.edit.button'),
+    icon: 'i-lucide:user-round-pen',
+    onSelect: ((e: Event) => {
+      userStore.edit = true
+    })
+  },
+  {
     label: t('logout.title'),
     icon: 'i-lucide:log-out',
+    class: 'text-error hover:!text-error',
     onSelect: ((e: Event) => {
       jwtCookie.value = null
       return navigateTo('/login')

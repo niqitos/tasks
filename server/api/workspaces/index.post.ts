@@ -3,6 +3,7 @@ import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
+  const t = await useTranslation(event)
 
   try {
     const body = await readBody(event)
@@ -23,48 +24,42 @@ export default defineEventHandler(async (event) => {
       data: {
         name: body.name,
         description: body.description,
-        creatorId: decodedToken.id
-      }
-    })
-
-    const member = await prisma.workspaceMember.create({
-      data: {
-        workspaceId: workspace.id,
-        userId: decodedToken.id,
-        role: 'ADMIN',
-        invitedById: decodedToken.id
-      }
-    })
-
-    const defaultBoards = [
-      {
-        position: 1,
-        name: 'To Do',
-        description: 'Tasks waiting to be started'
-      },
-      {
-        position: 2,
-        name: 'In Progress',
-        description: 'Tasks currently in progress'
-      },
-      {
-        position: 3,
-        name: 'Done',
-        description: 'Completed tasks'
-      }
-    ]
-
-    for (const board of defaultBoards) {
-      await prisma.board.create({
-        data: {
-          name: board.name,
-          description: board.description,
-          position: board.position,
-          workspaceId: workspace.id,
-          creatorId: decodedToken.id
+        creatorId: decodedToken.id,
+        members: {
+          create: {
+            userId: decodedToken.id,
+            role: 'ADMIN',
+            invitedById: decodedToken.id
+          }
+        },
+        boards: {
+          create: [
+            {
+              position: 1,
+              name: t('board.default.1.name'), // 'To Do',
+              description: t('board.default.1.description'), // 'Tasks waiting to be started',
+              creatorId: decodedToken.id
+            },
+            {
+              position: 2,
+              name: t('board.default.2.name'), // 'In Progress',
+              description: t('board.default.2.description'), // 'Tasks currently in progress',
+              creatorId: decodedToken.id
+            },
+            {
+              position: 3,
+              name: t('board.default.3.name'), // 'Done',
+              description: t('board.default.3.description'), // 'Completed tasks',
+              creatorId: decodedToken.id
+            }
+          ]
         }
-      })
-    }
+      },
+      include: {
+        members: true,
+        boards: true
+      }
+    })
 
     return workspace
   } catch (err) {

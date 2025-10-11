@@ -2,14 +2,16 @@ export default {
   app: {
     name: 'Tasks'
   },
+  cancel: 'Cancel',
   fields: {
     name: {
       label: 'Name',
       placeholder: 'Enter your name',
-      invalid: 'Invalid name'
+      required: 'Name is required',
+      invalid: 'Invalid name',
     },
     lastname: {
-      label: 'Дastname',
+      label: 'Lastname',
       placeholder: 'Enter your lastname',
       invalid: 'Invalid lastname'
     },
@@ -59,10 +61,25 @@ export default {
     title: 'Error!',
     500: 'Something went wrong 😒'
   },
+  user: {
+    edit: {
+      button: 'User',
+      title: 'Edit user',
+      submit: 'Update'
+    },
+    update: {
+      success: {
+        description: 'User updated successfully'
+      }
+    }
+  },
   workspaces: {
     create: {
       title: 'Create workspace',
-      submit: 'Submit'
+      submit: 'Submit',
+      success: {
+        description: 'Workspace created successfully.'
+      }
     },
     name: {
       label: 'Name',
@@ -72,22 +89,69 @@ export default {
     description: {
       label: 'Description',
       placeholder: 'Enter workspace description'
+    }
+  },
+  board: {
+    default: {
+      1: {
+        name: 'To Do',
+        description: 'Tasks waiting to be started'
+      },
+      2: {
+        name: 'In Progress',
+        description: 'Tasks currently in progress'
+      },
+      3: {
+        name: 'Done',
+        description: 'Completed tasks'
+      }
     },
-    success: {
-      description: 'Workspace Created successfully.'
+    create: {
+      placeholder: 'Create board',
+      success: {
+        description: 'Board created successfully'
+      }
+    },
+    delete: {
+      button: 'Delete board',
+      title: 'Are you sure you want to delete this board?',
+      description: 'The board will be deleted along with all the tasks.',
+      submit: 'Yes, delete the board',
+      success: {
+        description: 'The board deleted successfully'
+      }
     }
   },
   task: {
-    create: 'Create task',
+    create: {
+      placeholder: 'Create task',
+      success: {
+        description: 'Task created successfully'
+      }
+    },
     edit: 'Edit task',
     update: {
       button: 'Update',
       success: 'Task updated'
     },
-    delete: 'Delete task',
+    delete: {
+      button: 'Delete task',
+      title: 'Are you sure you want to delete this task?',
+      description: 'You won\'t be able to restore it.',
+      submit: 'Yes, delete the task',
+      success: {
+        description: 'The task deleted successfully'
+      }
+    },
     404: 'Task not found.',
-    name: 'Name',
-    description: 'Description'
+    createdBy: 'Created By',
+    name: {
+      label: 'Name',
+      required: 'Name is required'
+    },
+    description: {
+      label: 'Description'
+    }
   },
   logout: {
     title: 'Logout'

@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const body = await readBody(event)
     const id = await getRouterParam(event, 'id')
 
     const cookies = parseCookies(event)
@@ -20,31 +19,30 @@ export default defineEventHandler(async (event) => {
 
     const decodedToken = await jwt.verify(token, config.jwtSecret)
 
-    const taskTryingToUpdate = await prisma.task.findUnique({
+    const boardTryingToDelete = await prisma.board.findUnique({
       where: {
         id
       }
     })
 
-    if (!taskTryingToUpdate) {
+    if (!boardTryingToDelete) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Task does not exist',
+        statusMessage: 'Board does not exist',
       })
     }
 
-    if (taskTryingToUpdate.creatorId !== decodedToken.id) {
+    if (boardTryingToDelete.creatorId !== decodedToken.id) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Does not have permission to update task'
+        statusMessage: 'Does not have permission to update board',
       })
     }
 
-    await prisma.task.update({
+    await prisma.board.delete({
       where: {
         id
-      },
-      data: body
+      }
     })
   } catch (err) {
     console.log(err)
