@@ -42,6 +42,7 @@
             :label="$t('user.edit.submit')"
             icon="i-lucide:save"
             :loading
+            type="submit"
           />
         </div>
       </UForm>
@@ -67,7 +68,7 @@ type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
   name: userStore.user.name,
-  lastname: userStore.user.lastname
+  lastname: userStore.user.lastname || ''
 })
 
 const loading = ref<boolean>(false)
@@ -75,6 +76,7 @@ const loading = ref<boolean>(false)
 const submit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true
 
+  console.log(event.data)
   try {
     await $fetch(`/api/users/${userStore.user.id}`, {
       method: 'PATCH',

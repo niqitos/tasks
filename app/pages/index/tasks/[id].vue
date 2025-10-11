@@ -9,7 +9,7 @@
   >
     <template #body>
       <div class="flex items-center gap-2 mb-4">
-        <span v-text="$t('task.createdBy')" />
+
 
         <UAvatar
           :src="task?.creator.avatar || ''"
@@ -17,7 +17,13 @@
           :icon="fullName ? '' : 'i-lucide:user'"
         />
 
-        <span v-text="fullName" />
+        <div class="text-xs">
+          <div
+            class="text-muted"
+            v-text="$t('task.createdBy')"
+          />
+          <div v-text="fullName" />
+        </div>
       </div>
 
       <UForm
