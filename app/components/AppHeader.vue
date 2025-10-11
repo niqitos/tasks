@@ -34,7 +34,7 @@
         :items="dropdownItems"
         class="hidden lg:block"
         :ui="{
-          link: '!cursor-pointer',
+          item: '!cursor-pointer',
           itemLeadingIcon: 'text-inherit group-hover:!text-inherit'
         }"
       >

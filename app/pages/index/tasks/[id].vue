@@ -2,6 +2,9 @@
   <UModal
     v-model:open="open"
     :title="$t('task.edit')"
+    :ui="{
+      content: 'min-w-80 sm:min-w-120 md:min-w-160 lg:min-w-200'
+    }"
     @update:open="close"
   >
     <template #body>
@@ -45,13 +48,21 @@
           class="w-full"
           name="description"
         >
-          <UTextarea
+          <!-- <UTextarea
             v-model="state.description"
             autoresize
             :ui="{
               root: 'w-full'
             }"
-          />
+          /> -->
+          <ClientOnly>
+            <TiptapEditor
+              :content="state.description"
+              @change="($event: any) => {
+                state.description = $event
+              }"
+            />
+          </ClientOnly>
         </UFormField>
 
         <div class="flex justify-between">
