@@ -40,7 +40,7 @@
       >
         <UButton
           :avatar="{
-            src: userStore.user.avatar, // 'https://avatar.iran.liara.run/public/39',
+            src: userStore.user.avatar,
             alt: `${userStore.user.name}${userStore.user.lastname ? ` ${userStore.user.lastname}` : ''}`,
             icon: userStore.user.name || userStore.user.lastname ? '' : 'i-lucide:user'
           }"

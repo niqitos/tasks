@@ -31,15 +31,10 @@ const show = (id: string) => {
   router.push(localePath({ name: 'index-tasks-id', params: { id } }))
 }
 
-const name = computed(() => props.task.name.length > 50
-  ? props.task.name.slice(0, 50) + '…'
+const name = computed(() => props.task.name.length > 90
+  ? props.task.name.slice(0, 90) + '…'
   : props.task.name
 )
-
-// const description = computed(() => props.task.description.length > 50
-//   ? props.task.description.slice(0, 50) + '…'
-//   : props.task.description
-// )
 
 const description = computed(() => {
   if (!props.task.description) return ''
@@ -52,25 +47,8 @@ const description = computed(() => {
 
   const text = firstEl.textContent?.trim() || ''
 
-  return text.length > 50
-    ? text.slice(0, 50) + '…'
+  return text.length > 160
+    ? text.slice(0, 160) + '…'
     : text
 })
-
-// Get preview of HTML
-// const getPreview: any = (html: string, maxLength: number = 50) => {
-//   if (!html) return ''
-
-//   const div = document.createElement('div')
-//   div.innerHTML = html.trim()
-
-//   const firstEl = div.firstElementChild
-//   if (!firstEl) return ''
-
-//   const text = firstEl.textContent?.trim() || ''
-
-//   return text.length > maxLength
-//     ? text.slice(0, maxLength) + '…'
-//     : text
-// }
 </script>
