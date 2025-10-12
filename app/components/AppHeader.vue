@@ -5,7 +5,9 @@
     }"
   >
     <template #left>
-      <Logo />
+      <div class="flex items-center text-2xl font-bold">
+        <Logo />&nbsp;/&nbsp;{{ workspaceStore.current?.name }}
+      </div>
     </template>
 
     <!-- <UNavigationMenu
@@ -75,9 +77,10 @@ import type { LocaleObject } from '@nuxtjs/i18n'
 
 const { t, locale, locales: i18nLocales, setLocale: setI18nLocale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
-const localePath = useLocalePath()
 const jwtCookie = useCookie('TasksJWT')
 const userStore = useUserStore()
+
+const workspaceStore = useWorkspaceStore()
 
 const navigationItems = ref<NavigationMenuItem[]>([
   // {
