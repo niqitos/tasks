@@ -60,7 +60,9 @@ const update = async () => {
 
   await $fetch(`/api/boards/${props.board.id}`, {
     method: 'PATCH',
-    body: props.board
+    body: {
+      name: props.board.name
+    }
   })
 
   closeRename()
