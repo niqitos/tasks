@@ -20,6 +20,13 @@ export default defineEventHandler(async (event) => {
     const user = await prisma.user.findFirst({
       where: {
         id: decodedToken.id
+      },
+      select: {
+        id: true,
+        name: true,
+        lastname: true,
+        email: true,
+        avatar: true
       }
     })
 
