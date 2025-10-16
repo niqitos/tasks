@@ -41,7 +41,8 @@ export default defineEventHandler(async (event) => {
         lastname: body.lastname,
         email: body.email,
         password: passwordHash,
-        salt: salt
+        salt: salt,
+        avatar: 'https://avatar.iran.liara.run/public'
       }
     })
 
