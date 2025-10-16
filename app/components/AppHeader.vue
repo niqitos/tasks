@@ -7,8 +7,10 @@
     <template #left>
       <div class="flex items-center text-2xl font-bold">
         <Logo />
-        &nbsp;/&nbsp;
-        <WorkspaceManager />
+        <template v-if="workspaceStore.workspaces.length">
+          &nbsp;/&nbsp;
+          <WorkspaceManager />
+        </template>
       </div>
     </template>
 
