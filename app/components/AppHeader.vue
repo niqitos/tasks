@@ -6,7 +6,26 @@
   >
     <template #left>
       <div class="flex items-center text-2xl font-bold">
-        <Logo />&nbsp;/&nbsp;{{ workspaceStore.current?.name }}
+        <Logo />
+        &nbsp;/&nbsp;
+        <!-- <UDropdownMenu
+          :items="workspaceStore.workspaces.map((w: any) => ({
+            label: w.name,
+            type: 'checkbox' as const,
+            checked: w.id === workspaceStore.current?.id
+          }))"
+        >
+          <UButton
+            color="neutral"
+            variant="link"
+            :label="workspaceStore.current?.name"
+            :ui="{
+              base: 'text-2xl font-bold p-0 text-default'
+            }"
+          />
+        </UDropdownMenu> -->
+
+        <WorkspaceManager />
       </div>
     </template>
 
@@ -80,7 +99,7 @@ const switchLocalePath = useSwitchLocalePath()
 const jwtCookie = useCookie('TasksJWT')
 const userStore = useUserStore()
 
-const workspaceStore = useWorkspaceStore()
+// const workspaceStore = useWorkspaceStore()
 
 const navigationItems = ref<NavigationMenuItem[]>([
   // {

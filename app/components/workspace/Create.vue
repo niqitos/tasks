@@ -1,6 +1,5 @@
 <template>
   <div class="flex justify-center items-center min-h-[inherit] w-full">
-
     <div class="space-y-4 min-w-64">
       <h2
         class="text-2xl font-bold"
@@ -79,6 +78,8 @@ const state = reactive<Partial<Schema>>({
   description: ''
 })
 
+const emit = defineEmits(['created'])
+
 const loading = ref<boolean>(false)
 
 const submit = async (event: FormSubmitEvent<Schema>) => {
@@ -105,6 +106,7 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
     })
 
     loading.value = false
+    emit('created')
   } catch (error: any) {
     loading.value = false
 

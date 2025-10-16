@@ -8,23 +8,13 @@
     @update:open="close"
   >
     <template #body>
-      <div class="flex justify-between mb-4">
-        <div class="flex items-center gap-2">
-          <UAvatar
-            :src="task?.creator.avatar || ''"
-            :alt="fullName"
-            :icon="fullName ? '' : 'i-lucide:user'"
-          />
-
-          <div class="text-xs">
-            <div
-              class="text-muted"
-              v-text="$t('task.createdBy')"
-            />
-
-            <div v-text="fullName" />
-          </div>
-        </div>
+      <div
+        v-if="task?.creator"
+        class="flex justify-between mb-4"
+      >
+        <TaskCreator
+          :user="task.creator"
+        />
 
         <div class="flex flex-col items-end text-xs">
           <div
@@ -83,6 +73,25 @@
           </ClientOnly>
         </UFormField>
 
+        <div>
+          <div
+            class="text-muted text-xs"
+            v-text="$t('task.assignees', task.assignees.length)"
+          />
+
+          <div class="flex gap-4 mt-4">
+            <TaskAssignee
+              v-for="assignee in task.assignees"
+              v-model:task="task"
+              :assignee
+            />
+
+            <TaskAssignModal
+              :task="task"
+            />
+          </div>
+        </div>
+
         <div class="flex justify-between">
           <TaskDelete
             :task="task"
@@ -117,7 +126,7 @@ const route = useRoute()
 const toast = useToast()
 const { t } = useI18n()
 
-const task = await $fetch(`/api/tasks/${route.params.id}`)
+const task = ref(await $fetch(`/api/tasks/${route.params.id}`))
 
 const schema = z.object({
   name: z.string(t('task.name.required')).min(1, t('task.name.required')),
@@ -127,22 +136,20 @@ const schema = z.object({
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
-  name: task?.name,
-  description: task?.description || ''
+  name: task.value?.name,
+  description: task.value?.description || ''
 })
 
 const boardStore = useBoardStore()
 
-const board = computed(() => boardStore.boards.find((b: any) => b.id === task?.boardId))
+const board = computed(() => boardStore.boards.find((b: any) => b.id === task.value?.boardId))
 
 const loading = ref<boolean>(false)
-
-const fullName = computed(() => `${task?.creator.name}${task?.creator.lastname ? ` ${task?.creator.lastname}` : ''}`)
 
 const open = computed<boolean>(() => route.path === localePath('index-tasks-id') && !!task)
 
 const createdAt = computed(() => {
-  const date = new Date(task?.createdAt)
+  const date = new Date(task.value?.createdAt)
 
   return date.toLocaleDateString([], {
     weekday: 'short',
@@ -196,6 +203,6 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
 }
 
 const close = () => {
-  navigateTo(localePath('/'))
+  navigateTo(localePath('index'))
 }
 </script>

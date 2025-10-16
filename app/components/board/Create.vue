@@ -11,7 +11,8 @@
       :rows="1"
       autoresize
       :placeholder="$t('board.create.placeholder')"
-      icon="i-lucide:circle-plus"
+      icon="i-lucide:plus"
+      :loading
       :ui="{
         root: 'w-full'
       }"

@@ -5,7 +5,8 @@
     :rows="1"
     autoresize
     :placeholder="$t('task.create.placeholder')"
-    icon="i-lucide:circle-plus"
+    icon="i-lucide:plus"
+    :loading
     :ui="{
       root: 'w-full'
     }"
@@ -29,7 +30,7 @@ const { t } = useI18n()
 const name = ref('')
 const loading = ref<boolean>(false)
 
-const store = async () => {
+const store = async (e: Event) => {
   loading.value = true
 
   try {

@@ -146,6 +146,11 @@ export default {
     404: 'Task not found.',
     createdBy: 'Created By',
     createdAt: 'Created At',
+    assignees: 'No assignees | Assignee | Assignees | Assignees',
+    assign: {
+      button: 'Assign',
+      search: 'Search users...'
+    },
     name: {
       label: 'Name',
       required: 'Name is required'

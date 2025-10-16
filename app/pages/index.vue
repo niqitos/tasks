@@ -18,7 +18,17 @@ const workspaces = await $fetch('/api/workspaces')
 
 if (workspaces.length > 0) {
   workspaceStore.workspaces = workspaces
-  workspaceStore.current = workspaceStore.workspaces[0]
+
+  let workspace = workspaceStore.workspaces.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
+
+  if (!workspace) {
+    workspace = workspaceStore.workspaces[0]
+
+    localStorage.setItem('workspace.current.id', workspace.id)
+  }
+
+  workspaceStore.current = workspace
+
   boardStore.boards = workspaceStore.current.boards
 }
 </script>
