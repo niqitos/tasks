@@ -8,23 +8,6 @@
       <div class="flex items-center text-2xl font-bold">
         <Logo />
         &nbsp;/&nbsp;
-        <!-- <UDropdownMenu
-          :items="workspaceStore.workspaces.map((w: any) => ({
-            label: w.name,
-            type: 'checkbox' as const,
-            checked: w.id === workspaceStore.current?.id
-          }))"
-        >
-          <UButton
-            color="neutral"
-            variant="link"
-            :label="workspaceStore.current?.name"
-            :ui="{
-              base: 'text-2xl font-bold p-0 text-default'
-            }"
-          />
-        </UDropdownMenu> -->
-
         <WorkspaceManager />
       </div>
     </template>
@@ -98,8 +81,10 @@ const { t, locale, locales: i18nLocales, setLocale: setI18nLocale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
 const jwtCookie = useCookie('TasksJWT')
 const userStore = useUserStore()
+const localePath = useLocalePath()
 
-// const workspaceStore = useWorkspaceStore()
+const workspaceStore = useWorkspaceStore()
+const boardStore = useBoardStore()
 
 const navigationItems = ref<NavigationMenuItem[]>([
   // {
@@ -118,10 +103,7 @@ const navigationItems = ref<NavigationMenuItem[]>([
     label: t('logout.title'),
     icon: 'i-lucide:log-out',
     class: 'text-error hover:!text-error data-highlighted:text-error data-[state=open]:text-error',
-    onSelect: ((e: Event) => {
-      jwtCookie.value = null
-      return navigateTo('/login')
-    })
+    onSelect: ((e: Event) => logout())
   }
 ])
 
@@ -142,10 +124,7 @@ const dropdownItems = ref<DropdownMenuItem[]>([
     label: t('logout.title'),
     icon: 'i-lucide:log-out',
     class: 'text-error hover:!text-error',
-    onSelect: ((e: Event) => {
-      jwtCookie.value = null
-      return navigateTo('/login')
-    })
+    onSelect: ((e: Event) => logout())
   }
 ])
 
@@ -161,5 +140,13 @@ const setLocale = (value: SupportedLocale) => {
 
     location.href = switchLocalePath(value)
   }
+}
+
+const logout = () => {
+  jwtCookie.value = null
+  workspaceStore.workspaces = []
+  workspaceStore.current = null
+  boardStore.boards = []
+  return navigateTo(localePath('login'))
 }
 </script>
