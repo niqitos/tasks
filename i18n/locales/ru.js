@@ -156,7 +156,8 @@ export default {
       required: 'Название обязательно'
     },
     description: {
-      label: 'Описание'
+      label: 'Описание',
+      placeholder: 'Начните печатать...'
     }
   },
   logout: {

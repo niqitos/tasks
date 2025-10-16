@@ -156,7 +156,8 @@ export default {
       required: 'Name is required'
     },
     description: {
-      label: 'Description'
+      label: 'Description',
+      placeholder: 'Start typing...'
     }
   },
   logout: {

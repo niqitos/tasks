@@ -1,7 +1,7 @@
 <template>
   <UFieldGroup
     v-if="editor"
-    class="mt-3 mb-4"
+    class="-mx-2.5 sm:mx-auto flex-wrap"
   >
     <UButton
       v-for="(action, index) in textActions"
@@ -75,6 +75,14 @@ const textActions: TextAction[] = [
     active: () => props.editor?.isActive('strike')
   },
   {
+    name: 'codeblock',
+    label: 'Code Block',
+    icon: 'material-symbols-light:code-blocks-outline-rounded',
+    command: () => props.editor?.chain().focus().toggleCodeBlock().run(),
+    disabled: false,
+    active: () => props.editor?.isActive('material-symbols-light:code-blocks-outline-rounded')
+  },
+  {
     name: 'code',
     label: 'Code',
     icon: 'material-symbols-light:code',
@@ -89,6 +97,14 @@ const textActions: TextAction[] = [
     command: () => setLink(),
     disabled: false,
     active: () => props.editor?.isActive('link')
+  },
+  {
+    name: 'blockquote',
+    label: 'Blockquote',
+    icon: 'material-symbols-light:format-quote',
+    command: () => props.editor?.chain().focus().toggleBlockquote().run(),
+    disabled: false,
+    active: () => props.editor?.isActive('blockquote')
   },
   // {
   //   name: 'text_align_left,
@@ -122,6 +138,14 @@ const textActions: TextAction[] = [
   //   disabled: false,
   //   active: () => props.editor?.isActive({ textAlign: 'justify' })
   // },
+  {
+    name: 'taskList',
+    label: 'Task List',
+    icon: 'material-symbols-light:checklist',
+    command: () => props.editor?.chain().focus().toggleTaskList().run(),
+    disabled: false,
+    active: () => props.editor?.isActive('taskList')
+  },
   {
     name: 'bulletList',
     label: 'Bullet List',
