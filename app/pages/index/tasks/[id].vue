@@ -98,7 +98,7 @@
                 v-if="file?.mimeType && file.mimeType.startsWith('image/')"
                 :src="file?.url"
                 alt="Preview"
-                class="size-16 object-cover rounded mr-2"
+                class="size-16 object-cover rounded"
               />
 
               <UIcon
@@ -109,7 +109,7 @@
 
               <span
                 class="ml-2"
-                v-text="file.filename"
+                v-text="`${file.filename} (${formatBytes(file.size)})`"
               />
             </ULink>
           </div>
