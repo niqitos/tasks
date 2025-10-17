@@ -171,6 +171,7 @@ const state = reactive<Partial<Schema>>({
   description: task.value?.description || ''
 })
 
+const workspaceStore = useWorkspaceStore()
 const boardStore = useBoardStore()
 
 const board = computed(() => boardStore.boards.find((b: any) => b.id === task.value?.boardId))
@@ -268,6 +269,14 @@ const uploadFiles = async () => {
       })
 
       task.value?.files.push(file)
+
+      workspaceStore.current
+        .boards
+        .find((b: any) => b.id === task.value.boardId)
+        .tasks
+        .find((t: any) => t.id === task.value.id)
+        .files
+        .push(file)
     })
 
     files.value = []

@@ -163,7 +163,7 @@ export default {
     },
     files: {
       create: {
-        label: 'Add files',
+        label: 'Attach files',
         max: 'max.'
       },
       delete: {
@@ -171,7 +171,8 @@ export default {
           description: 'Task file deleted successfully'
         }
       },
-      label: 'Added files'
+      label: 'Attached files',
+      attached: 'Task has attached files'
     }
   },
   logout: {

@@ -163,7 +163,7 @@ export default {
     },
     files: {
       create: {
-        label: 'Додати файли',
+        label: 'Прикріпити файли',
         max: 'макс.'
       },
       delete: {
@@ -171,7 +171,8 @@ export default {
           description: 'Файл задачі успішно видалено'
         }
       },
-      label: 'Додані файли'
+      label: 'Прикріплені файли',
+      attached: 'Задача має прикріплені файли'
     }
   },
   logout: {

@@ -16,29 +16,34 @@
       /> -->
     </div>
 
-    <UAvatarGroup
-      v-if="task.assignees.length"
-      :ui="{
-        root: 'flex flex-row justify-end-safe mt-2'
-      }"
+    <div
+      v-show="task.files.length || task.assignees.length"
+      class="flex items-center justify-between mt-2"
     >
-      <!-- <UTooltip
-        v-for="assignee in task.assignees"
-        :key="assignee.id"
+      <UTooltip
+        v-show="task.files.length"
         :delay-duration="0"
-        text="Open on GitHub"
+        :text="$t('task.files.attached')"
       >
-        <UAvatar
-          :src="assignee.user.avatar"
-          :alt="`${assignee.user.name}${assignee.user.lastname ? ` ${assignee.user.lastname}` : ''}`"
+        <UIcon
+          name="i-lucide:paperclip"
+          class="text-dimmed"
         />
-      </UTooltip> -->
-      <TaskCardAssignee
-        v-for="assignee in task.assignees"
-        :key="assignee.user.id"
-        :user="assignee.user"
-      />
-    </UAvatarGroup>
+      </UTooltip>
+
+      <UAvatarGroup
+        v-show="task.assignees.length"
+        :ui="{
+          root: 'flex flex-row flex-1 justify-end-safe'
+        }"
+      >
+        <TaskCardAssignee
+          v-for="assignee in task.assignees"
+          :key="assignee.user.id"
+          :user="assignee.user"
+        />
+      </UAvatarGroup>
+    </div>
   </UCard>
 </template>
 
