@@ -20,6 +20,7 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
   modules: [
+    '@nuxt/image',
     '@nuxt/ui',
     '@nuxtjs/i18n',
     '@pinia/nuxt',
@@ -64,6 +65,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-10-08',
 
   runtimeConfig: {
-    jwtSecret: process.env.JWT_SECRET
+    jwtSecret: process.env.JWT_SECRET,
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY,
+      supabaseBucket: process.env.SUPABASE_BUCKET
+    }
   }
 })

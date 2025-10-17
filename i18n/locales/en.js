@@ -158,6 +158,12 @@ export default {
     description: {
       label: 'Description',
       placeholder: 'Start typing...'
+    },
+    files: {
+      add: {
+        label: 'Add files'
+      },
+      label: 'Added files'
     }
   },
   logout: {

@@ -158,6 +158,12 @@ export default {
     description: {
       label: 'Описание',
       placeholder: 'Начните печатать...'
+    },
+    files: {
+      add: {
+        label: 'Прикрепить файлы'
+      },
+      label: 'Прикрепленные файлы'
     }
   },
   logout: {

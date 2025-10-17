@@ -158,6 +158,12 @@ export default {
     description: {
       label: 'Опис',
       placeholder: 'Почніть друкувати...'
+    },
+    files: {
+      add: {
+        label: 'Додати файли'
+      },
+      label: 'Додані файли'
     }
   },
   logout: {
