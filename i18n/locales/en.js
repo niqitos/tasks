@@ -3,6 +3,8 @@ export default {
     name: 'Tasks'
   },
   cancel: 'Cancel',
+  or: 'or',
+  mb: 'MB',
   fields: {
     name: {
       label: 'Name',
@@ -160,8 +162,14 @@ export default {
       placeholder: 'Start typing...'
     },
     files: {
-      add: {
-        label: 'Add files'
+      create: {
+        label: 'Add files',
+        max: 'max.'
+      },
+      delete: {
+        success: {
+          description: 'Task file deleted successfully'
+        }
       },
       label: 'Added files'
     }

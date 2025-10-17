@@ -60,9 +60,5 @@ const unassign = async () => {
   if (workspaceBoardTaskAssigneeIndex !== -1) {
     workspaceBoardTaskAssignees.splice(workspaceBoardTaskAssigneeIndex, 1);
   }
-
-  // await nextTick()
-
-  // task.value = task.value
 }
 </script>

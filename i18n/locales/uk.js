@@ -3,6 +3,8 @@ export default {
     name: 'Задачі'
   },
   cancel: 'Відмінити',
+  or: 'або',
+  mb: 'МБ',
   fields: {
     name: {
       label: 'Ім’я',
@@ -160,8 +162,14 @@ export default {
       placeholder: 'Почніть друкувати...'
     },
     files: {
-      add: {
-        label: 'Додати файли'
+      create: {
+        label: 'Додати файли',
+        max: 'макс.'
+      },
+      delete: {
+        success: {
+          description: 'Файл задачі успішно видалено'
+        }
       },
       label: 'Додані файли'
     }

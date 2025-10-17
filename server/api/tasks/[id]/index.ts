@@ -45,7 +45,11 @@ export default defineEventHandler(async (event) => {
           }
         },
         comments: true,
-        files: true
+        files: {
+          where: {
+            deletedAt: null
+          }
+        }
       }
     })
 

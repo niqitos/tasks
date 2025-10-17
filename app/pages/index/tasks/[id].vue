@@ -74,8 +74,9 @@
 
           <UFileUpload
             v-model="files"
-            :label="$t('task.files.add.label')"
-            description="SVG, PNG, JPG or GIF (max. 2MB)"
+            :label="$t('task.files.create.label')"
+            :description="`SVG, PNG, JPG, GIF, WEBP, DOC, EXCEL ${$t('or')} PDF (${$t('task.files.create.max')} 2${$t('mb')})`"
+            accept=".svg,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx,.xlsx,.pdf"
             multiple
             class="w-full min-h-16 mt-4"
             :ui="{
@@ -84,34 +85,18 @@
             @update:model-value="uploadFiles"
           />
 
-          <div v-if="task.files.length" class="mt-4">
+          <div
+            v-if="task.files.length"
+            class="mt-4"
+          >
             <h3 v-text="$t('task.files.label')" />
 
-            <ULink
+            <TaskFile
               v-for="(file, index) in task.files"
               :key="index"
-              :to="file?.url"
-              target="_blank"
-              class="mt-2 flex items-center"
-            >
-              <NuxtImg
-                v-if="file?.mimeType && file.mimeType.startsWith('image/')"
-                :src="file?.url"
-                alt="Preview"
-                class="size-16 object-cover rounded"
-              />
-
-              <UIcon
-                v-else
-                name="i-lucide:paperclip"
-                class="size-4"
-              />
-
-              <span
-                class="ml-2"
-                v-text="`${file.filename} (${formatBytes(file.size)})`"
-              />
-            </ULink>
+              v-model:task="task"
+              :file
+            />
           </div>
         </UFormField>
 
@@ -170,7 +155,7 @@ const route = useRoute()
 const toast = useToast()
 const { t } = useI18n()
 
-const task = ref(await $fetch(`/api/tasks/${route.params.id}`))
+const task = ref<any>(await $fetch(`/api/tasks/${route.params.id}`))
 
 const files = ref<File[]>([])
 
@@ -248,15 +233,6 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
   }
 }
 
-const formatBytes = (bytes: number) => {
-  if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
-
 const uploadFiles = async () => {
   try {
     if (!files.value.length) {
@@ -271,7 +247,7 @@ const uploadFiles = async () => {
         .from(config.public.supabaseBucket)
         .upload(`tasks/${task.value?.id}/${filename}`, f)
 
-      console.log({ data, error })
+      // console.log({ data, error })
 
       if (error) {
         throw createError({

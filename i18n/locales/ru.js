@@ -3,6 +3,8 @@ export default {
     name: 'Задачи'
   },
   cancel: 'Отменить',
+  or: 'или',
+  mb: 'МБ',
   fields: {
     name: {
       label: 'Имя',
@@ -24,7 +26,7 @@ export default {
       label: 'Пароль',
       placeholder: 'Введите пароль',
       required: 'Пароль обязательное поле',
-      min: 'Должно быть не менее 8 символов.'
+      min: 'Должно быть не менее 8 символов'
     }
   },
   register: {
@@ -36,7 +38,7 @@ export default {
     },
     submit: 'Зарегистрироваться',
     success: {
-      description: 'Аккаунт успешно создан.'
+      description: 'Аккаунт успешно создан'
     }
   },
   login: {
@@ -44,11 +46,11 @@ export default {
     notRegistered: 'Не зарегистрированы?',
     signup: {
       button: 'Создайте',
-      text: 'аккаунт.'
+      text: 'аккаунт'
     },
     submit: 'Войти',
     success: {
-      description: 'Авторизация выполнена успешно.'
+      description: 'Авторизация выполнена успешно'
     }
   },
   home: {
@@ -69,7 +71,7 @@ export default {
     },
     update: {
       success: {
-        description: 'Пользователь успешно обновлен.'
+        description: 'Пользователь успешно обновлен'
       }
     }
   },
@@ -78,7 +80,7 @@ export default {
       title: 'Создать рабочую область',
       submit: 'Создать',
       success: {
-        description: 'Рабочая область успешно создан.'
+        description: 'Рабочая область успешно создан'
       }
     },
     name: {
@@ -109,16 +111,16 @@ export default {
     create: {
       placeholder: 'Создать доску',
       success: {
-        description: 'Доска успешно создана.'
+        description: 'Доска успешно создана'
       }
     },
     delete: {
       button: 'Удалить доску',
       title: 'Вы уверены, что хотите удалить эту доску?',
-      description: 'Доска будет удалена вместе со всеми задачами.',
+      description: 'Доска будет удалена вместе со всеми задачами',
       submit: 'Да, удалить доску',
       success: {
-        description: 'Доска успешно удалена.'
+        description: 'Доска успешно удалена'
       }
     }
   },
@@ -126,7 +128,7 @@ export default {
     create: {
       placeholder: 'Создать задачу',
       success: {
-        description: 'Задача успешно создана.'
+        description: 'Задача успешно создана'
       }
     },
     edit: 'Редактировать задачу',
@@ -137,13 +139,13 @@ export default {
     delete: {
       button: 'Удалить задачу',
       title: 'Вы уверены, что хотите удалить эту задачу?',
-      description: 'Вы не сможете ее восстановить.',
+      description: 'Вы не сможете ее восстановить',
       submit: 'Да, удалить задачу',
       success: {
-        description: 'Задача успешно удалена.'
+        description: 'Задача успешно удалена'
       }
     },
-    404: 'Задача не найдена.',
+    404: 'Задача не найдена',
     createdBy: 'Автор',
     createdAt: 'Дата создания',
     assignees: 'Еще нет исполнителей | Исполнитель | Исполнители | Исполнители',
@@ -160,8 +162,14 @@ export default {
       placeholder: 'Начните печатать...'
     },
     files: {
-      add: {
-        label: 'Прикрепить файлы'
+      create: {
+        label: 'Прикрепить файлы',
+        max: 'макс.'
+      },
+      delete: {
+        success: {
+          description: 'Файл задачи успешно удален'
+        }
       },
       label: 'Прикрепленные файлы'
     }
