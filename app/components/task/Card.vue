@@ -20,16 +20,32 @@
       v-show="task.files.length || task.assignees.length"
       class="flex items-center justify-between mt-2"
     >
-      <UTooltip
-        v-show="task.files.length"
-        :delay-duration="0"
-        :text="$t('task.files.attached')"
+      <div
+        v-if="task.files.length || task.comments.length"
+        class="flex gap-2"
       >
-        <UIcon
-          name="i-lucide:paperclip"
-          class="text-dimmed"
-        />
-      </UTooltip>
+        <UTooltip
+          v-if="task.files.length"
+          :delay-duration="0"
+          :text="$t('task.files.attached')"
+        >
+          <UIcon
+            name="i-lucide:paperclip"
+            class="text-dimmed"
+          />
+        </UTooltip>
+
+        <UTooltip
+          v-if="task.comments.length"
+          :delay-duration="0"
+          :text="$t('task.comments.has')"
+        >
+          <UIcon
+            name="i-lucide:message-square-text"
+            class="text-dimmed"
+          />
+        </UTooltip>
+      </div>
 
       <UAvatarGroup
         v-show="task.assignees.length"
@@ -59,27 +75,25 @@ const router = useRouter()
 const localePath = useLocalePath()
 
 const show = (id: string) => {
-  router.push(localePath({ name: 'index-tasks-id', params: { id } }))
+  router.push(localePath({ name: 'dashboard-index-tasks-id', params: { id } }))
 }
 
-const name = computed(() => props.task.name.length > 90
-  ? props.task.name.slice(0, 90) + '…'
-  : props.task.name
-)
+const name = computed(() => props.task.name.length > 90 ? props.task.name.slice(0, 90) + '…' : props.task.name)
 
-const description = computed(() => {
-  if (!props.task.description) return ''
+// const description = computed(() => {
+//   if (!props.task.description) return ''
 
-  const div = document.createElement('div')
-  div.innerHTML = props.task.description.trim()
+//   const div = document.createElement('div')
+//   div.innerHTML = props.task.description.trim()
 
-  const firstEl = div.firstElementChild
-  if (!firstEl) return ''
+//   const firstEl = div.firstElementChild
 
-  const text = firstEl.textContent?.trim() || ''
+//   if (!firstEl) {
+//     return ''
+//   }
 
-  return text.length > 160
-    ? text.slice(0, 160) + '…'
-    : text
-})
+//   const text = firstEl.textContent?.trim() || ''
+
+//   return text.length > 160 ? text.slice(0, 160) + '…' : text
+// })
 </script>

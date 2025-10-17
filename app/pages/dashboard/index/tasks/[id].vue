@@ -3,10 +3,31 @@
     v-model:open="open"
     :title="$t('task.edit')"
     :ui="{
+      header: 'flex justify-between items-center',
       content: 'min-w-80 sm:min-w-120 md:min-w-160 lg:min-w-200'
     }"
     @update:open="close"
   >
+    <template #header>
+      <h2
+        class="text-highlighted font-semibold flex justify-between items-center"
+        v-text="$t('task.edit')"
+      />
+
+      <div class="flex gap-2">
+        <TaskDelete
+          :task="task"
+        />
+
+        <UButton
+          icon="i-lucide:x"
+          color="neutral"
+          variant="link"
+          @click="open = false"
+        />
+      </div>
+    </template>
+
     <template #body>
       <div
         v-if="task?.creator"
@@ -48,6 +69,7 @@
             :ui="{
               root: 'w-full'
             }"
+            @update:model-value="debouncedFn()"
           />
         </UFormField>
 
@@ -56,53 +78,48 @@
           class="w-full"
           name="description"
         >
-          <!-- <UTextarea
-            v-model="state.description"
-            autoresize
-            :ui="{
-              root: 'w-full'
-            }"
-          /> -->
           <ClientOnly>
             <TiptapEditor
               :content="state.description"
               @change="($event: any) => {
+                if (state.description === $event) return
+                debouncedFn()
                 state.description = $event
               }"
             />
           </ClientOnly>
-
-          <UFileUpload
-            v-model="files"
-            :label="$t('task.files.create.label')"
-            :description="`SVG, PNG, JPG, GIF, WEBP, DOC, EXCEL ${$t('or')} PDF (${$t('task.files.create.max')} 2${$t('mb')})`"
-            accept=".svg,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx,.xlsx,.pdf"
-            multiple
-            class="w-full min-h-16 mt-4"
-            :ui="{
-              base: 'p-0'
-            }"
-            @update:model-value="uploadFiles"
-          />
-
-          <div
-            v-if="task.files.length"
-            class="mt-4"
-          >
-            <h3 v-text="$t('task.files.label')" />
-
-            <TaskFile
-              v-for="(file, index) in task.files"
-              :key="index"
-              v-model:task="task"
-              :file
-            />
-          </div>
         </UFormField>
 
+        <UFileUpload
+          v-model="files"
+          :label="$t('task.files.create.label')"
+          :description="`SVG, PNG, JPG, GIF, WEBP, DOC, EXCEL ${$t('or')} PDF (${$t('task.files.create.max')} 2${$t('mb')})`"
+          accept=".svg,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx,.xlsx,.pdf"
+          multiple
+          class="w-full min-h-16 mt-4"
+          :ui="{
+            base: 'p-0'
+          }"
+          @update:model-value="uploadFiles"
+        />
+
+        <div v-if="task.files.length">
+          <h3
+            class="text-muted text-sm mb-2"
+            v-text="$t('task.files.label')"
+          />
+
+          <TaskFile
+            v-for="(file, index) in task.files"
+            :key="index"
+            v-model:task="task"
+            :file
+          />
+        </div>
+
         <div>
-          <div
-            class="text-muted text-xs"
+          <h3
+            class="text-muted text-sm"
             v-text="$t('task.assignees', task.assignees.length)"
           />
 
@@ -118,19 +135,6 @@
             />
           </div>
         </div>
-
-        <div class="flex justify-between">
-          <TaskDelete
-            :task="task"
-          />
-
-          <UButton
-            :label="$t('task.update.button')"
-            icon="i-lucide:save"
-            type="submit"
-            :loading="loading"
-          />
-        </div>
       </UForm>
 
       <template v-else>
@@ -140,9 +144,9 @@
   </UModal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import * as z from 'zod'
-import type { FormSubmitEvent } from '@nuxt/ui'
+// import type { FormSubmitEvent } from '@nuxt/ui'
 
 definePageMeta({
   middleware: ['auth']
@@ -178,7 +182,7 @@ const board = computed(() => boardStore.boards.find((b: any) => b.id === task.va
 
 const loading = ref<boolean>(false)
 
-const open = computed<boolean>(() => route.path === localePath('index-tasks-id') && !!task)
+const open = computed<boolean>(() => route.path === localePath('dashboard-index-tasks-id') && !!task)
 
 const createdAt = computed(() => {
   const date = new Date(task.value?.createdAt)
@@ -195,20 +199,20 @@ const createdAt = computed(() => {
   })
 })
 
-const submit = async (event: FormSubmitEvent<Schema>) => {
+const submit = async () => {
   loading.value = true
 
   try {
     await $fetch(`/api/tasks/${route.params.id}`, {
       method: 'PATCH',
-      body: event.data
+      body: state
     })
 
     if (board.value) {
       const index = board.value.tasks.findIndex((b: any) => b.id === route.params.id)
 
       if (index !== -1) {
-        board.value.tasks[index] = { ...board.value.tasks[index], ...event.data }
+        board.value.tasks[index] = { ...board.value.tasks[index], ...state }
       }
     }
 
@@ -233,6 +237,11 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
     })
   }
 }
+
+const debouncedFn = useDebounceFn(async () => {
+  console.log(1)
+  await submit()
+}, 1000)
 
 const uploadFiles = async () => {
   try {
@@ -292,6 +301,6 @@ const uploadFiles = async () => {
 }
 
 const close = () => {
-  navigateTo(localePath('index'))
+  navigateTo(localePath('dashboard'))
 }
 </script>

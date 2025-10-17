@@ -1,5 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   const token = useCookie('TasksJWT')
+  const localePath = useLocalePath()
 
   if (!token.value) {
     return
@@ -14,7 +15,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     })
 
     if (verified.valid) {
-      return navigateTo('/')
+      return navigateTo(localePath('dashboard'))
     }
   } catch (err) {
     token.value = null

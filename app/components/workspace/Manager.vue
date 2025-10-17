@@ -19,6 +19,11 @@
           }
         }
       ]"
+      :content="{
+        align: 'start',
+        side: 'bottom',
+        sideOffset: 8
+      }"
     >
       <UButton
         color="neutral"

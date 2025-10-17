@@ -54,7 +54,88 @@ export default {
     }
   },
   home: {
-    title: 'Home'
+    title: 'Home',
+    hero: {
+      headline: 'Manage projects',
+      title: 'Taskboard',
+      description: 'The flexible way to manage your projects, big or small.',
+      links: {
+        start: 'Get started'
+      }
+    },
+    features_title: 'Core Features',
+    features: {
+      workspaces: {
+        title: 'Dedicated Workspaces',
+        desc: 'Organize related projects and team members into distinct private or shared environments.'
+      },
+      boards: {
+        title: 'Kanban Boards',
+        desc: 'Visualize workflow progress with custom columns (lists). Drag-and-drop tasks between stages.'
+      },
+      tasks: {
+        title: 'Feature-Rich Tasks (Cards)',
+        desc: 'Each task holds all necessary details: deadlines, priority, status, and related content.'
+      },
+      user_assign: {
+        title: 'Workspace User Management',
+        desc: 'Assign roles (Admin, Member, Guest) and manage access permissions at the workspace level.'
+      },
+      task_assign: {
+        title: 'Assign Users to Tasks',
+        desc: 'Quickly add team members to specific tasks to clarify ownership and responsibility.'
+      },
+      attachments: {
+        title: 'File Attachments',
+        desc: 'Upload files and documents directly to any task card for easy access to resources.'
+      },
+      comments: {
+        title: 'Real-Time Comments',
+        desc: 'Collaborate directly on tasks using real-time comments and mentions (@user).'
+      },
+      tiptap: {
+        title: 'Rich Task Descriptions',
+        desc: 'Use the Tiptap editor for advanced formatting (markdown, lists, tables) in your task descriptions.'
+      }
+    },
+    pricing_title: 'Pricing Plans',
+    plans: {
+      free: {
+        name: 'Free',
+        description: 'Tailored for indie hackers.',
+        features: {
+          1: '1 Workspace',
+          2: 'Up to 5 Boards',
+          3: 'Basic Task Features'
+        },
+        action: 'Start Now'
+      },
+      team: {
+        name: 'Team',
+        description: 'Best suited for small teams.',
+        features: {
+          1: 'Unlimited Workspaces',
+          2: 'Unlimited Boards',
+          3: 'Up to 5 Users per Workspace',
+          4: 'Advanced Filters'
+        },
+        action: 'Go team'
+      },
+      business: {
+        name: 'Business',
+        description: 'Ideal for larger teams and organizations.',
+        features: {
+          1: 'All Team Features',
+          2: 'User Roles & Permissions',
+          3: 'Unlimited Users per Workspace',
+          4: 'Audit Logs'
+        },
+        action: 'Go Business'
+      }
+    }
+  },
+  dashboard: {
+    title: 'Dahsboard'
   },
   success: {
     title: 'Success!'
@@ -75,6 +156,14 @@ export default {
       }
     }
   },
+  settings: {
+    edit: {
+      title: 'Settings',
+      button: 'Settings',
+      language: 'Language',
+      theme: 'Theme'
+    }
+  },
   workspaces: {
     create: {
       title: 'Create workspace',
@@ -91,6 +180,9 @@ export default {
     description: {
       label: 'Description',
       placeholder: 'Enter workspace description'
+    },
+    members: {
+      title: 'Workspace members'
     }
   },
   board: {

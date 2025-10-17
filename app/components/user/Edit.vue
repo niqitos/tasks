@@ -50,7 +50,7 @@
   </UModal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 

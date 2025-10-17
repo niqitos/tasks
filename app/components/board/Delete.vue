@@ -7,18 +7,6 @@
       footer: 'justify-end gap-2'
     }"
   >
-    <UButton
-      icon="i-lucide:trash"
-      color="error"
-      variant="link"
-      :title="$t('board.delete.button')"
-      :ui="{
-        base: 'p-0',
-        leadingIcon: 'size-4'
-      }"
-      @click="open = true"
-    />
-
     <template #footer="{ close }">
       <UButton
         color="neutral"
@@ -37,7 +25,7 @@
   </UModal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   board: {
     type: Object,
@@ -51,7 +39,9 @@ const toast = useToast()
 
 const workspaceStore = useWorkspaceStore()
 
-const open = ref<boolean>(false)
+const open = defineModel<boolean>('open', {
+  default: false
+})
 const loading = ref<boolean>(false)
 
 const remove = async () => {

@@ -10,8 +10,8 @@
     <UButton
       icon="i-lucide:trash"
       color="error"
-      variant="outline"
-      :label="$t('task.delete.button')"
+      variant="link"
+      :title="$t('task.delete.button')"
       @click="open = true"
     />
 
@@ -33,7 +33,7 @@
   </UModal>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 const props = defineProps({
   task: {
     type: Object,

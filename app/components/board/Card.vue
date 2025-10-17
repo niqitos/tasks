@@ -14,8 +14,32 @@
       />
 
       <BoardDelete
+        v-model:open="deleting"
         :board="board"
       />
+
+      <UDropdownMenu
+        :items="items"
+        :content="{
+          align: 'start',
+          side: 'bottom',
+          sideOffset: 8
+        }"
+        :ui="{
+          content: 'w-48'
+        }"
+      >
+        <UButton
+          title="Open"
+          icon="i-lucide:ellipsis-vertical"
+          color="neutral"
+          variant="link"
+          :ui="{
+            base: 'p-0',
+            trailingIcon: 'size-4'
+          }"
+        />
+      </UDropdownMenu>
     </div>
 
     <TaskCard
@@ -40,7 +64,9 @@
   </UCard>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
+import type { DropdownMenuItem } from '@nuxt/ui'
+
 const props = defineProps({
   board: {
     type: Object,
@@ -53,6 +79,19 @@ const props = defineProps({
 })
 
 const boardStore = useBoardStore()
+
+const deleting = ref<boolean>(false)
+
+const items = ref<DropdownMenuItem[]>([
+  {
+    label: $t('board.delete.button'),
+    icon: 'i-lucide:trash',
+    color: 'error',
+    onSelect(e: Event) {
+      deleting.value = true
+    }
+  }
+])
 
 const dragstart = (event: any, { fromBoardIndex, fromTaskIndex }: any) => {
   event.dataTransfer.setData('drag-type', 'task')

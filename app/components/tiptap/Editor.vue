@@ -14,7 +14,7 @@
   </UContainer>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from "@tiptap/starter-kit"
 import Placeholder from '@tiptap/extension-placeholder'

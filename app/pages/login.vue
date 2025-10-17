@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import * as z from 'zod'
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
 
@@ -48,6 +48,7 @@ definePageMeta({
   layout: 'auth'
 })
 
+const localePath = useLocalePath()
 const toast = useToast()
 const { t } = useI18n()
 
@@ -101,7 +102,7 @@ const submit = async (payload: FormSubmitEvent<Schema>) => {
 
     loading.value = false
 
-    navigateTo('/')
+    navigateTo(localePath('dashboard'))
   } catch (error: any) {
     loading.value = false
 

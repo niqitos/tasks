@@ -17,7 +17,7 @@
   </UFieldGroup>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { Editor } from '@tiptap/vue-3'
 
 interface TextAction {

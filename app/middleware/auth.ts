@@ -1,9 +1,10 @@
 export default defineNuxtRouteMiddleware(async (to) => {
+  const localePath = useLocalePath()
   const token = useCookie('TasksJWT')
   const userStore = useUserStore()
 
   if (!token.value) {
-    return navigateTo('/login')
+    return navigateTo(localePath('login'))
   }
 
   try {
@@ -17,7 +18,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if (!verified.valid) {
       token.value = null
 
-      return navigateTo('/login')
+      return navigateTo(localePath('login'))
     }
 
     const user = await $fetch('/api/auth/user')
@@ -28,6 +29,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   } catch (err) {
     token.value = null
 
-    return navigateTo('/login')
+    return navigateTo(localePath('login'))
   }
 })
