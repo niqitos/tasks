@@ -6,6 +6,7 @@
     }"
   >
     <UTextarea
+      v-if="roleStore.canCreateBoards"
       v-model="name"
       size="lg"
       :rows="1"
@@ -18,6 +19,17 @@
       }"
       @keyup.enter="store"
     />
+
+    <UButton
+      v-else
+      :label="$t(`plans.${userStore.user.plan}.upgrade`)"
+      icon="i-lucide:circle-fading-arrow-up"
+      color="primary"
+      :to="localePath('upgrade')"
+      :ui="{
+        base: 'w-full flex justify-center items-center'
+      }"
+    />
   </UCard>
 </template>
 
@@ -29,9 +41,11 @@ const props = defineProps({
   }
 })
 
+const localePath = useLocalePath()
 const { t } = useI18n()
 const toast = useToast()
 
+const roleStore = useRoleStore()
 const userStore = useUserStore()
 
 const name = ref<string>('')

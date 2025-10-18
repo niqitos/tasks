@@ -26,7 +26,8 @@ export default defineEventHandler(async (event) => {
         name: true,
         lastname: true,
         email: true,
-        avatar: true
+        avatar: true,
+        plan: true
       }
     })
 

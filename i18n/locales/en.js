@@ -108,12 +108,14 @@ export default {
         title: 'Rich Task Descriptions',
         desc: 'Use the Tiptap editor for advanced formatting (markdown, lists, tables) in your task descriptions.'
       }
-    },
-    pricing: {
-      title: 'Pricing Plans'
     }
   },
+  upgrade: {
+    title: 'Upgrade',
+    headline: 'Coming Soon'
+  },
   plans: {
+    title: 'Pricing Plans',
     free: {
       name: 'Free',
       description: 'Tailored for indie hackers.',
@@ -122,7 +124,8 @@ export default {
         2: 'Up to 5 Boards',
         3: 'Basic Task Features'
       },
-      action: 'Start Now'
+      action: 'Start Now',
+      upgrade: 'Upgrade to Team'
     },
     team: {
       name: 'Team',
@@ -133,7 +136,8 @@ export default {
         3: 'Up to 5 Users per Workspace',
         4: 'Advanced Filters'
       },
-      action: 'Go team'
+      action: 'Go team',
+      upgrade: 'Upgrade to Business'
     },
     business: {
       name: 'Business',
@@ -144,7 +148,20 @@ export default {
         3: 'Unlimited Users per Workspace',
         4: 'Audit Logs'
       },
-      action: 'Go Business'
+      action: 'Go Business',
+      upgrade: 'Upgrade to Enterprise'
+    },
+    enterprise: {
+      name: 'Enterprise',
+      description: 'Ideal for larger big enterprise.',
+      features: {
+        1: 'All Business Features',
+        2: 'User Roles & Permissions',
+        3: 'Unlimited Users per Workspace',
+        4: 'Audit Logs'
+      },
+      action: 'Get more',
+      upgrade: 'Get more'
     }
   },
   dashboard: {

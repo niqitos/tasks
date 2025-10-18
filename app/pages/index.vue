@@ -45,7 +45,7 @@
       <section>
         <h2
           class="text-3xl font-bold text-center mb-8 lg:mb-12"
-          v-text="$t('home.pricing.title')"
+          v-text="$t('plans.title')"
         />
 
         <UPricingPlans :plans="planStore.plans" />
@@ -55,10 +55,6 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-  layout: 'home'
-})
-
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const planStore = usePlanStore()

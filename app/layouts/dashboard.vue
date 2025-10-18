@@ -1,9 +1,11 @@
 <template>
-  <HomeHeader />
+  <AppHeader />
 
   <UMain>
     <slot />
   </UMain>
 
-  <HomeFooter />
+  <UserEdit />
+
+  <SettingsEdit />
 </template>

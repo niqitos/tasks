@@ -1,5 +1,6 @@
 <template>
   <UTextarea
+    v-if="roleStore.canCreateTasks"
     v-model="name"
     size="lg"
     :rows="1"
@@ -12,6 +13,17 @@
     }"
     @keyup.enter="store"
   />
+
+  <UButton
+    v-else
+    :label="$t(`plans.${userStore.user.plan}.upgrade`)"
+    icon="i-lucide:circle-fading-arrow-up"
+    color="primary"
+    :to="localePath('upgrade')"
+    :ui="{
+      base: 'w-full flex justify-center items-center'
+    }"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -23,7 +35,9 @@ const props = defineProps({
 })
 
 const userStore = useUserStore()
+const roleStore = useRoleStore()
 
+const localePath = useLocalePath()
 const toast = useToast()
 const { t } = useI18n()
 

@@ -106,6 +106,14 @@ const menu = computed(() => ([
   ],
   [
     {
+      label: $t(`plans.${userStore.user.plan}.upgrade`),
+      icon: 'i-lucide:circle-fading-arrow-up',
+      color: 'primary',
+      to: localePath('upgrade')
+    }
+  ],
+  [
+    {
       label: t('logout.title'),
       icon: 'i-lucide:log-out',
       class: 'text-error hover:!text-error data-highlighted:text-error data-[state=open]:text-error',
