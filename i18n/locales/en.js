@@ -102,7 +102,7 @@ export default {
       },
       comments: {
         title: 'Real-Time Comments',
-        desc: 'Collaborate directly on tasks using real-time comments and mentions (@user).'
+        desc: 'Collaborate directly on tasks using real-time comments and mentions.'
       },
       tiptap: {
         title: 'Rich Task Descriptions',
