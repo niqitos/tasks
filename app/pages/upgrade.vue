@@ -7,6 +7,8 @@
         root: 'border-none'
       }"
     />
+
+    <PlansTable />
   </UContainer>
 </template>
 

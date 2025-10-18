@@ -69,6 +69,9 @@ CREATE TABLE "Task" (
     "name" TEXT NOT NULL,
     "description" TEXT,
     "position" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "startAt" TIMESTAMP(3),
+    "endAt" TIMESTAMP(3),
+    "completedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
@@ -76,6 +79,19 @@ CREATE TABLE "Task" (
     "creatorId" TEXT NOT NULL,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TaskHistory" (
+    "id" TEXT NOT NULL,
+    "taskId" TEXT NOT NULL,
+    "fromBoardId" TEXT,
+    "toBoardId" TEXT,
+    "updatedById" TEXT,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "note" TEXT,
+
+    CONSTRAINT "TaskHistory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -119,6 +135,40 @@ CREATE TABLE "Comment" (
     CONSTRAINT "Comment_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "StoredCard" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "provider" TEXT NOT NULL,
+    "providerCardId" TEXT NOT NULL,
+    "last4" TEXT,
+    "brand" TEXT,
+    "expMonth" INTEGER,
+    "expYear" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deletedAt" TIMESTAMP(3),
+
+    CONSTRAINT "StoredCard_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Subscription" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "storedCardId" TEXT NOT NULL,
+    "amountKop" INTEGER NOT NULL,
+    "currency" TEXT NOT NULL DEFAULT 'UAH',
+    "interval" TEXT NOT NULL,
+    "nextChargeAt" TIMESTAMP(3) NOT NULL,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "cancelledAt" TIMESTAMP(3),
+
+    CONSTRAINT "Subscription_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -138,6 +188,18 @@ CREATE INDEX "Board_workspaceId_position_idx" ON "Board"("workspaceId", "positio
 CREATE INDEX "Task_boardId_position_idx" ON "Task"("boardId", "position");
 
 -- CreateIndex
+CREATE INDEX "TaskHistory_taskId_idx" ON "TaskHistory"("taskId");
+
+-- CreateIndex
+CREATE INDEX "TaskHistory_fromBoardId_idx" ON "TaskHistory"("fromBoardId");
+
+-- CreateIndex
+CREATE INDEX "TaskHistory_toBoardId_idx" ON "TaskHistory"("toBoardId");
+
+-- CreateIndex
+CREATE INDEX "TaskHistory_updatedById_idx" ON "TaskHistory"("updatedById");
+
+-- CreateIndex
 CREATE INDEX "TaskAssignee_userId_idx" ON "TaskAssignee"("userId");
 
 -- CreateIndex
@@ -148,6 +210,12 @@ CREATE UNIQUE INDEX "TaskAssignee_taskId_userId_key" ON "TaskAssignee"("taskId",
 
 -- CreateIndex
 CREATE INDEX "File_taskId_idx" ON "File"("taskId");
+
+-- CreateIndex
+CREATE INDEX "Subscription_userId_idx" ON "Subscription"("userId");
+
+-- CreateIndex
+CREATE INDEX "Subscription_storedCardId_idx" ON "Subscription"("storedCardId");
 
 -- AddForeignKey
 ALTER TABLE "Workspace" ADD CONSTRAINT "Workspace_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -174,6 +242,18 @@ ALTER TABLE "Task" ADD CONSTRAINT "Task_boardId_fkey" FOREIGN KEY ("boardId") RE
 ALTER TABLE "Task" ADD CONSTRAINT "Task_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "TaskHistory" ADD CONSTRAINT "TaskHistory_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TaskHistory" ADD CONSTRAINT "TaskHistory_fromBoardId_fkey" FOREIGN KEY ("fromBoardId") REFERENCES "Board"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TaskHistory" ADD CONSTRAINT "TaskHistory_toBoardId_fkey" FOREIGN KEY ("toBoardId") REFERENCES "Board"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TaskHistory" ADD CONSTRAINT "TaskHistory_updatedById_fkey" FOREIGN KEY ("updatedById") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "TaskAssignee" ADD CONSTRAINT "TaskAssignee_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -196,3 +276,12 @@ ALTER TABLE "Comment" ADD CONSTRAINT "Comment_authorId_fkey" FOREIGN KEY ("autho
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Comment"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "StoredCard" ADD CONSTRAINT "StoredCard_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_storedCardId_fkey" FOREIGN KEY ("storedCardId") REFERENCES "StoredCard"("id") ON DELETE CASCADE ON UPDATE CASCADE;

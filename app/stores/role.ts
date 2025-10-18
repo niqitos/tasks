@@ -34,10 +34,16 @@ export const useRoleStore = defineStore('role', () => {
     planStore.limitations[userStore.user?.plan]?.workspaces.boards.tasks.max > workspaceStore.current?.boards.map((b: any) => b.tasks).flat().length
   )
 
+  const canAddMembersToWorkspaces = computed<boolean>(() =>
+    planStore.limitations[userStore.user?.plan]?.workspaces.members.max === planStore.unlimited ||
+    planStore.limitations[userStore.user?.plan]?.workspaces.members.max > workspaceStore.current?.members.length
+  )
+
   return {
     roles,
     canCreateWorkspaces,
     canCreateBoards,
-    canCreateTasks
+    canCreateTasks,
+    canAddMembersToWorkspaces
   }
 })

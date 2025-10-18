@@ -17,9 +17,9 @@ const prismaClientSingleton = () => {
   const extensions: any = {}
 
   softDeleteModels.forEach((model: string) => {
-    extensions[model.toLowerCase()] = {
+    extensions[model.charAt(0).toLowerCase() + model.slice(1)] = {
       async delete({ args }: any) {
-        const prismaModel = prisma[model.toLowerCase() as keyof typeof prisma] as any
+        const prismaModel = prisma[model.charAt(0).toLowerCase() + model.slice(1) as keyof typeof prisma] as any
         return prismaModel.update({
           ...args,
           data: {
@@ -28,7 +28,7 @@ const prismaClientSingleton = () => {
         })
       },
       async deleteMany({ args }: any) {
-        const prismaModel = prisma[model.toLowerCase() as keyof typeof prisma] as any
+        const prismaModel = prisma[model.charAt(0).toLowerCase() + model.slice(1) as keyof typeof prisma] as any
         return prismaModel.updateMany({
           ...args,
           data: {
@@ -40,8 +40,8 @@ const prismaClientSingleton = () => {
         return query({
           ...args,
           where: {
-            ...args.where,
-            deletedAt: null
+            deletedAt: null,
+            ...args.where
           }
         })
       },
@@ -49,8 +49,8 @@ const prismaClientSingleton = () => {
         return query({
           ...args,
           where: {
-            ...args.where,
-            deletedAt: null
+            deletedAt: null,
+            ...args.where
           }
         })
       },
@@ -58,8 +58,8 @@ const prismaClientSingleton = () => {
         return query({
           ...args,
           where: {
-            ...args.where,
-            deletedAt: null
+            deletedAt: null,
+            ...args.where
           }
         })
       },
@@ -67,8 +67,8 @@ const prismaClientSingleton = () => {
         return query({
           ...args,
           where: {
-            ...args.where,
-            deletedAt: null
+            deletedAt: null,
+            ...args.where
           }
         })
       },
@@ -76,8 +76,8 @@ const prismaClientSingleton = () => {
         return query({
           ...args,
           where: {
-            ...args.where,
-            deletedAt: null
+            deletedAt: null,
+            ...args.where
           }
         })
       }

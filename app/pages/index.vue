@@ -42,14 +42,7 @@
         </div>
       </section>
 
-      <section>
-        <h2
-          class="text-3xl font-bold text-center mb-8 lg:mb-12"
-          v-text="$t('plans.title')"
-        />
-
-        <UPricingPlans :plans="planStore.plans" />
-      </section>
+      <PlansCards />
     </UContainer>
   </div>
 </template>
@@ -57,7 +50,6 @@
 <script lang="ts" setup>
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
-const planStore = usePlanStore()
 
 const links = ref([
   {

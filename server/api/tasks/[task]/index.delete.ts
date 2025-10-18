@@ -44,6 +44,19 @@ export default defineEventHandler(async (event) => {
         id: task
       }
     })
+
+    const now = new Date()
+
+    prisma.taskHistory.create({
+      data: {
+        taskId: taskTryingToDelete.id,
+        // fromBoardId: taskTryingToDelete.boardId,
+        toBoardId: taskTryingToDelete.boardId,
+        updatedById: decodedToken.id,
+        updatedAt: now,
+        note: 'deleted'
+      }
+    })
   } catch (err) {
     console.log(err)
   }

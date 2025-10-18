@@ -32,12 +32,14 @@
       />
 
       <UForm
+        v-if="roleStore.canAddMembersToWorkspaces"
         :schema="schema"
         :state="state"
         class="space-y-4"
         @submit="submit"
       >
         <FieldUserSearch
+          ref="userSearchRef"
           v-model="state.user"
           required
         />
@@ -70,22 +72,36 @@
           :loading="loading"
           size="xl"
           :ui="{
-            base: 'w-full mt-6 rounded-full text-sm font-bold flex justify-center items-center cursor-pointer',
+            base: 'w-full mt-6 text-sm font-bold flex justify-center items-center cursor-pointer',
             trailingIcon: 'size-5'
           }"
         />
       </UForm>
+
+      <UButton
+        v-else
+        :label="$t(`plans.${userStore.user.plan}.upgrade`)"
+        icon="i-lucide:circle-fading-arrow-up"
+        color="primary"
+        :to="localePath('upgrade')"
+        :ui="{
+          base: 'w-full flex justify-center items-center'
+        }"
+      />
     </template>
 
     <template #footer>
-      <UPageList>
+      <UPageList
+        class="w-full"
+      >
         <UPageCard
           v-for="(member, index) in workspaceStore.current?.members"
           :key="index"
           variant="ghost"
           :ui="{
             root: 'relative',
-            container: 'px-0 py-2 sm:px-0 sm:py-2'
+            container: 'px-0 py-2 sm:px-0 sm:py-2',
+            body: 'w-full flex justify-between'
           }"
         >
           <template #body>
@@ -98,6 +114,12 @@
               }"
               size="xl"
             />
+
+
+            <WorkspaceMembersDelete
+              v-if="member.user?.id !== workspaceStore.current.creatorId"
+              :member
+            />
           </template>
         </UPageCard>
       </UPageList>
@@ -109,11 +131,15 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
+const localePath = useLocalePath()
 const { t } = useI18n()
 const toast = useToast()
 
 const workspaceStore = useWorkspaceStore()
 const roleStore = useRoleStore()
+const userStore = useUserStore()
+
+const userSearchRef = ref<any>(null)
 
 const schema = z.object({
   user: z.string(t('workspaces.members.add.user.required')),
@@ -150,6 +176,10 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
     })
 
     loading.value = false
+
+    state.user = undefined
+    state.role = undefined
+    userSearchRef.value.reset()
   } catch (error: any) {
     loading.value = false
 

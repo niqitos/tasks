@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const q = query.q as string
+    const excludeWorkspaceId = query.excludeWorkspace as string
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -42,16 +43,16 @@ export default defineEventHandler(async (event) => {
             }
           }
         ],
-        // AND: [
-        //   {
-        //     workspaceMembers: {
-        //       some: {
-        //         workspaceId: workspaceId,
-        //         deletedAt: null
-        //       }
-        //     }
-        //   }
-        // ]
+        AND: [
+          {
+            workspaceMembers: {
+              none: {
+                workspaceId: excludeWorkspaceId,
+                deletedAt: null
+              }
+            }
+          }
+        ]
       },
       select: {
         id: true,

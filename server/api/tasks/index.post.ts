@@ -57,6 +57,19 @@ export default defineEventHandler(async (event) => {
       }
     })
 
+    const now = new Date()
+
+    prisma.taskHistory.create({
+      data: {
+        taskId: newTask.id,
+        // fromBoardId: newTask.boardId,
+        toBoardId: newTask.boardId,
+        updatedById: decodedToken.id,
+        updatedAt: now,
+        note: 'created'
+      }
+    })
+
     return newTask
   } catch (err) {
     throw createError({

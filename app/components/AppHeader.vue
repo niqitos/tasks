@@ -10,9 +10,8 @@
         <template v-if="workspaceStore.workspaces.length">
           &nbsp;/&nbsp;
           <WorkspaceManager />
+          <WorkspaceMembersModal />
         </template>
-
-         <WorkspaceMembers />
       </div>
     </template>
 

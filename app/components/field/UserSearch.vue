@@ -4,6 +4,7 @@
     name="user"
   >
     <USelectMenu
+      v-model="localModal"
       v-model:open="open"
       v-model:search-term="searchTerm"
       icon="i-lucide:search"
@@ -25,6 +26,10 @@ const items = ref<any[]>()
 const searchTerm = ref<string>('')
 const loading = ref<boolean>(false)
 
+const workspaceStore = useWorkspaceStore()
+
+const localModal = ref<any>(null)
+
 const model = defineModel()
 
 const search = useDebounceFn(async () => {
@@ -37,7 +42,12 @@ const search = useDebounceFn(async () => {
   loading.value = true
 
   try {
-    const res = await $fetch(`/api/users/search?q=${encodeURIComponent(searchTerm.value)}`)
+    const params = new URLSearchParams({
+      q: searchTerm.value,
+      excludeWorkspaceId: workspaceStore.current?.id
+    });
+
+    const res = await $fetch(`/api/users/search?${params}`)
 
     items.value = res?.map((user: any) => ({
       id: user.id,
@@ -54,4 +64,12 @@ const search = useDebounceFn(async () => {
     loading.value = false
   }
 }, 300)
+
+const reset = () => {
+  localModal.value = null
+}
+
+defineExpose({
+  reset
+})
 </script>

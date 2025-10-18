@@ -26,57 +26,74 @@ enum UserPlan {
   enterprise
 }
 
-model User {
-  id         String      @id @default(uuid())
-  name       String
-  lastname   String?
-  email      String      @unique
-  password   String
-  salt       String
-  avatar     String?
-  plan       UserPlan    @default(free)
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @default(now()) @updatedAt
-  deletedAt  DateTime?
+enum Currency {
+  UAH
+  USD
+  EUR
+  GBP
+  PLN
+  CZK
+  CAD
+  BYN
+  CNY
+  RUB
+  BTC
+}
 
-  workspacesCreated  Workspace[]        @relation("WorkspaceCreator")
-  tasksAssigned      TaskAssignee[]     @relation("TaskAssigner")
-  boardsCreated      Board[]            @relation("BoardCreator")
-  tasksCreated       Task[]             @relation("TaskCreator")
-  filesCreated       File[]             @relation("FileCreator")
-  comments           Comment[]          @relation("AuthorComments")
-  workspaceMembers   WorkspaceMember[]
-  taskAssignees      TaskAssignee[]
-  invitedMembers     WorkspaceMember[]  @relation("WorkspaceInviter")
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  lastname  String?
+  email     String    @unique
+  password  String
+  salt      String
+  avatar    String?
+  plan      UserPlan  @default(free)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  deletedAt DateTime?
+
+  workspacesCreated Workspace[]       @relation("WorkspaceCreator")
+  tasksAssigned     TaskAssignee[]    @relation("TaskAssigner")
+  boardsCreated     Board[]           @relation("BoardCreator")
+  tasksCreated      Task[]            @relation("TaskCreator")
+  filesCreated      File[]            @relation("FileCreator")
+  comments          Comment[]         @relation("AuthorComments")
+  workspaceMembers  WorkspaceMember[]
+  taskAssignees     TaskAssignee[]
+  invitedMembers    WorkspaceMember[] @relation("WorkspaceInviter")
+  taskHistory       TaskHistory[]
+  storedCards       StoredCard[]
+  subscriptions     Subscription[]
 }
 
 model Workspace {
-  id          String             @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   description String?
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @default(now()) @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
   deletedAt   DateTime?
 
-  creatorId   String
-  creator     User               @relation("WorkspaceCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String
+  creator   User   @relation("WorkspaceCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 
-  boards      Board[]            @relation("WorkspaceBoards")
-  members     WorkspaceMember[]
+  boards  Board[]           @relation("WorkspaceBoards")
+  members WorkspaceMember[]
 }
 
 model WorkspaceMember {
-  id           Int            @id @default(autoincrement())
-  workspace    Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId  String
-  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
-  role         WorkspaceRole  @default(guest)
-  invitedAt    DateTime?
-  joinedAt     DateTime?
-  invitedById  String?
-  invitedBy    User?          @relation("WorkspaceInviter", fields: [invitedById], references: [id])
-  deletedAt    DateTime?
+  id          Int           @id @default(autoincrement())
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  role        WorkspaceRole @default(guest)
+  invitedAt   DateTime?
+  joinedAt    DateTime?
+  invitedById String?
+  invitedBy   User?         @relation("WorkspaceInviter", fields: [invitedById], references: [id])
+  deletedAt   DateTime?
 
   @@unique([workspaceId, userId])
   @@index([userId])
@@ -84,58 +101,87 @@ model WorkspaceMember {
 }
 
 model Board {
-  id          String     @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   description String?
-  position    Float      @default(0)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @default(now()) @updatedAt
+  position    Float     @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
   deletedAt   DateTime?
 
   workspaceId String
-  workspace   Workspace  @relation("WorkspaceBoards", fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation("WorkspaceBoards", fields: [workspaceId], references: [id], onDelete: Cascade)
 
-  creatorId   String
-  creator     User       @relation("BoardCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String
+  creator   User   @relation("BoardCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 
-  tasks       Task[]     @relation("BoardTasks")
+  tasks           Task[]        @relation("BoardTasks")
+  taskHistoryFrom TaskHistory[] @relation("FromBoardHistory")
+  taskHistoryTo   TaskHistory[] @relation("ToBoardHistory")
 
   @@index([workspaceId, position])
 }
 
 model Task {
-  id          String          @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   description String?
-  position    Float           @default(0)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @default(now()) @updatedAt
+  position    Float     @default(0)
+  startAt     DateTime?
+  endAt       DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
   deletedAt   DateTime?
 
-  boardId     String
-  board       Board           @relation("BoardTasks", fields: [boardId], references: [id], onDelete: Cascade)
+  boardId String
+  board   Board  @relation("BoardTasks", fields: [boardId], references: [id], onDelete: Cascade)
 
-  creatorId   String
-  creator     User            @relation("TaskCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String
+  creator   User   @relation("TaskCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 
   assignees   TaskAssignee[]
   files       File[]
   comments    Comment[]
+  taskHistory TaskHistory[]
 
   @@index([boardId, position])
 }
 
+model TaskHistory {
+  id     String @id @default(uuid())
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId String
+
+  fromBoard   Board?  @relation("FromBoardHistory", fields: [fromBoardId], references: [id])
+  fromBoardId String?
+
+  toBoard   Board?  @relation("ToBoardHistory", fields: [toBoardId], references: [id])
+  toBoardId String?
+
+  updatedBy   User?   @relation(fields: [updatedById], references: [id], onDelete: SetNull)
+  updatedById String?
+
+  updatedAt DateTime @default(now())
+  note    String?
+
+  @@index([taskId])
+  @@index([fromBoardId])
+  @@index([toBoardId])
+  @@index([updatedById])
+}
+
 model TaskAssignee {
-  id         Int        @id @default(autoincrement())
-  task       Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId     String
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     String
+  id     Int    @id @default(autoincrement())
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   assignerId String
-  assigner   User       @relation("TaskAssigner", fields: [assignerId], references: [id], onDelete: Cascade)
+  assigner   User   @relation("TaskAssigner", fields: [assignerId], references: [id], onDelete: Cascade)
 
-  assignedAt DateTime   @default(now())
+  assignedAt DateTime  @default(now())
   deletedAt  DateTime?
 
   @@unique([taskId, userId])
@@ -144,37 +190,76 @@ model TaskAssignee {
 }
 
 model File {
-  id        String     @id @default(uuid())
+  id        String    @id @default(uuid())
   filename  String
   url       String
   mimeType  String?
   size      Int?
-  createdAt DateTime   @default(now())
+  createdAt DateTime  @default(now())
   deletedAt DateTime?
 
-  task      Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId    String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId String
 
   creatorId String
-  creator   User       @relation("FileCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  creator   User   @relation("FileCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 
   @@index([taskId])
 }
 
 model Comment {
-  id        String     @id @default(uuid())
+  id        String    @id @default(uuid())
   content   String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @default(now()) @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
   deletedAt DateTime?
 
-  task      Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId    String
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId String
 
-  author    User?      @relation("AuthorComments", fields: [authorId], references: [id], onDelete: SetNull)
-  authorId  String?
+  author   User?   @relation("AuthorComments", fields: [authorId], references: [id], onDelete: SetNull)
+  authorId String?
 
-  parentId  String?
-  parent    Comment?   @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  replies   Comment[]  @relation("CommentReplies")
+  parentId String?
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[] @relation("CommentReplies")
 }
+
+model StoredCard {
+  id              String    @id @default(uuid())
+  userId          String
+  provider        String
+  providerCardId  String
+  last4           String?
+  brand           String?
+  expMonth        Int?
+  expYear         Int?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now())
+  deletedAt       DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id            String    @id @default(uuid())
+  userId        String
+  storedCardId  String
+  amountKop     Int
+  currency      Currency  @default(USD)
+  interval      String
+  nextChargeAt  DateTime
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  cancelledAt   DateTime?
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storedCard StoredCard  @relation(fields: [storedCardId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([storedCardId])
+}
+

@@ -77,7 +77,7 @@ export default {
     features: {
       title: 'Core Features',
       workspaces: {
-        title: 'Dedicated Workspaces',
+        title: 'Dedicated Projects',
         desc: 'Organize related projects and team members into distinct private or shared environments.'
       },
       boards: {
@@ -89,8 +89,8 @@ export default {
         desc: 'Each task holds all necessary details: deadlines, priority, status, and related content.'
       },
       user_assign: {
-        title: 'Workspace User Management',
-        desc: 'Assign roles (Admin, Member, Guest) and manage access permissions at the workspace level.'
+        title: 'Project User Management',
+        desc: 'Assign roles (Admin, Member, Guest) and manage access permissions at the project level.'
       },
       task_assign: {
         title: 'Assign Users to Tasks',
@@ -116,13 +116,42 @@ export default {
   },
   plans: {
     title: 'Pricing Plans',
+    limits: {
+      title: 'Limits',
+      limited: '0 | {count} | Up to {count}',
+      unlimited: 'Unlimited',
+      workspaces: {
+        title: 'Projects',
+        limited: '0 Projects | {count} Project | Up to {count} Projects',
+        unlimited: 'Unlimited Projects',
+        boards: {
+          title: 'Boards',
+          limited: '0 Boards | {count} Board | Up to {count} Boards',
+          unlimited: 'Unlimited Boards',
+          tasks: {
+            title: 'Tasks',
+            limited: '0 Tasks | {count} Task | Up to {count} Tasks',
+            unlimited: 'Unlimited Tasks'
+          }
+        },
+        members: {
+          title: 'Project Members',
+          limited: '0 Project Members | {count} Project Member | Up to {count} Project Members',
+          unlimited: 'Unlimited Project Members'
+        }
+      }
+    },
+    features: {
+      title: 'Features',
+      support: {
+        title: 'Support'
+      }
+    },
     free: {
       name: 'Free',
-      description: 'Tailored for indie hackers.',
+      description: 'Tailored for personal projects and indie developers.',
       features: {
-        1: '1 Workspace',
-        2: 'Up to 5 Boards',
-        3: 'Basic Task Features'
+        //
       },
       action: 'Start Now',
       upgrade: 'Upgrade to Team'
@@ -131,10 +160,7 @@ export default {
       name: 'Team',
       description: 'Best suited for small teams.',
       features: {
-        1: 'Unlimited Workspaces',
-        2: 'Unlimited Boards',
-        3: 'Up to 5 Users per Workspace',
-        4: 'Advanced Filters'
+        support: 'Basic support'
       },
       action: 'Go team',
       upgrade: 'Upgrade to Business'
@@ -143,10 +169,7 @@ export default {
       name: 'Business',
       description: 'Ideal for larger teams and organizations.',
       features: {
-        1: 'All Team Features',
-        2: 'User Roles & Permissions',
-        3: 'Unlimited Users per Workspace',
-        4: 'Audit Logs'
+        support: '24/7 support'
       },
       action: 'Go Business',
       upgrade: 'Upgrade to Enterprise'
@@ -155,12 +178,9 @@ export default {
       name: 'Enterprise',
       description: 'Ideal for larger big enterprise.',
       features: {
-        1: 'All Business Features',
-        2: 'User Roles & Permissions',
-        3: 'Unlimited Users per Workspace',
-        4: 'Audit Logs'
+        support: '24/7 support'
       },
-      action: 'Get more',
+      action: 'Go Enterprise',
       upgrade: 'Get more'
     }
   },
@@ -196,25 +216,25 @@ export default {
   },
   workspaces: {
     create: {
-      title: 'Create workspace',
+      title: 'Create project',
       submit: 'Submit',
       success: {
-        description: 'Workspace created successfully.'
+        description: 'Project created successfully.'
       }
     },
     name: {
       label: 'Name',
-      placeholder: 'Enter workspace name',
-      required: 'Workspace name is required'
+      placeholder: 'Enter project name',
+      required: 'Project name is required'
     },
     description: {
       label: 'Description',
-      placeholder: 'Enter workspace description'
+      placeholder: 'Enter project description'
     },
     owner: 'Owner',
     member: 'Member',
     members: {
-      title: 'Workspace members',
+      title: 'Project members',
       add: {
         title: 'Add member',
         user: {
@@ -228,7 +248,16 @@ export default {
           required: 'Required'
         },
         success: {
-          description: 'Workspace member added successfully'
+          description: 'Project member added successfully'
+        }
+      },
+      remove: {
+        button: 'Remove member',
+        title: 'Are you sure you want to remove this project member?',
+        description: 'The user will have no access to the project.',
+        submit: 'Yes, remove the project member',
+        success: {
+          description: 'The project member removed successfully'
         }
       }
     }

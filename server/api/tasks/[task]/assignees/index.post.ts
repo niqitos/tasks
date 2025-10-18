@@ -20,6 +20,51 @@ export default defineEventHandler(async (event) => {
 
     const decodedToken = await jwt.verify(token, config.jwtSecret)
 
+    const existingTaskAssigneeTrying = await prisma.taskAssignee.findFirst({
+      where: {
+        taskId: task,
+        userId: body.user,
+        deletedAt: {
+          not: null,
+        }
+      }
+    })
+
+    if (existingTaskAssigneeTrying) {
+      return await prisma.taskAssignee.update({
+        where: {
+          taskId_userId: {
+            taskId: task,
+            userId: body.user
+          },
+          deletedAt: {
+            not: null,
+          }
+        },
+        data: {
+          deletedAt: null
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              lastname: true,
+              email: true,
+              avatar: true,
+            }
+          }
+        }
+      })
+    }
+
+    // if (existingTaskAssigneeTrying.creatorId !== decodedToken.id) {
+    //   throw createError({
+    //     statusCode: 401,
+    //     statusMessage: 'Does not have permission to update board',
+    //   })
+    // }
+
     const newTaskAssignee = await prisma.taskAssignee.create({
       data: {
         taskId: task,
@@ -41,6 +86,7 @@ export default defineEventHandler(async (event) => {
 
     return newTaskAssignee
   } catch (err) {
+    console.log(err)
     throw createError({
       statusCode: 500,
       statusMessage: 'Could not verify jwt',

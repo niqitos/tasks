@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const body = await readBody(event)
-    const task = await getRouterParam(event, 'task')
+    const taskId = await getRouterParam(event, 'task')
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
     const taskTryingToUpdate = await prisma.task.findUnique({
       where: {
-        id: task
+        id: taskId
       }
     })
 
@@ -40,11 +40,24 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    await prisma.task.update({
+    const task = await prisma.task.update({
       where: {
-        id: task
+        id: taskId
       },
       data: body
+    })
+
+    const now = new Date()
+
+    prisma.taskHistory.create({
+      data: {
+        taskId,
+        fromBoardId: taskTryingToUpdate.boardId,
+        toBoardId: task.boardId,
+        updatedById: decodedToken.id,
+        updatedAt: now,
+        note: 'updated'
+      }
     })
   } catch (err) {
     console.log(err)

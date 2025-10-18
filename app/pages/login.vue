@@ -29,7 +29,7 @@
             :loading="loading"
             size="xl"
             :ui="{
-              base: 'w-full mt-6 rounded-full text-sm font-bold flex justify-center items-center cursor-pointer',
+              base: 'w-full mt-6 text-sm font-bold flex justify-center items-center cursor-pointer',
               trailingIcon: 'size-5'
             }"
           />
