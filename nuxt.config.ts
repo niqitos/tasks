@@ -66,7 +66,12 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET,
+    monobankApiBase: process.env.MONOBANK_API_BASE,
+    monobankMerchantId: process.env.MONOBANK_MERCHANT_ID,
+    monobankSecret: process.env.MONOBANK_SECRET,
+    monobankWebhookSecret: process.env.MONOBANK_WEBHOOK_SECRET,
     public: {
+      appUrl: process.env.NUXT_PUBLIC_SITE_URL,
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY,
       supabaseBucket: process.env.SUPABASE_BUCKET

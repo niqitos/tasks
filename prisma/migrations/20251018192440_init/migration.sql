@@ -4,6 +4,9 @@ CREATE TYPE "WorkspaceRole" AS ENUM ('guest', 'maintainer', 'admin');
 -- CreateEnum
 CREATE TYPE "UserPlan" AS ENUM ('free', 'team', 'business', 'enterprise');
 
+-- CreateEnum
+CREATE TYPE "Currency" AS ENUM ('UAH', 'USD', 'EUR', 'GBP', 'PLN', 'CZK', 'CAD', 'BYN', 'CNY', 'RUB', 'BTC');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -157,8 +160,8 @@ CREATE TABLE "Subscription" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "storedCardId" TEXT NOT NULL,
-    "amountKop" INTEGER NOT NULL,
-    "currency" TEXT NOT NULL DEFAULT 'UAH',
+    "amount" INTEGER NOT NULL,
+    "currency" "Currency" NOT NULL DEFAULT 'USD',
     "interval" TEXT NOT NULL,
     "nextChargeAt" TIMESTAMP(3) NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,

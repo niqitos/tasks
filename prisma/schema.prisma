@@ -247,7 +247,7 @@ model Subscription {
   id            String    @id @default(uuid())
   userId        String
   storedCardId  String
-  amountKop     Int
+  amount        Int
   currency      Currency  @default(USD)
   interval      String
   nextChargeAt  DateTime
