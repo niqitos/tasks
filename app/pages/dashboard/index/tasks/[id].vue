@@ -93,6 +93,7 @@
         </UFormField>
 
         <UFileUpload
+          v-if="roleStore.canAddFilesToTask(task)"
           v-model="files"
           :label="$t('task.files.create.label')"
           :description="`SVG, PNG, JPG, GIF, WEBP, DOC, EXCEL ${$t('or')} PDF (${$t('task.files.create.max')} 2${$t('mb')})`"
@@ -103,6 +104,17 @@
             base: 'p-0'
           }"
           @update:model-value="uploadFiles"
+        />
+
+        <UButton
+          v-else
+          :label="$t(`plans.${userStore.user.plan}.upgrade`)"
+          icon="i-lucide:circle-fading-arrow-up"
+          color="primary"
+          :to="localePath('upgrade')"
+          :ui="{
+            base: 'w-full flex justify-center items-center'
+          }"
         />
 
         <div v-if="task.files.length">
@@ -160,6 +172,9 @@ const localePath = useLocalePath()
 const route = useRoute()
 const toast = useToast()
 const { t } = useI18n()
+
+const roleStore = useRoleStore()
+const userStore = useUserStore()
 
 const task = ref<any>(await $fetch(`/api/tasks/${route.params.id}`))
 

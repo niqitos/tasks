@@ -3,13 +3,25 @@
     v-model:open="open"
   >
     <UButton
+      v-if="roleStore.canAddAssigneesToTask(task)"
       :label="$t('task.assign.button')"
       color="neutral"
       variant="outline"
       icon="i-lucide:plus"
     />
 
-    <template #content>
+    <UButton
+      v-else
+      :label="$t(`plans.${userStore.user.plan}.upgrade`)"
+      icon="i-lucide:circle-fading-arrow-up"
+      color="primary"
+      :to="localePath('upgrade')"
+    />
+
+    <template
+      v-if="roleStore.canAddAssigneesToTask(task)"
+      #content
+    >
       <UCommandPalette
         v-model:search-term="searchTerm"
         :loading="status === 'pending'"
@@ -29,6 +41,10 @@ const props = defineProps({
   }
 })
 
+const localePath = useLocalePath()
+
+const roleStore = useRoleStore()
+const userStore = useUserStore()
 const workspaceStore = useWorkspaceStore()
 
 const open = ref<boolean>(false)

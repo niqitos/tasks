@@ -32,7 +32,7 @@
       />
 
       <UForm
-        v-if="roleStore.canAddMembersToWorkspaces"
+        v-if="roleStore.canAddMembersToWorkspace"
         :schema="schema"
         :state="state"
         class="space-y-4"

@@ -9,7 +9,7 @@ export const usePlanStore = defineStore('plan', () => {
           max: 3,
           tasks: {
             max: unlimited,
-            attachments: {
+            files: {
               max: 1
             },
             assignees: {
@@ -29,11 +29,11 @@ export const usePlanStore = defineStore('plan', () => {
           max: unlimited,
           tasks: {
             max: unlimited,
-            attachments: {
+            files: {
               max: 1
             },
             assignees: {
-              max: unlimited
+              max: 5
             }
           }
         },
@@ -49,7 +49,7 @@ export const usePlanStore = defineStore('plan', () => {
           max: unlimited,
           tasks: {
             max: unlimited,
-            attachments: {
+            files: {
               max: unlimited
             },
             assignees: {
@@ -69,7 +69,7 @@ export const usePlanStore = defineStore('plan', () => {
           max: unlimited,
           tasks: {
             max: unlimited,
-            attachments: {
+            files: {
               max: unlimited
             },
             assignees: {
