@@ -3,7 +3,7 @@
     v-model:open="open"
     :title="$t('workspaces.members.title')"
     :ui="{
-      footer: 'justify-end'
+      footer: 'flex-col items-start'
     }"
   >
     <UAvatarGroup
@@ -13,19 +13,71 @@
     >
       <UButton
         color="neutral"
-        variant="solid"
+        variant="soft"
         icon="i-lucide:plus"
       />
 
       <UAvatar
         v-for="member in workspaceStore.current?.members"
         :key="member.id"
-        :src="member.user.avatar"
-        :alt="`${member.user.name}${member.user.lastname ? ` ${member.user.lastname}` : ''}`"
+        :src="member.user?.avatar"
+        :alt="`${member.user?.name}${member.user?.lastname ? ` ${member.user?.lastname}` : ''}`"
       />
     </UAvatarGroup>
 
     <template #body>
+      <h3
+        class="text-highlighted font-semibold mb-3"
+        v-text="$t('workspaces.members.add.title')"
+      />
+
+      <UForm
+        :schema="schema"
+        :state="state"
+        class="space-y-4"
+        @submit="submit"
+      >
+        <FieldUserSearch
+          v-model="state.user"
+          required
+        />
+
+        <UFormField
+          :label="$t('workspaces.members.add.role.label')"
+          name="role"
+          required
+          :ui="{
+            root: 'mt-4'
+          }"
+        >
+          <USelectMenu
+            v-model="state.role"
+            :search-input="false"
+            icon="i-lucide:key-round"
+            :placeholder="$t('workspaces.members.add.role.placeholder')"
+            value-key="value"
+            :items="roleStore.roles"
+            :ui="{
+              base: 'w-full'
+            }"
+          />
+        </UFormField>
+
+        <UButton
+          trailing-icon="i-lucide:arrow-right"
+          :label="$t('workspaces.members.add.title')"
+          type="submit"
+          :loading="loading"
+          size="xl"
+          :ui="{
+            base: 'w-full mt-6 rounded-full text-sm font-bold flex justify-center items-center cursor-pointer',
+            trailingIcon: 'size-5'
+          }"
+        />
+      </UForm>
+    </template>
+
+    <template #footer>
       <UPageList>
         <UPageCard
           v-for="(member, index) in workspaceStore.current?.members"
@@ -38,37 +90,76 @@
         >
           <template #body>
             <UUser
-              :name="`${member.user.name}${member.user.lastname ? ` ${member.user.lastname}` : ''}`"
-              :description="member.role"
+              :name="`${member.user?.name}${member.user?.lastname ? ` ${member.user?.lastname}` : ''}`"
+              :description="$t(`role.${member.role}.label`)"
               :avatar="{
-                src: member.user.avatar,
-                alt: `${member.user.name}${member.user.lastname ? ` ${member.user.lastname}` : ''}`
+                src: member.user?.avatar,
+                alt: `${member.user?.name}${member.user?.lastname ? ` ${member.user?.lastname}` : ''}`
               }"
               size="xl"
             />
           </template>
         </UPageCard>
       </UPageList>
-
-      <UCommandPalette
-        v-model:search-term="searchTerm"
-        :loading
-        :groups
-        :placeholder="$t('task.assign.search')"
-        class="h-80"
-      />
     </template>
   </UModal>
 </template>
 
 <script lang="ts" setup>
+import * as z from 'zod'
+import type { FormSubmitEvent } from '@nuxt/ui'
+
+const { t } = useI18n()
+const toast = useToast()
+
 const workspaceStore = useWorkspaceStore()
+const roleStore = useRoleStore()
+
+const schema = z.object({
+  user: z.string(t('workspaces.members.add.user.required')),
+  role: z.string(t('workspaces.members.add.user.required'))
+})
+
+type Schema = z.output<typeof schema>
+
+const state = reactive<Partial<Schema>>({
+  user: undefined,
+  role: undefined
+})
 
 const open = ref<boolean>(false)
-const searchTerm = ref<string>('')
 const loading = ref<boolean>(false)
 
-const groups = computed(() => [
+const submit = async (event: FormSubmitEvent<Schema>) => {
+  loading.value = true
 
-])
+  try {
+    const member = await $fetch(`/api/workspaces/${workspaceStore.current.id}/members`, {
+      method: 'POST',
+      body: event.data
+    })
+
+    workspaceStore.current.members.push(member)
+
+    toast.add({
+      title: t('success.title'),
+      description: t('workspaces.members.add.success.description'),
+      icon: 'i-lucide:circle-check',
+      color: 'success',
+      duration: 3000
+    })
+
+    loading.value = false
+  } catch (error: any) {
+    loading.value = false
+
+    toast.add({
+      title: t('error.title'),
+      description: t('error.500'),
+      icon: 'i-lucide:circle-check',
+      color: 'error',
+      duration: 3000
+    })
+  }
+}
 </script>

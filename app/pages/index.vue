@@ -19,7 +19,7 @@
       <section class="mb-20">
         <h2
           class="text-3xl font-bold text-center mb-8"
-          v-text="$t('home.features_title')"
+          v-text="$t('home.features.title')"
         />
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -45,10 +45,10 @@
       <section>
         <h2
           class="text-3xl font-bold text-center mb-8 lg:mb-12"
-          v-text="$t('home.pricing_title')"
+          v-text="$t('home.pricing.title')"
         />
 
-        <UPricingPlans :plans="plans" />
+        <UPricingPlans :plans="planStore.plans" />
       </section>
     </UContainer>
   </div>
@@ -61,6 +61,7 @@ definePageMeta({
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const planStore = usePlanStore()
 
 const links = ref([
   {
@@ -111,51 +112,5 @@ const featuresList = computed(() => [
     icon: 'i-lucide:square-pen',
     size: 'lg:col-span-1'
   } // MEDIUM
-])
-
-const plans = ref([
-  {
-    title: t('home.plans.free.name'),
-    description: t('home.plans.free.description'),
-    price: '$0',
-    features: [
-      t('home.plans.free.features.1'),
-      t('home.plans.free.features.2'),
-      t('home.plans.free.features.3')
-    ],
-    button: {
-      label: t('home.plans.free.action')
-    }
-  },
-  {
-    title: t('home.plans.team.name'),
-    description: t('home.plans.team.description'),
-    price: '$4.99',
-    features: [
-      t('home.plans.team.features.1'),
-      t('home.plans.team.features.2'),
-      t('home.plans.team.features.3'),
-      t('home.plans.team.features.4')
-    ],
-    button: {
-      label: t('home.plans.team.action')
-    },
-    scale: true,
-    highlight: true
-  },
-  {
-    title: t('home.plans.business.name'),
-    description: t('home.plans.business.description'),
-    price: '$9.99',
-    features: [
-      t('home.plans.business.features.1'),
-      t('home.plans.business.features.2'),
-      t('home.plans.business.features.3'),
-      t('home.plans.business.features.4')
-    ],
-    button: {
-      label: t('home.plans.business.action')
-    }
-  }
 ])
 </script>

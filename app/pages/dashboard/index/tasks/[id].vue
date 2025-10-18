@@ -15,6 +15,8 @@
       />
 
       <div class="flex gap-2">
+        <LocalToast ref="toastRef" />
+
         <TaskDelete
           :task="task"
         />
@@ -178,9 +180,10 @@ const state = reactive<Partial<Schema>>({
 const workspaceStore = useWorkspaceStore()
 const boardStore = useBoardStore()
 
-const board = computed(() => boardStore.boards.find((b: any) => b.id === task.value?.boardId))
-
 const loading = ref<boolean>(false)
+const toastRef = ref<any>(null)
+
+const board = computed(() => boardStore.boards.find((b: any) => b.id === task.value?.boardId))
 
 const open = computed<boolean>(() => route.path === localePath('dashboard-index-tasks-id') && !!task)
 
@@ -216,12 +219,17 @@ const submit = async () => {
       }
     }
 
-    toast.add({
-      title: t('success.title'),
-      description: t('task.update.success'),
+    // toast.add({
+    //   title: t('success.title'),
+    //   description: t('task.update.success'),
+    //   icon: 'i-lucide:circle-check',
+    //   color: 'success',
+    //   duration: 3000
+    // })
+    toastRef.value?.showToast({
+      title: t('task.update.success'),
       icon: 'i-lucide:circle-check',
       color: 'success',
-      duration: 3000
     })
 
     loading.value = false
@@ -239,7 +247,6 @@ const submit = async () => {
 }
 
 const debouncedFn = useDebounceFn(async () => {
-  console.log(1)
   await submit()
 }, 1000)
 
@@ -271,7 +278,7 @@ const uploadFiles = async () => {
         method: 'POST',
         body: {
           filename,
-          url: `${config.public.supabaseUrl}/storage/v1/object/public/${data?.fullPath}`,
+          url: `${config.public.supabaseUrl}/storage/v1/object/authenticated/${data?.fullPath}`,
           mimeType: f.type,
           size: f.size
         }

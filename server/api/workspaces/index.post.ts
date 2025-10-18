@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
         members: {
           create: {
             userId: decodedToken.id,
-            role: 'ADMIN',
+            role: 'admin',
             invitedById: decodedToken.id
           }
         },
@@ -56,8 +56,80 @@ export default defineEventHandler(async (event) => {
         }
       },
       include: {
-        members: true,
-        boards: true
+        boards: {
+          where: {
+            deletedAt: null
+          },
+          orderBy: {
+            position: 'asc'
+          },
+          include: {
+            tasks: {
+              where: {
+                deletedAt: null
+              },
+              orderBy: {
+                position: 'asc'
+              },
+              include: {
+                creator: {
+                  select: {
+                    id: true,
+                    name: true,
+                    lastname: true,
+                    avatar: true
+                  }
+                },
+                assignees: {
+                  include: {
+                    user: {
+                      select: {
+                        id: true,
+                        name: true,
+                        lastname: true,
+                        avatar: true
+                      }
+                    }
+                  }
+                },
+                comments: true,
+                files: {
+                  where: {
+                    deletedAt: null
+                  }
+                }
+              }
+            },
+            creator: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                avatar: true
+              }
+            }
+          }
+        },
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                avatar: true
+              }
+            }
+          }
+        },
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            lastname: true,
+            avatar: true
+          }
+        }
       }
     })
 

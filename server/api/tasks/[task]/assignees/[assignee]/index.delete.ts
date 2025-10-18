@@ -5,8 +5,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const body = await readBody(event)
-    const id = await getRouterParam(event, 'id')
+    const task = await getRouterParam(event, 'task')
+    const assignee = Number(await getRouterParam(event, 'assignee'))
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -20,31 +20,30 @@ export default defineEventHandler(async (event) => {
 
     const decodedToken = await jwt.verify(token, config.jwtSecret)
 
-    const taskTryingToUpdate = await prisma.task.findUnique({
+    const taskAssigneeTryingToDelete = await prisma.taskAssignee.findUnique({
       where: {
-        id
+        id: assignee
       }
     })
 
-    if (!taskTryingToUpdate) {
+    if (!taskAssigneeTryingToDelete) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Task does not exist',
+        statusMessage: 'Task assignee does not exist',
       })
     }
 
-    if (taskTryingToUpdate.creatorId !== decodedToken.id) {
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'Does not have permission to update task'
-      })
-    }
+    // if (taskAssigneeTryingToDelete.assignedById !== decodedToken.id) {
+    //   throw createError({
+    //     statusCode: 401,
+    //     statusMessage: 'Does not have permission to delete task assignee',
+    //   })
+    // }
 
-    await prisma.task.update({
+    await prisma.taskAssignee.delete({
       where: {
-        id
-      },
-      data: body
+        id: assignee
+      }
     })
   } catch (err) {
     console.log(err)

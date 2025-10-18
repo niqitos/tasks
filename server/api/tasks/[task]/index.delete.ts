@@ -5,8 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const id = await getRouterParam(event, 'id')
-    const file = await getRouterParam(event, 'file')
+    const task = await getRouterParam(event, 'task')
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -20,30 +19,29 @@ export default defineEventHandler(async (event) => {
 
     const decodedToken = await jwt.verify(token, config.jwtSecret)
 
-    console.log(file)
-    const taskFileTryingToDelete = await prisma.file.findUnique({
+    const taskTryingToDelete = await prisma.task.findUnique({
       where: {
-        id: file
+        id: task
       }
     })
 
-    if (!taskFileTryingToDelete) {
+    if (!taskTryingToDelete) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Task file does not exist',
+        statusMessage: 'Task does not exist',
       })
     }
 
-    // if (taskFileTryingToDelete.createdById !== decodedToken.id) {
-    //   throw createError({
-    //     statusCode: 401,
-    //     statusMessage: 'Does not have permission to delete task file',
-    //   })
-    // }
+    if (taskTryingToDelete.creatorId !== decodedToken.id) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Does not have permission to update task',
+      })
+    }
 
-    await prisma.file.delete({
+    await prisma.task.delete({
       where: {
-        id: file
+        id: task
       }
     })
   } catch (err) {

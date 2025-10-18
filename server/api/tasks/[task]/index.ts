@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const id = await getRouterParam(event, 'id')
+    const task = await getRouterParam(event, 'task')
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 
     const tasks = await prisma.task.findFirst({
       where: {
-        id
+        id: task
       },
       include: {
         creator: {

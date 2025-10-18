@@ -38,7 +38,7 @@ const task = defineModel<any>('task')
 const fullName = computed(() => `${props.assignee.user.name}${props.assignee.user.lastname ? ` ${props.assignee.user.lastname}` : ''}`)
 
 const unassign = async () => {
-  await $fetch(`/api/tasks/${task.value.id}/${props.assignee.id}`, {
+  await $fetch(`/api/tasks/${task.value.id}/assignees/${props.assignee.id}`, {
     method: 'DELETE'
   })
 

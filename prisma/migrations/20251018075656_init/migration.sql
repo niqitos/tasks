@@ -1,5 +1,8 @@
 -- CreateEnum
-CREATE TYPE "WorkspaceRole" AS ENUM ('GUEST', 'MAINTAINER', 'ADMIN');
+CREATE TYPE "WorkspaceRole" AS ENUM ('guest', 'maintainer', 'admin');
+
+-- CreateEnum
+CREATE TYPE "UserPlan" AS ENUM ('free', 'team', 'business', 'enterprise');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -10,6 +13,7 @@ CREATE TABLE "User" (
     "password" TEXT NOT NULL,
     "salt" TEXT NOT NULL,
     "avatar" TEXT,
+    "plan" "UserPlan" NOT NULL DEFAULT 'free',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
@@ -35,7 +39,7 @@ CREATE TABLE "WorkspaceMember" (
     "id" SERIAL NOT NULL,
     "workspaceId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "role" "WorkspaceRole" NOT NULL DEFAULT 'GUEST',
+    "role" "WorkspaceRole" NOT NULL DEFAULT 'guest',
     "invitedAt" TIMESTAMP(3),
     "joinedAt" TIMESTAMP(3),
     "invitedById" TEXT,
@@ -79,6 +83,7 @@ CREATE TABLE "TaskAssignee" (
     "id" SERIAL NOT NULL,
     "taskId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "assignerId" TEXT NOT NULL,
     "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
 
@@ -95,6 +100,7 @@ CREATE TABLE "File" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
     "taskId" TEXT NOT NULL,
+    "creatorId" TEXT NOT NULL,
 
     CONSTRAINT "File_pkey" PRIMARY KEY ("id")
 );
@@ -174,7 +180,13 @@ ALTER TABLE "TaskAssignee" ADD CONSTRAINT "TaskAssignee_taskId_fkey" FOREIGN KEY
 ALTER TABLE "TaskAssignee" ADD CONSTRAINT "TaskAssignee_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "TaskAssignee" ADD CONSTRAINT "TaskAssignee_assignerId_fkey" FOREIGN KEY ("assignerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "File" ADD CONSTRAINT "File_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "File" ADD CONSTRAINT "File_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -34,17 +34,17 @@ const workspaceStore = useWorkspaceStore()
 const open = ref<boolean>(false)
 const searchTerm = ref<string>('')
 
-const { data: users, status } = await useFetch(`/api/users/${workspaceStore.current.id}`, {
-  key: `/api/users/${workspaceStore.current.id}`,
+const { data: users, status } = await useFetch(`/api/workspaces/${workspaceStore.current.id}/members`, {
+  key: `/api/workspaces/${workspaceStore.current.id}/members`,
   params: { q: searchTerm },
   transform: (data: any[]) => {
-      return data?.map(user => ({
-          id: user.id,
-          label: `${user.name}${user.lastname ? ` ${user.lastname}` : ''}`,
-          suffix: user.email,
+      return data?.map(member => ({
+          id: member.user.id,
+          label: `${member.user.name}${member.user.lastname ? ` ${member.user.lastname}` : ''}`,
+          suffix: member.user.email,
           avatar: {
-            src: user.avatar,
-            alt: `${user.name}${user.lastname ? ` ${user.lastname}` : ''}`
+            src: member.user.avatar,
+            alt: `${member.user.name}${member.user.lastname ? ` ${member.user.lastname}` : ''}`
           }
         })
     ) || []
@@ -53,8 +53,11 @@ const { data: users, status } = await useFetch(`/api/users/${workspaceStore.curr
 })
 
 const assign = async (user: any) => {
-  const response = await $fetch(`/api/tasks/${props.task.id}/${user.id}`, {
-    method: 'POST'
+  const response = await $fetch(`/api/tasks/${props.task.id}/assignees`, {
+    method: 'POST',
+    body: {
+      user: user.id
+    }
   })
 
   props.task.assignees.push(response)

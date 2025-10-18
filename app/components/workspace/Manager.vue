@@ -3,7 +3,7 @@
     <UDropdownMenu
       :items="[
         ...workspaceStore.workspaces.map((w: any) => ({
-          label: w.name,
+          label: `${w.name} (${$t(`workspaces.${w.creatorId === userStore.user.id ? 'owner' : 'member'}`)})`,
           type: 'checkbox' as const,
           checked: w.id === workspaceStore.current?.id,
           onSelect: ((e: Event) => changeWorkspace(w))
@@ -53,6 +53,7 @@
 <script lang="ts" setup>
 const workspaceStore = useWorkspaceStore()
 const boardStore = useBoardStore()
+const userStore = useUserStore()
 
 const open = ref<boolean>(false)
 

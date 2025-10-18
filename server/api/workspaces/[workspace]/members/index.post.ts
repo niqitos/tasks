@@ -5,9 +5,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const id = await getRouterParam(event, 'id')
-
     const body = await readBody(event)
+    const workspace = await getRouterParam(event, 'workspace')
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -21,17 +20,27 @@ export default defineEventHandler(async (event) => {
 
     const decodedToken = await jwt.verify(token, config.jwtSecret)
 
-    const newFile = await prisma.file.create({
+    const newTaskAssignee = await prisma.workspaceMember.create({
       data: {
-        filename: body.filename,
-        url: body.url,
-        mimeType: body.mimeType,
-        size: body.size,
-        taskId: id
+        workspaceId: workspace,
+        userId: body.user,
+        role: body.role,
+        invitedById: decodedToken.id
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastname: true,
+            email: true,
+            avatar: true,
+          }
+        }
       }
     })
 
-    return newFile
+    return newTaskAssignee
   } catch (err) {
     throw createError({
       statusCode: 500,

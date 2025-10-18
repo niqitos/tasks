@@ -5,8 +5,8 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const id = await getRouterParam(event, 'id')
-    const user = await getRouterParam(event, 'user')
+    const body = await readBody(event)
+    const task = await getRouterParam(event, 'task')
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -22,8 +22,9 @@ export default defineEventHandler(async (event) => {
 
     const newTaskAssignee = await prisma.taskAssignee.create({
       data: {
-        taskId: id,
-        userId: user
+        taskId: task,
+        userId: body.user,
+        assignerId: decodedToken.id
       },
       include: {
         user: {

@@ -14,21 +14,29 @@ definePageMeta({
 const workspaceStore = useWorkspaceStore()
 const boardStore = useBoardStore()
 
-const workspaces = await $fetch('/api/workspaces')
+const workspaces = ref<any[]>(await $fetch('/api/workspaces'))
 
-if (workspaces.length > 0) {
-  workspaceStore.workspaces = workspaces
+watch(
+  () => workspaces.value,
+  () => {
+    if (workspaces.value.length > 0) {
+      workspaceStore.workspaces = workspaces.value
 
-  let workspace = workspaceStore.workspaces.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
+      let workspace = workspaceStore.workspaces.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
 
-  if (!workspace) {
-    workspace = workspaceStore.workspaces[0]
+      if (!workspace) {
+        workspace = workspaceStore.workspaces[0]
 
-    localStorage.setItem('workspace.current.id', workspace.id)
+        localStorage.setItem('workspace.current.id', workspace.id)
+      }
+
+      workspaceStore.current = workspace
+
+      boardStore.boards = workspaceStore.current.boards
+    }
+  },
+  {
+    immediate: true
   }
-
-  workspaceStore.current = workspace
-
-  boardStore.boards = workspaceStore.current.boards
-}
+)
 </script>

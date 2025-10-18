@@ -29,6 +29,17 @@ export default {
       min: 'Must be at least 8 characters'
     }
   },
+  role: {
+    guest: {
+      label: 'Guest'
+    },
+    maintainer: {
+      label: 'Maintainer'
+    },
+    admin: {
+      label: 'Admin'
+    }
+  },
   register: {
     title: 'Sign up for a free account',
     already: 'Already registered?',
@@ -63,8 +74,8 @@ export default {
         start: 'Get started'
       }
     },
-    features_title: 'Core Features',
     features: {
+      title: 'Core Features',
       workspaces: {
         title: 'Dedicated Workspaces',
         desc: 'Organize related projects and team members into distinct private or shared environments.'
@@ -98,40 +109,42 @@ export default {
         desc: 'Use the Tiptap editor for advanced formatting (markdown, lists, tables) in your task descriptions.'
       }
     },
-    pricing_title: 'Pricing Plans',
-    plans: {
-      free: {
-        name: 'Free',
-        description: 'Tailored for indie hackers.',
-        features: {
-          1: '1 Workspace',
-          2: 'Up to 5 Boards',
-          3: 'Basic Task Features'
-        },
-        action: 'Start Now'
+    pricing: {
+      title: 'Pricing Plans'
+    }
+  },
+  plans: {
+    free: {
+      name: 'Free',
+      description: 'Tailored for indie hackers.',
+      features: {
+        1: '1 Workspace',
+        2: 'Up to 5 Boards',
+        3: 'Basic Task Features'
       },
-      team: {
-        name: 'Team',
-        description: 'Best suited for small teams.',
-        features: {
-          1: 'Unlimited Workspaces',
-          2: 'Unlimited Boards',
-          3: 'Up to 5 Users per Workspace',
-          4: 'Advanced Filters'
-        },
-        action: 'Go team'
+      action: 'Start Now'
+    },
+    team: {
+      name: 'Team',
+      description: 'Best suited for small teams.',
+      features: {
+        1: 'Unlimited Workspaces',
+        2: 'Unlimited Boards',
+        3: 'Up to 5 Users per Workspace',
+        4: 'Advanced Filters'
       },
-      business: {
-        name: 'Business',
-        description: 'Ideal for larger teams and organizations.',
-        features: {
-          1: 'All Team Features',
-          2: 'User Roles & Permissions',
-          3: 'Unlimited Users per Workspace',
-          4: 'Audit Logs'
-        },
-        action: 'Go Business'
-      }
+      action: 'Go team'
+    },
+    business: {
+      name: 'Business',
+      description: 'Ideal for larger teams and organizations.',
+      features: {
+        1: 'All Team Features',
+        2: 'User Roles & Permissions',
+        3: 'Unlimited Users per Workspace',
+        4: 'Audit Logs'
+      },
+      action: 'Go Business'
     }
   },
   dashboard: {
@@ -181,8 +194,26 @@ export default {
       label: 'Description',
       placeholder: 'Enter workspace description'
     },
+    owner: 'Owner',
+    member: 'Member',
     members: {
-      title: 'Workspace members'
+      title: 'Workspace members',
+      add: {
+        title: 'Add member',
+        user: {
+          label: 'User',
+          placeholder: 'Search',
+          required: 'Required'
+        },
+        role: {
+          label: 'Role',
+          placeholder: 'Select',
+          required: 'Required'
+        },
+        success: {
+          description: 'Workspace member added successfully'
+        }
+      }
     }
   },
   board: {
@@ -204,6 +235,11 @@ export default {
       placeholder: 'Create board',
       success: {
         description: 'Board created successfully'
+      }
+    },
+    update: {
+      success: {
+        description: 'Board updated successfully'
       }
     },
     delete: {

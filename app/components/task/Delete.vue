@@ -44,6 +44,7 @@ const props = defineProps({
 const { t } = useI18n()
 const router = useRouter()
 const toast = useToast()
+const localePath = useLocalePath()
 
 const workspaceStore = useWorkspaceStore()
 
@@ -77,7 +78,7 @@ const remove = async () => {
 
     loading.value = false
 
-    router.push('/')
+    return navigateTo(localePath('dashboard'))
   } catch (error: any) {
     loading.value = false
 

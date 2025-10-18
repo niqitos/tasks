@@ -34,7 +34,6 @@ const props = defineProps({
 })
 
 const { t } = useI18n()
-
 const toast = useToast()
 
 const workspaceStore = useWorkspaceStore()

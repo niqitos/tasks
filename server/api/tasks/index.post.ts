@@ -28,6 +28,14 @@ export default defineEventHandler(async (event) => {
         creatorId: decodedToken.id
       },
       include: {
+        creator: {
+          select: {
+            id: true,
+            name: true,
+            lastname: true,
+            avatar: true
+          }
+        },
         assignees: {
           include: {
             user: {
@@ -38,6 +46,12 @@ export default defineEventHandler(async (event) => {
                 avatar: true
               }
             }
+          }
+        },
+        comments: true,
+        files: {
+          where: {
+            deletedAt: null
           }
         }
       }

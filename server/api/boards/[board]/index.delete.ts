@@ -5,8 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const id = await getRouterParam(event, 'id')
-    const assignee = Number(await getRouterParam(event, 'user'))
+    const board = await getRouterParam(event, 'board')
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -20,29 +19,29 @@ export default defineEventHandler(async (event) => {
 
     const decodedToken = await jwt.verify(token, config.jwtSecret)
 
-    const taskAssigneeTryingToDelete = await prisma.taskAssignee.findUnique({
+    const boardTryingToDelete = await prisma.board.findUnique({
       where: {
-        id: assignee
+        id: board
       }
     })
 
-    if (!taskAssigneeTryingToDelete) {
+    if (!boardTryingToDelete) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Task assignee does not exist',
+        statusMessage: 'Board does not exist',
       })
     }
 
-    // if (taskAssigneeTryingToDelete.assignedById !== decodedToken.id) {
-    //   throw createError({
-    //     statusCode: 401,
-    //     statusMessage: 'Does not have permission to delete task assignee',
-    //   })
-    // }
+    if (boardTryingToDelete.creatorId !== decodedToken.id) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Does not have permission to update board',
+      })
+    }
 
-    await prisma.taskAssignee.delete({
+    await prisma.board.delete({
       where: {
-        id: assignee
+        id: board
       }
     })
   } catch (err) {

@@ -51,6 +51,9 @@ const props = defineProps({
   }
 })
 
+const { t } = useI18n()
+const toast = useToast()
+
 const renameInputRef = ref<any>(null)
 const rename = ref<any>(false)
 const renaming = ref<any>(false)
@@ -58,16 +61,36 @@ const renaming = ref<any>(false)
 const update = async () => {
   renaming.value = true
 
-  await $fetch(`/api/boards/${props.board.id}`, {
-    method: 'PATCH',
-    body: {
-      name: props.board.name
-    }
-  })
+  try {
+    await $fetch(`/api/boards/${props.board.id}`, {
+      method: 'PATCH',
+      body: {
+        name: props.board.name
+      }
+    })
 
-  closeRename()
+    closeRename()
 
-  renaming.value = false
+    toast.add({
+      title: t('success.title'),
+      description: t('board.update.success.description'),
+      icon: 'i-lucide:circle-check',
+      color: 'success',
+      duration: 3000
+    })
+
+    renaming.value = false
+  } catch (error: any) {
+    renaming.value = false
+
+    toast.add({
+      title: t('error.title'),
+      description: t('error.500'),
+      icon: 'i-lucide:circle-check',
+      color: 'error',
+      duration: 3000
+    })
+  }
 }
 
 const openRename = async () => {

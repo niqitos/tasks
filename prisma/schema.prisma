@@ -14,9 +14,16 @@ datasource db {
 }
 
 enum WorkspaceRole {
-  GUEST
-  MAINTAINER
-  ADMIN
+  guest
+  maintainer
+  admin
+}
+
+enum UserPlan {
+  free
+  team
+  business
+  enterprise
 }
 
 model User {
@@ -27,13 +34,16 @@ model User {
   password   String
   salt       String
   avatar     String?
+  plan       UserPlan    @default(free)
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @default(now()) @updatedAt
   deletedAt  DateTime?
 
   workspacesCreated  Workspace[]        @relation("WorkspaceCreator")
+  tasksAssigned      TaskAssignee[]     @relation("TaskAssigner")
   boardsCreated      Board[]            @relation("BoardCreator")
   tasksCreated       Task[]             @relation("TaskCreator")
+  filesCreated       File[]             @relation("FileCreator")
   comments           Comment[]          @relation("AuthorComments")
   workspaceMembers   WorkspaceMember[]
   taskAssignees      TaskAssignee[]
@@ -61,7 +71,7 @@ model WorkspaceMember {
   workspaceId  String
   user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
-  role         WorkspaceRole  @default(GUEST)
+  role         WorkspaceRole  @default(guest)
   invitedAt    DateTime?
   joinedAt     DateTime?
   invitedById  String?
@@ -121,6 +131,10 @@ model TaskAssignee {
   taskId     String
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
+
+  assignerId String
+  assigner   User       @relation("TaskAssigner", fields: [assignerId], references: [id], onDelete: Cascade)
+
   assignedAt DateTime   @default(now())
   deletedAt  DateTime?
 
@@ -140,6 +154,9 @@ model File {
 
   task      Task       @relation(fields: [taskId], references: [id], onDelete: Cascade)
   taskId    String
+
+  creatorId String
+  creator   User       @relation("FileCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 
   @@index([taskId])
 }

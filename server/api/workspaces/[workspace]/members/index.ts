@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const workspaceId = await getRouterParam(event, 'workspace')
+    const workspace = await getRouterParam(event, 'workspace')
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -19,26 +19,21 @@ export default defineEventHandler(async (event) => {
 
     const decodedToken = await jwt.verify(token, config.jwtSecret)
 
-    const users = await prisma.user.findMany({
+    const users = await prisma.workspaceMember.findMany({
       where: {
-        workspaceMembers: {
-          some: {
-            workspaceId: workspaceId,
-            deletedAt: null
-          }
-        },
+        workspaceId: workspace,
         deletedAt: null
       },
       select: {
-        id: true,
-        name: true,
-        lastname: true,
-        email: true,
-        avatar: true,
-        workspaceMembers: {
+        role: true,
+        joinedAt: true,
+        user: {
           select: {
-            role: true,
-            joinedAt: true
+            id: true,
+            name: true,
+            lastname: true,
+            email: true,
+            avatar: true,
           }
         }
       }

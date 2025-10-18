@@ -76,7 +76,6 @@ const loading = ref<boolean>(false)
 const submit = async (event: FormSubmitEvent<Schema>) => {
   loading.value = true
 
-  console.log(event.data)
   try {
     await $fetch(`/api/users/${userStore.user.id}`, {
       method: 'PATCH',

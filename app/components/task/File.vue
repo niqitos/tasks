@@ -1,13 +1,13 @@
 <template>
   <div class="inline-flex items-center mr-4 relative group">
     <ULink
-      :to="file?.url"
+      :to="`/api/tasks/${task.id}/files/${file?.id}`"
       target="_blank"
       class="mt-2 inline-flex items-center"
     >
-      <NuxtImg
+      <img
         v-if="file?.mimeType && file.mimeType.startsWith('image/')"
-        :src="file?.url"
+        :src="`/api/tasks/${task.id}/files/${file?.id}`"
         :alt="file?.filename"
         class="size-16 object-cover rounded"
       />
