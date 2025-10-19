@@ -4,6 +4,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       meta: [
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
         { name: 'apple-mobile-web-app-title', content: 'Tasks' },
         { name: 'theme-color', content: '#ffffff', media: '(prefers-color-scheme: light)' },
         { name: 'theme-color', content: '#0f172b', media: '(prefers-color-scheme: dark)' }
