@@ -1,17 +1,23 @@
 <template>
-  <UContainer
-    class="mx-auto w-full flex-grow flex flex-col rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 sm:px-2.5 lg:px-2.5 pb-1.5 text-sm gap-3.5 text-highlighted bg-default ring ring-inset ring-accented resize-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
-    @click="editor?.commands.focus()"
+  <UFormField
+    :label="$t('task.description.label')"
+    class="w-full"
+    name="description"
   >
-    <TiptapToolbar
-      :editor="editor"
-    />
+    <UContainer
+        class="mx-auto w-full flex-grow flex flex-col rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 sm:px-2.5 lg:px-2.5 pb-1.5 text-sm gap-3.5 text-highlighted bg-default ring ring-inset ring-accented resize-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+        @click="editor?.commands.focus()"
+    >
+        <TiptapToolbar
+        :editor="editor"
+        />
 
-    <EditorContent
-      :editor="editor"
-      class="prose prose-neutral dark:prose-invert"
-    />
-  </UContainer>
+        <EditorContent
+        :editor="editor"
+        class="prose prose-neutral dark:prose-invert"
+        />
+    </UContainer>
+  </UFormField>
 </template>
 
 <script lang="ts" setup>
@@ -33,10 +39,6 @@ import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
 
 const props = defineProps({
-  label: {
-    type: String,
-    required: true
-  },
   content: {
     type: String,
     required: true

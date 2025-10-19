@@ -85,6 +85,23 @@ export default defineNuxtConfig({
       supabaseBucket: process.env.SUPABASE_BUCKET
     }
   },
+  extends: [
+    './app/common',
+    './app/auth',
+    './app/dashboard',
+    './app/marketing'
+  ],
+
+  imports: {
+    dirs: [
+      // Auto-import stores from layers
+      'stores',
+      '@/common/stores',
+      '@/auth/stores',
+      '@/dashboard/stores',
+      '@/marketing/stores'
+    ]
+  },
 
   pwa: {
     strategies: 'generateSW',

@@ -1,7 +1,7 @@
 <template>
   <LoadingScreen />
 
-  <AppHeader />
+  <DashboardHeader />
 
   <UMain>
     <slot />

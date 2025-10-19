@@ -13,7 +13,7 @@
         variant="link"
         :label="workspaceStore.current?.name"
         :ui="{
-          base: 'text-2xl font-bold p-0 text-default'
+          base: 'text-2xl font-bold p-0 text-default hover:text-muted'
         }"
       />
     </UDropdownMenu>
@@ -45,7 +45,7 @@ const localePath = useLocalePath()
 const open = ref<boolean>(false)
 
 const items = computed(() => {
-  let items = [
+  let items: any = [
     ...workspaceStore.workspaces.map((w: any) => ({
       label: `${w.name} (${$t(`workspaces.${w.creatorId === userStore.user.id ? 'owner' : 'member'}`)})`,
       type: 'checkbox' as const,

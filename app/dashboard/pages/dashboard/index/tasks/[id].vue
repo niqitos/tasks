@@ -75,22 +75,16 @@
           />
         </UFormField>
 
-        <UFormField
-          :label="$t('task.description.label')"
-          class="w-full"
-          name="description"
-        >
-          <ClientOnly>
-            <TiptapEditor
-              :content="state.description"
-              @change="($event: any) => {
-                if (state.description === $event) return
-                debouncedFn()
-                state.description = $event
-              }"
-            />
-          </ClientOnly>
-        </UFormField>
+        <ClientOnly>
+          <TiptapEditor
+            :content="state.description ?? ''"
+            @change="($event: any) => {
+              if (state.description === $event) return
+              debouncedFn()
+              state.description = $event
+            }"
+          />
+        </ClientOnly>
 
         <UFileUpload
           v-if="roleStore.canAddFilesToTask(task)"

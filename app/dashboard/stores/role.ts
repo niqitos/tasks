@@ -1,6 +1,6 @@
 export const useRoleStore = defineStore('role', () => {
   const { t } = useI18n()
-  const userStore = useUserStore()
+
   const planStore = usePlanStore()
   const workspaceStore = useWorkspaceStore()
 
