@@ -157,9 +157,6 @@ export default defineNuxtConfig({
         }
       ]
     },
-    client: {
-      installPrompt: true
-    },
     devOptions: {
       enabled: true,
       suppressWarnings: true,
