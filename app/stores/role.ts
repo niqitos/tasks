@@ -19,33 +19,35 @@ export const useRoleStore = defineStore('role', () => {
     }
   ])
 
+  const limitations = reactive<any>(planStore.limitations[workspaceStore.current?.creator.plan/*userStore.user?.plan*/])
+
   const canCreateWorkspaces = computed<boolean>(() =>
-    planStore.limitations[userStore.user?.plan]?.workspaces.max === planStore.unlimited ||
-    planStore.limitations[userStore.user?.plan]?.workspaces.max > workspaceStore.workspaces.length
+    limitations?.workspaces.max === planStore.unlimited ||
+    limitations?.workspaces.max > workspaceStore.workspaces.length
   )
 
   const canCreateBoards = computed<boolean>(() =>
-    planStore.limitations[userStore.user?.plan]?.workspaces.boards.max === planStore.unlimited ||
-    planStore.limitations[userStore.user?.plan]?.workspaces.boards.max > workspaceStore.current?.boards.length
+    limitations?.workspaces.boards.max === planStore.unlimited ||
+    limitations?.workspaces.boards.max > workspaceStore.current?.boards.length
   )
 
   const canCreateTasks = computed<boolean>(() =>
-    planStore.limitations[userStore.user?.plan]?.workspaces.boards.tasks.max === planStore.unlimited ||
-    planStore.limitations[userStore.user?.plan]?.workspaces.boards.tasks.max > workspaceStore.current?.boards.map((b: any) => b.tasks).flat().length
+    limitations?.workspaces.boards.tasks.max === planStore.unlimited ||
+    limitations?.workspaces.boards.tasks.max > workspaceStore.current?.boards.map((b: any) => b.tasks).flat().length
   )
 
   const canAddMembersToWorkspace = computed<boolean>(() =>
-    planStore.limitations[userStore.user?.plan]?.workspaces.members.max === planStore.unlimited ||
-    planStore.limitations[userStore.user?.plan]?.workspaces.members.max > workspaceStore.current?.members.length
+    limitations?.workspaces.members.max === planStore.unlimited ||
+    limitations?.workspaces.members.max > workspaceStore.current?.members.length
   )
 
-  const canAddFilesToTask: boolean = (task: any) =>
-    planStore.limitations[userStore.user?.plan]?.workspaces.boards.tasks.files.max === planStore.unlimited ||
-    planStore.limitations[userStore.user?.plan]?.workspaces.boards.tasks.files.max > task.files.length
+  const canAddFilesToTask = (task: any): boolean =>
+    limitations?.workspaces.boards.tasks.files.max === planStore.unlimited ||
+    limitations?.workspaces.boards.tasks.files.max > task.files.length
 
-  const canAddAssigneesToTask: boolean = (task: any) =>
-    planStore.limitations[userStore.user?.plan]?.workspaces.boards.tasks.assignees.max === planStore.unlimited ||
-    planStore.limitations[userStore.user?.plan]?.workspaces.boards.tasks.assignees.max > task.assignees.length
+  const canAddAssigneesToTask = (task: any): boolean =>
+    limitations?.workspaces.boards.tasks.assignees.max === planStore.unlimited ||
+    limitations?.workspaces.boards.tasks.assignees.max > task.assignees.length
 
   return {
     roles,

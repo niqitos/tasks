@@ -5,6 +5,13 @@
       v-text="$t('plans.title')"
     />
 
+    <div class="flex justify-end">
+      <USwitch
+        v-model="cycle"
+        :label="t(`plans.cycle.${planStore.cycle}.title`)"
+      />
+    </div>
+
     <UPricingTable
       :tiers
       :sections
@@ -13,23 +20,24 @@
 </template>
 
 <script lang="ts" setup>
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
 const planStore = usePlanStore()
 const userStore = useUserStore()
+
+const cycle = computed({
+  get: () => planStore.cycle === 'annually',
+  set: (value: boolean) => {
+    planStore.cycle = value ? 'annually' : 'monthly'
+  }
+})
 
 const tiers = computed(() => [
   {
     id: 'free',
     title: t('plans.free.name'),
     description: t('plans.free.description'),
-    price: '$0',
-    // features: [
-    //   t(`plans.limits.workspaces.${planStore.limitations.free.workspaces.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.free.workspaces.max),
-    //   t(`plans.limits.workspaces.boards.${planStore.limitations.free.workspaces.boards.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.free.workspaces.boards.max),
-    //   t(`plans.limits.workspaces.members.${planStore.limitations.free.workspaces.members.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.free.workspaces.members.max)
-    // ],
     button: {
       label: t('plans.free.action'),
       to: localePath('dashboard')
@@ -39,12 +47,6 @@ const tiers = computed(() => [
     id: 'team',
     title: t('plans.team.name'),
     description: t('plans.team.description'),
-    price: '$4.99',
-    // features: [
-    //   t(`plans.limits.workspaces.${planStore.limitations.team.workspaces.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.team.workspaces.max),
-    //   t(`plans.limits.workspaces.boards.${planStore.limitations.team.workspaces.boards.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.team.workspaces.boards.max),
-    //   t(`plans.limits.workspaces.members.${planStore.limitations.team.workspaces.members.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.team.workspaces.members.max)
-    // ],
     button: {
       label: t('plans.team.action'),
       to: ['team', 'business', 'enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
@@ -56,12 +58,6 @@ const tiers = computed(() => [
     id: 'business',
     title: t('plans.business.name'),
     description: t('plans.business.description'),
-    price: '$9.99',
-    // features: [
-    //   t(`plans.limits.workspaces.${planStore.limitations.business.workspaces.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.business.workspaces.max),
-    //   t(`plans.limits.workspaces.boards.${planStore.limitations.business.workspaces.boards.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.business.workspaces.boards.max),
-    //   t(`plans.limits.workspaces.members.${planStore.limitations.business.workspaces.members.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.business.workspaces.members.max)
-    // ],
     button: {
       label: t('plans.business.action'),
       to: ['business', 'enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
@@ -71,18 +67,30 @@ const tiers = computed(() => [
   //   id: 'enterprise',
   //   title: t('plans.enterprise.name'),
   //   description: t('plans.enterprise.description'),
-  //   price: '$99.99',
-  //   features: [
-  //     t(`plans.limits.workspaces.${planStore.limitations.enterprise.workspaces.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.enterprise.workspaces.max),
-  //     t(`plans.limits.workspaces.boards.${planStore.limitations.enterprise.workspaces.boards.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.enterprise.workspaces.boards.max),
-  //     t(`plans.limits.workspaces.members.${planStore.limitations.enterprise.workspaces.members.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.enterprise.workspaces.members.max)
-  //   ],
   //   button: {
   //     label: t('plans.enterprise.action'),
   //     to: ['enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
   //   }
   }
-])
+].map((tier: any) => {
+  const price = planStore.prices[tier.id][planStore.currency][planStore.cycle]
+
+  if (price !== false) {
+    tier.price = new Intl.NumberFormat(locale.value, {
+      style: 'currency',
+      currencyDisplay: 'narrowSymbol',
+      currency: planStore.currency,
+    }).format(price)
+  }
+
+  if (price !== false && price > 0) {
+    tier.billingCycle =t(`plans.cycle.${planStore.cycle}.per`),
+    tier.billingPeriod =t(`plans.cycle.${planStore.cycle}.title`)
+  }
+
+  return tier
+})
+)
 
 const sections = ref([
   {
@@ -122,6 +130,24 @@ const sections = ref([
           team: t(`plans.limits.${planStore.limitations.team.workspaces.boards.tasks.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.team.workspaces.boards.tasks.max),
           business: t(`plans.limits.${planStore.limitations.business.workspaces.boards.tasks.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.business.workspaces.boards.tasks.max),
           // enterprise: t(`plans.limits.${planStore.limitations.enterprise.workspaces.boards.tasks.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.enterprise.workspaces.boards.tasks.max)
+        }
+      },
+      {
+        title: t('plans.limits.workspaces.boards.tasks.files.title'),
+        tiers: {
+          free: t(`plans.limits.${planStore.limitations.free.workspaces.boards.tasks.files.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.free.workspaces.boards.tasks.files.max),
+          team: t(`plans.limits.${planStore.limitations.team.workspaces.boards.tasks.files.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.team.workspaces.boards.tasks.files.max),
+          business: t(`plans.limits.${planStore.limitations.business.workspaces.boards.tasks.files.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.business.workspaces.boards.tasks.files.max),
+          // enterprise: t(`plans.limits.${planStore.limitations.enterprise.workspaces.boards.tasks.files.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.enterprise.workspaces.boards.tasks.files.max)
+        }
+      },
+      {
+        title: t('plans.limits.workspaces.boards.tasks.assignees.title'),
+        tiers: {
+          free: t(`plans.limits.${planStore.limitations.free.workspaces.boards.tasks.assignees.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.free.workspaces.boards.tasks.assignees.max),
+          team: t(`plans.limits.${planStore.limitations.team.workspaces.boards.tasks.assignees.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.team.workspaces.boards.tasks.assignees.max),
+          business: t(`plans.limits.${planStore.limitations.business.workspaces.boards.tasks.assignees.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.business.workspaces.boards.tasks.assignees.max),
+          // enterprise: t(`plans.limits.${planStore.limitations.enterprise.workspaces.boards.tasks.assignees.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.enterprise.workspaces.boards.tasks.assignees.max)
         }
       }
     ]

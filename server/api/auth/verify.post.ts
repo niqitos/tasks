@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { JwtPayload } from 'jsonwebtoken'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -13,7 +14,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret)
+    const decoded = jwt.verify(token, config.jwtSecret) as JwtPayload
     return { valid: true, decoded }
   } catch (err) {
     throw createError({

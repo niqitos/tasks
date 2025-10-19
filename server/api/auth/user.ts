@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { JwtPayload } from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
@@ -15,7 +16,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const decodedToken = await jwt.verify(token, config.jwtSecret)
+    const decodedToken = await jwt.verify(token, config.jwtSecret) as JwtPayload
 
     const user = await prisma.user.findFirst({
       where: {

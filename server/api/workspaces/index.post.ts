@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { JwtPayload } from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
@@ -18,7 +19,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const decodedToken = await jwt.verify(token, config.jwtSecret)
+    const decodedToken = await jwt.verify(token, config.jwtSecret) as JwtPayload
 
     const workspace = await prisma.workspace.create({
       data: {
@@ -36,20 +37,20 @@ export default defineEventHandler(async (event) => {
           create: [
             {
               position: 1,
-              name: t('board.default.1.name'), // 'To Do',
-              description: t('board.default.1.description'), // 'Tasks waiting to be started',
+              name: t('board.default.1.name'),
+              description: t('board.default.1.description'),
               creatorId: decodedToken.id
             },
             {
               position: 2,
-              name: t('board.default.2.name'), // 'In Progress',
-              description: t('board.default.2.description'), // 'Tasks currently in progress',
+              name: t('board.default.2.name'),
+              description: t('board.default.2.description'),
               creatorId: decodedToken.id
             },
             {
               position: 3,
-              name: t('board.default.3.name'), // 'Done',
-              description: t('board.default.3.description'), // 'Completed tasks',
+              name: t('board.default.3.name'),
+              description: t('board.default.3.description'),
               creatorId: decodedToken.id
             }
           ]
@@ -127,7 +128,8 @@ export default defineEventHandler(async (event) => {
             id: true,
             name: true,
             lastname: true,
-            avatar: true
+            avatar: true,
+            plan: true
           }
         }
       }

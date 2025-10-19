@@ -5,6 +5,7 @@ import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
+  const t = await useTranslation(event)
 
   try {
     const body = await readBody(event)
@@ -27,7 +28,7 @@ export default defineEventHandler(async (event) => {
     ) {
       throw createError({
         statusCode: 400,
-        message: 'Password is not minimum 8 characters, please change.',
+        message: t('register.error.password'),
       })
     }
 
@@ -55,7 +56,7 @@ export default defineEventHandler(async (event) => {
     if (error?.code === 'P2002') {
       throw createError({
         statusCode: 409,
-        message: 'A user with this email already exists.',
+        message: t('register.error.409'),
       })
     }
 

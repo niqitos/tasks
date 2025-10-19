@@ -1,6 +1,7 @@
-import { createClient } from '@supabase/supabase-js'
 import jwt from 'jsonwebtoken'
+import { JwtPayload } from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
+import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -24,7 +25,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const decodedToken = await jwt.verify(token, config.jwtSecret)
+    const decodedToken = await jwt.verify(token, config.jwtSecret) as JwtPayload
 
     const task = await prisma.task.findUnique({
       where: {
@@ -70,6 +71,13 @@ export default defineEventHandler(async (event) => {
         filename: true
       }
     })
+
+    if (!file) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'File not found'
+      })
+    }
 
     const { data, error } = await supabase.storage
       .from(config.public.supabaseBucket)

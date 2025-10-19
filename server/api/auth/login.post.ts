@@ -5,14 +5,15 @@ import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
+  const t = await useTranslation(event)
 
   try {
     const body = await readBody(event)
 
     if (!validator.isEmail(body.email)) {
       throw createError({
-        statusCode: 400,
-        message: 'Invalid email, please change.',
+        statusCode: 401,
+        message: t('login.error.401'),
       })
     }
 
@@ -27,7 +28,7 @@ export default defineEventHandler(async (event) => {
     ) {
       throw createError({
         statusCode: 400,
-        message: 'Password is not minimum 8 characters, please change.',
+        message: t('login.error.password'),
       })
     }
 
@@ -37,12 +38,19 @@ export default defineEventHandler(async (event) => {
       },
     })
 
+    if (!user) {
+      throw createError({
+        statusCode: 401,
+        message: t('login.error.401'),
+      })
+    }
+
     const isValid = await bcrypt.compare(body.password, user.password)
 
     if (!isValid) {
       throw createError({
         statusCode: 400,
-        message: 'Username or password is invalid.',
+        message: t('login.error.400'),
       })
     }
 
@@ -51,11 +59,11 @@ export default defineEventHandler(async (event) => {
     setCookie(event, 'TasksJWT', token)
 
     return { data: 'success!' }
-  } catch (error) {
-    if (error.code === 'P2002') {
+  } catch (error: any) {
+    if (error?.code === 'P2002') {
       throw createError({
         statusCode: 409,
-        message: 'An email with this address already exists.',
+        message: t('login.error.400'),
       })
     }
 

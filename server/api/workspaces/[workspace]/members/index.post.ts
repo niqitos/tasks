@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { JwtPayload } from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
@@ -6,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const body = await readBody(event)
-    const workspace = await getRouterParam(event, 'workspace')
+    const workspace = await getRouterParam(event, 'workspace') as string
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -18,7 +19,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const decodedToken = await jwt.verify(token, config.jwtSecret)
+    const decodedToken = await jwt.verify(token, config.jwtSecret) as JwtPayload
 
     const existingWorkspaceMemberTrying = await prisma.workspaceMember.findFirst({
       where: {

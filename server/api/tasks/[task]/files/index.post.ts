@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken'
+import { JwtPayload } from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    const task = await getRouterParam(event, 'task')
+    const task = await getRouterParam(event, 'task') as string
 
     const body = await readBody(event)
 
@@ -19,7 +20,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const decodedToken = await jwt.verify(token, config.jwtSecret)
+    const decodedToken = await jwt.verify(token, config.jwtSecret) as JwtPayload
 
     const newFile = await prisma.file.create({
       data: {

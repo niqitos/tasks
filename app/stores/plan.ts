@@ -1,14 +1,14 @@
 export const usePlanStore = defineStore('plan', () => {
-  const unlimited = reactive<string>('unlimited')
+  const unlimited = ref<string>('unlimited')
 
-  const limitations = reactive({
+  const limitations = reactive<any>({
     free: {
       workspaces: {
         max: 1,
         boards: {
           max: 3,
           tasks: {
-            max: unlimited,
+            max: unlimited.value,
             files: {
               max: 1
             },
@@ -26,66 +26,129 @@ export const usePlanStore = defineStore('plan', () => {
       workspaces: {
         max: 10,
         boards: {
-          max: unlimited,
+          max: unlimited.value,
           tasks: {
-            max: unlimited,
+            max: unlimited.value,
             files: {
               max: 1
             },
             assignees: {
-              max: 5
+              max: 10
             }
           }
         },
         members: {
-          max: 5
+          max: 10
         }
       }
     },
     business: {
       workspaces: {
-        max: unlimited,
+        max: unlimited.value,
         boards: {
-          max: unlimited,
+          max: unlimited.value,
           tasks: {
-            max: unlimited,
+            max: unlimited.value,
             files: {
-              max: unlimited
+              max: unlimited.value
             },
             assignees: {
-              max: unlimited
+              max: unlimited.value
             }
           }
         },
         members: {
-          max: unlimited
+          max: unlimited.value
         }
       }
     },
     enterprise: {
       workspaces: {
-        max: unlimited,
+        max: unlimited.value,
         boards: {
-          max: unlimited,
+          max: unlimited.value,
           tasks: {
-            max: unlimited,
+            max: unlimited.value,
             files: {
-              max: unlimited
+              max: unlimited.value
             },
             assignees: {
-              max: unlimited
+              max: unlimited.value
             }
           }
         },
         members: {
-          max: unlimited
+          max: unlimited.value
         }
+      }
+    }
+  })
+
+  const currency = ref<string>('USD')
+
+  const currencies = reactive<any>({
+    USD: {
+      symbol: '$',
+      name: 'US Dollar',
+      code: 'USD'
+    },
+    EUR: {
+      symbol: '€',
+      name: 'Euro',
+      code: 'EUR'
+    },
+    GBP: {
+      symbol: '£',
+      name: 'British Pound',
+      code: 'GBP'
+    }
+  })
+
+  const cycle = ref<'monthly'|'annually'>('monthly')
+
+  const cycles = reactive<any>({
+    monthly: {
+      label: 'monthly'
+    },
+    annually: {
+      label: 'annually'
+    }
+  })
+
+  const prices = reactive<any>({
+    free: {
+      [currencies.USD.code]: {
+        [cycles.monthly.label]: 0,
+        [cycles.annually.label]: 0
+      }
+    },
+    team: {
+      [currencies.USD.code]: {
+        [cycles.monthly.label]: 2.99,
+        [cycles.annually.label]: 29.99
+      }
+    },
+    business: {
+      [currencies.USD.code]: {
+        [cycles.monthly.label]: 8.99,
+        [cycles.annually.label]: 89.99
+      }
+    },
+    enterprise: {
+      [currencies.USD.code]: {
+        [cycles.monthly.label]: false,
+        [cycles.annually.label]: false
       }
     }
   })
 
   return {
     unlimited,
-    limitations
+    limitations,
+    currency,
+    currencies,
+    cycle,
+    cycles,
+    prices
   }
 })

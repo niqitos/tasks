@@ -50,6 +50,10 @@ export default {
     submit: 'Sign Up',
     success: {
       description: 'Account created successfully.'
+    },
+    error: {
+      409: 'An account with this email already exists.',
+      password: 'Password is too weak.'
     }
   },
   login: {
@@ -62,6 +66,11 @@ export default {
     submit: 'Log in',
     success: {
       description: 'Logged in successfully.'
+    },
+    error: {
+      400: 'Incorrect email or password, please try again.',
+      401: 'Invalid email, please check.',
+      password: 'Password is minimum 8 characters, please change.',
     }
   },
   home: {
@@ -116,6 +125,16 @@ export default {
   },
   plans: {
     title: 'Pricing Plans',
+    cycle: {
+      monthly: {
+        title: 'Billed Monthly',
+        per: '/month'
+      },
+      annually: {
+        title: 'Billed Annually',
+        per: '/year'
+      }
+    },
     limits: {
       title: 'Limits',
       limited: '0 | {count} | Up to {count}',
@@ -131,7 +150,17 @@ export default {
           tasks: {
             title: 'Tasks',
             limited: '0 Tasks | {count} Task | Up to {count} Tasks',
-            unlimited: 'Unlimited Tasks'
+            unlimited: 'Unlimited Tasks',
+            files: {
+              title: 'Attachments per Task',
+              limited: '0 Attachments per Task | {count} Attachment per Task | Up to {count} Attachments per Task',
+              unlimited: 'Unlimited Attachments per Task'
+            },
+            assignees: {
+              title: 'Assignees per Task',
+              limited: '0 Assignees per Task | {count} Assignee per Task | Up to {count} Assignees per Task',
+              unlimited: 'Unlimited Assignees per Task'
+            }
           }
         },
         members: {
@@ -176,12 +205,12 @@ export default {
     },
     enterprise: {
       name: 'Enterprise',
-      description: 'Ideal for larger big enterprise.',
+      description: 'Ideal for big enterprises, heavy projects and large teams.',
       features: {
         support: '24/7 support'
       },
-      action: 'Go Enterprise',
-      upgrade: 'Get more'
+      action: 'Contact sales',
+      upgrade: 'Go Enterprise'
     }
   },
   dashboard: {
