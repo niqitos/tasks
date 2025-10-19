@@ -58,7 +58,8 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      redirectOn: 'root'
+      redirectOn: 'root',
+      fallbackLocale: process.env.DEFAULT_LOCALE as 'uk' | 'ru' | 'en' | undefined
     },
     experimental: {
       localeDetector: 'localeDetector.ts'
