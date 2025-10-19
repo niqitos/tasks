@@ -107,7 +107,7 @@ const menu = computed(() => ([
     {
       label: $t(`plans.${userStore.user.plan}.upgrade`),
       icon: 'i-lucide:circle-fading-arrow-up',
-      color: 'primary',
+      class: 'text-primary hover:!text-primary data-highlighted:text-primary data-[state=open]:text-primary',
       to: localePath('upgrade')
     }
   ],
