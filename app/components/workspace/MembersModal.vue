@@ -10,6 +10,7 @@
       :ui="{
         root: 'ml-4'
       }"
+      :max="4"
     >
       <UButton
         color="neutral"
