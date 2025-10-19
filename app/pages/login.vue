@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-dvh w-full bg-[url('https://images.unsplash.com/photo-1628884598964-95c605566cee')] bg-cover bg-center">
-    <div class="bg-default w-[516px] mx-auto md:mx-0 p-4 sm:p-12 flex flex-col justify-center">
+    <div class="bg-default w-full md:w-[516px] mx-auto md:mx-0 p-4 sm:p-12 flex flex-col justify-center">
       <Logo class="mb-6" />
 
       <UAuthForm
