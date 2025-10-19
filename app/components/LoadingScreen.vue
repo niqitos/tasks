@@ -7,9 +7,9 @@
       <div class="flex flex-col items-center space-y-4">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-kanban-icon lucide-square-kanban stroke-primary size-50">
           <rect width="18" height="18" x="3" y="3" rx="2" />
-          <path d="M8 7v7" id="board-1"/>
-          <path d="M12 7v4" id="board-2"/>
-          <path d="M16 7v9" id="board-3"/>
+          <path id="board-1" d="M8 7v7" />
+          <path id="board-2" d="M12 7v4" />
+          <path id="board-3" d="M16 7v9" />
         </svg>
       </div>
     </div>
