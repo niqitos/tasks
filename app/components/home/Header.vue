@@ -1,7 +1,7 @@
 <template>
   <UHeader
     :ui="{
-      body: 'p-3',
+      body: 'p-3 sm:p-5',
       container: 'max-w-full'
     }"
   >
