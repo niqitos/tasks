@@ -1,6 +1,7 @@
 <template>
   <UHeader
     :ui="{
+      body: 'p-3',
       container: 'max-w-full'
     }"
   >
@@ -31,7 +32,6 @@
       <UNavigationMenu
         orientation="vertical"
         :items="navigationItems"
-        class="-mx-2.5"
         :ui="{
           link: '!cursor-pointer',
           linkLeadingIcon: 'text-inherit group-hover:text-inherit'

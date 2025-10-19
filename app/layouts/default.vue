@@ -6,4 +6,6 @@
   </UMain>
 
   <HomeFooter />
+
+  <UserEdit />
 </template>
