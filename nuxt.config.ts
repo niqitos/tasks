@@ -85,11 +85,12 @@ export default defineNuxtConfig({
   },
 
   pwa: {
+    strategies: 'generateSW',
     registerType: 'autoUpdate',
     includeAssets: [
       'favicon.ico',
       'web-app-manifest-192x192.png',
-      'web-app-manifest-512x512.svg'
+      'web-app-manifest-512x512.png'
     ],
     manifest: {
       name: 'Tasks',
@@ -115,12 +116,6 @@ export default defineNuxtConfig({
     },
     workbox: {
       navigateFallback: '/',
-      additionalManifestEntries: [
-        {
-          url: '/',
-          revision: null
-        }
-      ],
       globPatterns: [
         '**/*.{js,css,html,svg,png,ico,json}'
       ],
@@ -160,9 +155,7 @@ export default defineNuxtConfig({
       ]
     },
     devOptions: {
-      enabled: true,
-      // suppressWarnings: true,
-      // navigateFallback: '/'
+      enabled: true
     }
   }
 })
