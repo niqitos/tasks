@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"><style xmlns="">
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+          #element-1 {
+            animation: fade-in 1s ease 0s infinite alternate forwards;
+          }
+        
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+          #element-2 {
+            animation: fade-in 1s ease 0.333s infinite alternate forwards;
+          }
+        
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+          #element-3 {
+            animation: fade-in 1s ease 0.666s infinite alternate none;
+          }
+        </style><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b7fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-kanban-icon lucide-square-kanban"><rect width="18" height="18" x="3" y="3" rx="2" id="element-0"/><path d="M8 7v7" id="element-1"/><path d="M12 7v4" id="element-2"/><path d="M16 7v9" id="element-3"/></svg></svg>

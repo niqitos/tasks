@@ -1,0 +1,61 @@
+<template>
+  <Transition name="fade">
+    <div
+      v-if="visible"
+      class="fixed inset-0 z-[9999] flex items-center justify-center bg-default"
+    >
+      <div class="flex flex-col items-center space-y-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-kanban-icon lucide-square-kanban stroke-primary size-50">
+          <rect width="18" height="18" x="3" y="3" rx="2" />
+          <path d="M8 7v7" id="board-1"/>
+          <path d="M12 7v4" id="board-2"/>
+          <path d="M16 7v9" id="board-3"/>
+        </svg>
+      </div>
+    </div>
+  </Transition>
+</template>
+
+<script setup lang="ts">
+const visible = ref(true)
+
+onMounted(() => {
+  nextTick(() => {
+    setTimeout(() => {
+      visible.value = false
+    }, 500)
+  })
+})
+</script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+#board-1 {
+  animation: fade-in 1s ease 0s infinite alternate forwards;
+}
+
+#board-2 {
+  animation: fade-in 1s ease 0.333s infinite alternate forwards;
+}
+
+#board-3 {
+  animation: fade-in 1s ease 0.666s infinite alternate none;
+}
+</style>
