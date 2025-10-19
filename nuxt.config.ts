@@ -111,26 +111,40 @@ export default defineNuxtConfig({
       ]
     },
     workbox: {
+      navigateFallback: '/',
+      additionalManifestEntries: [
+        {
+          url: '/',
+          revision: null
+        }
+      ],
       globPatterns: [
         '**/*.{js,css,html,svg,png,ico,json}'
       ],
       runtimeCaching: [
         {
-        urlPattern: ({ request }) => request.destination === 'document',
+          urlPattern: ({ request }) => request.mode === 'navigate',
           handler: 'NetworkFirst',
           options: {
             cacheName: 'html-cache'
           }
         },
         {
-        urlPattern: ({ request }) => request.destination === 'script' || request.destination === 'style',
+          urlPattern: ({ request }) => request.destination === 'document',
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'html-cache'
+          }
+        },
+        {
+          urlPattern: ({ request }) => request.destination === 'script' || request.destination === 'style',
           handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'asset-cache'
           }
         },
         {
-        urlPattern: ({ request }) => request.destination === 'image',
+          urlPattern: ({ request }) => request.destination === 'image',
           handler: 'CacheFirst',
           options: {
             cacheName: 'image-cache',
@@ -141,6 +155,9 @@ export default defineNuxtConfig({
           }
         }
       ]
+    },
+    client: {
+      installPrompt: true
     },
     devOptions: {
       enabled: true,
