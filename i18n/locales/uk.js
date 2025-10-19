@@ -131,7 +131,7 @@ export default {
         per: '/місяць'
       },
       annually: {
-        title: 'Щорічна Billed Annually',
+        title: 'Щорічна оплата',
         per: '/рік'
       }
     },
