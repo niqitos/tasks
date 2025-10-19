@@ -51,6 +51,32 @@ definePageMeta({
 const localePath = useLocalePath()
 const toast = useToast()
 const { t } = useI18n()
+const config = useRuntimeConfig()
+const route = useRoute()
+
+useSeoMeta({
+  title: `${t('login.title')} - ${t('app.name')}`,
+  description: t('login.description'),
+  ogTitle: `${t('login.title')} - ${t('app.name')}`,
+  ogDescription: t('login.description'),
+  ogImage: '/web-app-manifest-512.png',
+  twitterCard: 'summary_large_image',
+  ogUrl: localePath('login')
+})
+
+useHead(() => ({
+  link: [
+    {
+      rel: 'canonical',
+      href: `${config.public.appUrl}${route.path}`
+    }
+  ]
+}))
+
+useRobotsRule({
+  index: true,
+  follow: true
+})
 
 const fields: AuthFormField[] = [
   {

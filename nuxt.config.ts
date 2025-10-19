@@ -27,9 +27,11 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxtjs/i18n',
+    '@nuxtjs/robots',
+    '@nuxtjs/sitemap',
     '@pinia/nuxt',
-    '@vueuse/nuxt',
-    '@vite-pwa/nuxt'
+    '@vite-pwa/nuxt',
+    '@vueuse/nuxt'
   ],
 
   i18n: {
@@ -119,43 +121,49 @@ export default defineNuxtConfig({
       globPatterns: [
         '**/*.{js,css,html,svg,png,ico,json}'
       ],
-      runtimeCaching: [
-        {
-          urlPattern: ({ request }) => request.mode === 'navigate',
-          handler: 'NetworkFirst',
-          options: {
-            cacheName: 'html-cache'
-          }
-        },
-        {
-          urlPattern: ({ request }) => request.destination === 'document',
-          handler: 'NetworkFirst',
-          options: {
-            cacheName: 'html-cache'
-          }
-        },
-        {
-          urlPattern: ({ request }) => request.destination === 'script' || request.destination === 'style',
-          handler: 'StaleWhileRevalidate',
-          options: {
-            cacheName: 'asset-cache'
-          }
-        },
-        {
-          urlPattern: ({ request }) => request.destination === 'image',
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'image-cache',
-            expiration: {
-              maxEntries: 100,
-              maxAgeSeconds: 60 * 60 * 24 * 7 // 1 week
-            }
-          }
-        }
-      ]
+      // runtimeCaching: [
+      //   {
+      //     urlPattern: ({ request }) => request.mode === 'navigate',
+      //     handler: 'NetworkFirst',
+      //     options: {
+      //       cacheName: 'html-cache'
+      //     }
+      //   },
+      //   {
+      //     urlPattern: ({ request }) => request.destination === 'document',
+      //     handler: 'NetworkFirst',
+      //     options: {
+      //       cacheName: 'html-cache'
+      //     }
+      //   },
+      //   {
+      //     urlPattern: ({ request }) => request.destination === 'script' || request.destination === 'style',
+      //     handler: 'StaleWhileRevalidate',
+      //     options: {
+      //       cacheName: 'asset-cache'
+      //     }
+      //   },
+      //   {
+      //     urlPattern: ({ request }) => request.destination === 'image',
+      //     handler: 'CacheFirst',
+      //     options: {
+      //       cacheName: 'image-cache',
+      //       expiration: {
+      //         maxEntries: 100,
+      //         maxAgeSeconds: 60 * 60 * 24 * 7 // 1 week
+      //       }
+      //     }
+      //   }
+      // ]
     },
     devOptions: {
       enabled: true
     }
+  },
+
+  sitemap: {
+    exclude: [
+      '/dashboard'
+    ]
   }
 })

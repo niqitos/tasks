@@ -1,7 +1,6 @@
 <template>
   <UApp :locale="locales[locale]">
-    <!-- <NuxtLoadingIndicator /> -->
-    <LoadingScreen />
+    <NuxtLoadingIndicator />
 
     <NuxtLayout>
       <NuxtPage />

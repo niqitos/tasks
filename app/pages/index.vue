@@ -48,8 +48,38 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({
+  middleware: ['home']
+})
+
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const config = useRuntimeConfig()
+const route = useRoute()
+
+useSeoMeta({
+  title: `${t('home.title')} - ${t('app.name')}`,
+  description: t('home.description'),
+  ogTitle: `${t('home.title')} - ${t('app.name')}`,
+  ogDescription: t('home.description'),
+  ogImage: '/web-app-manifest-512.png',
+  twitterCard: 'summary_large_image',
+  ogUrl: localePath('index')
+})
+
+useHead(() => ({
+  link: [
+    {
+      rel: 'canonical',
+      href: `${config.public.appUrl}${route.path}`
+    }
+  ]
+}))
+
+useRobotsRule({
+  index: true,
+  follow: true
+})
 
 const links = ref([
   {

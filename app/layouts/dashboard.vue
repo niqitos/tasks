@@ -1,4 +1,6 @@
 <template>
+  <LoadingScreen />
+
   <AppHeader />
 
   <UMain>

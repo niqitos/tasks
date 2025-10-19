@@ -42,6 +42,7 @@ export default {
   },
   register: {
     title: 'Зареєструйте безкоштовний обліковий запис',
+    description: 'Зареєструйте безкоштовний обліковий запис',
     already: 'Вже зареєстровані?',
     login: {
       button: 'Увійти',
@@ -58,6 +59,7 @@ export default {
   },
   login: {
     title: 'Увійдіть до свого облікового запису',
+    description: 'Увійдіть до свого облікового запису',
     notRegistered: 'Не зареєстровані?',
     signup: {
       button: 'Створіть',
@@ -75,6 +77,7 @@ export default {
   },
   home: {
     title: 'Головна',
+    description: 'Головна',
     hero: {
       headline: 'Керуй проєктами',
       title: 'Дошка задач',
@@ -121,6 +124,7 @@ export default {
   },
   upgrade: {
     title: 'Оновити тарифний план',
+    description: 'Оновити тарифний план',
     headline: 'Скоро буде'
   },
   plans: {
@@ -214,7 +218,8 @@ export default {
     }
   },
   dashboard: {
-    title: 'Панель керування'
+    title: 'Панель керування',
+    description: 'Панель керування'
   },
   success: {
     title: 'Успіх!'

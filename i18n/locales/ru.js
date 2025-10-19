@@ -42,6 +42,7 @@ export default {
   },
   register: {
     title: 'Зарегистрируйте бесплатную учетную запись',
+    description: 'Зарегистрируйте бесплатную учетную запись',
     already: 'Уже зарегистрированы?',
     login: {
       button: 'Войти',
@@ -58,6 +59,7 @@ export default {
   },
   login: {
     title: 'Войдите в свою учетную запись',
+    description: 'Войдите в свою учетную запись',
     notRegistered: 'Не зарегистрированы?',
     signup: {
       button: 'Создайте',
@@ -75,6 +77,7 @@ export default {
   },
   home: {
     title: 'Главная',
+    description: 'Главная',
     hero: {
       headline: 'Управляй проектами',
       title: 'Доска задач',
@@ -121,6 +124,7 @@ export default {
   },
   upgrade: {
     title: 'Обновить тарифный план',
+    description: 'Обновить тарифный план',
     headline: 'Скоро будет'
   },
   plans: {
@@ -214,7 +218,8 @@ export default {
     }
   },
   dashboard: {
-    title: 'Панель управления'
+    title: 'Панель управления',
+    description: 'Панель управления'
   },
   success: {
     title: 'Успех!'

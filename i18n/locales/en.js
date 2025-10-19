@@ -42,6 +42,7 @@ export default {
   },
   register: {
     title: 'Sign up for a free account',
+    description: 'Sign up for a free account',
     already: 'Already registered?',
     login: {
       button: 'Log in',
@@ -58,6 +59,7 @@ export default {
   },
   login: {
     title: 'Log in to your account',
+    description: 'Log in to your account',
     notRegistered: 'Don\'t have an account?',
     signup: {
       button: 'Sign Up',
@@ -75,6 +77,7 @@ export default {
   },
   home: {
     title: 'Home',
+    description: 'Home',
     hero: {
       headline: 'Manage projects',
       title: 'Taskboard',
@@ -121,6 +124,7 @@ export default {
   },
   upgrade: {
     title: 'Upgrade',
+    description: 'Upgrade',
     headline: 'Coming Soon'
   },
   plans: {
@@ -210,11 +214,12 @@ export default {
         support: '24/7 support'
       },
       action: 'Contact sales',
-      upgrade: 'Go Enterprise'
+      upgrade: 'Get More'
     }
   },
   dashboard: {
-    title: 'Dahsboard'
+    title: 'Dashboard',
+    description: 'Dashboard'
   },
   success: {
     title: 'Success!'
