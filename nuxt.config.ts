@@ -159,8 +159,8 @@ export default defineNuxtConfig({
     },
     devOptions: {
       enabled: true,
-      suppressWarnings: true,
-      navigateFallback: '/'
+      // suppressWarnings: true,
+      // navigateFallback: '/'
     }
   }
 })
