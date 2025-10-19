@@ -1,6 +1,6 @@
 <template>
   <ULink
-    :to="!isIndex ? localePath('index') : ''"
+    :to="!clickable ? localePath('index') : undefined"
     class="flex items-center text-2xl font-bold text-default"
   >
     <UIcon
@@ -19,5 +19,9 @@
 const localePath = useLocalePath()
 const route = useRoute()
 
-const isIndex = computed<boolean>(() => route.path === localePath('index'))
+const clickable = computed<boolean>(() => [
+    localePath('index'),
+    localePath('dashboard')
+  ].includes(route.path)
+)
 </script>
