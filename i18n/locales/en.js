@@ -367,7 +367,7 @@ export default {
     },
     description: {
       label: 'Description',
-      placeholder: 'Start typing...'
+      placeholder: 'Write something...'
     },
     files: {
       create: {
@@ -381,6 +381,15 @@ export default {
       },
       label: 'Attached files',
       attached: 'Task has attached files'
+    },
+    startEndDates: {
+      startAt: 'Start At',
+      endAt: 'End At',
+      placeholder: 'Select start and end date'
+    },
+    complete: {
+      false: 'Mark as complete',
+      true: 'Mark as incomplete'
     }
   },
   logout: {

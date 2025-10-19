@@ -484,29 +484,4 @@ onBeforeUnmount(() => {
     content: "Write, type '/' for commands…";
     font-style: italic
 }
-
-.is-empty[data-placeholder]:has(>.ProseMirror-trailingBreak:only-child):before {
-    pointer-events: none;
-    height: 0;
-    position: absolute;
-    width: 100%;
-    text-align: inherit;
-    left: 0;
-    right: 0
-}
-
-.is-empty[data-placeholder]:has(>.ProseMirror-trailingBreak):before {
-    color: var(--placeholder-color)
-}
-
-.prosemirror-dropcursor-block,.prosemirror-dropcursor-inline {
-    background: var(--tt-brand-color-400)!important;
-    border-radius: .25rem;
-    margin-left: -1px;
-    margin-right: -1px;
-    width: 100%;
-    height: .188rem;
-    cursor: -webkit-grabbing;
-    cursor: grabbing
-}
 </style>

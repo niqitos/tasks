@@ -100,38 +100,34 @@
           @update:model-value="uploadFiles"
         />
 
-        <UButton
-          v-else
-          :label="$t(`plans.${userStore.user.plan}.upgrade`)"
-          icon="i-lucide:circle-fading-arrow-up"
-          color="primary"
-          :to="localePath('upgrade')"
-          :ui="{
-            base: 'w-full flex justify-center items-center'
-          }"
-        />
+        <UpgradeButton v-else />
 
-        <div v-if="task.files.length">
-          <h3
-            class="text-muted text-sm mb-2"
-            v-text="$t('task.files.label')"
-          />
-
+        <UFormField
+          v-if="task.files.length"
+          :label="$t('task.files.label')"
+        >
           <TaskFile
             v-for="(file, index) in task.files"
             :key="index"
             v-model:task="task"
             :file
           />
-        </div>
+        </UFormField>
 
-        <div>
-          <h3
-            class="text-muted text-sm"
-            v-text="$t('task.assignees', task.assignees.length)"
-          />
+        <TaskStartEndDates
+          v-model:task="task"
+          @updated="debouncedFn()"
+        />
 
-          <div class="flex gap-4 mt-4">
+        <TaskComplete
+          v-model:completedAt="task.completedAt"
+          @updated="debouncedFn()"
+        />
+
+        <UFormField
+          :label="$t('task.assignees', task.assignees.length)"
+        >
+          <div class="flex gap-4">
             <TaskAssignee
               v-for="assignee in task.assignees"
               v-model:task="task"
@@ -142,7 +138,7 @@
               :task="task"
             />
           </div>
-        </div>
+        </UFormField>
       </UForm>
 
       <template v-else>
@@ -154,7 +150,6 @@
 
 <script lang="ts" setup>
 import * as z from 'zod'
-// import type { FormSubmitEvent } from '@nuxt/ui'
 
 definePageMeta({
   middleware: ['auth']
@@ -168,7 +163,6 @@ const toast = useToast()
 const { t } = useI18n()
 
 const roleStore = useRoleStore()
-const userStore = useUserStore()
 
 const task = ref<any>(await $fetch(`/api/tasks/${route.params.id}`))
 
@@ -217,7 +211,12 @@ const submit = async () => {
   try {
     await $fetch(`/api/tasks/${route.params.id}`, {
       method: 'PATCH',
-      body: state
+      body: {
+        ...state,
+        startAt: task.value?.startAt,
+        endAt: task.value?.endAt,
+        completedAt: task.value?.completedAt
+      }
     })
 
     if (board.value) {

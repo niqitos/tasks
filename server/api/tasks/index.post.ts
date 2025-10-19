@@ -58,16 +58,15 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    const now = new Date()
-
-    prisma.taskHistory.create({
+    await prisma.activityLog.create({
       data: {
-        taskId: newTask.id,
-        // fromBoardId: newTask.boardId,
-        toBoardId: newTask.boardId,
-        updatedById: decodedToken.id,
-        updatedAt: now,
-        note: 'created'
+        logName: 'default',
+        description: 'Task created',
+        subjectId: newTask.id,
+        subjectType: 'Task',
+        event: 'created',
+        causedById:  decodedToken.id,
+        properties: newTask
       }
     })
 

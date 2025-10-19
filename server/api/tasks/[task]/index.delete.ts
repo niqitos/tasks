@@ -46,16 +46,17 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    const now = new Date()
-
-    prisma.taskHistory.create({
+    await prisma.activityLog.create({
       data: {
-        taskId: taskTryingToDelete.id,
-        // fromBoardId: taskTryingToDelete.boardId,
-        toBoardId: taskTryingToDelete.boardId,
-        updatedById: decodedToken.id,
-        updatedAt: now,
-        note: 'deleted'
+        logName: 'default',
+        description: 'Task deleted',
+        subjectId: taskTryingToDelete.id,
+        subjectType: 'Task',
+        event: 'deleted',
+        causedById:  decodedToken.id,
+        properties: {
+          deletedAt: new Date()
+        }
       }
     })
   } catch (err) {

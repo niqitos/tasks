@@ -14,16 +14,7 @@
     @keyup.enter="store"
   />
 
-  <UButton
-    v-else
-    :label="$t(`plans.${userStore.user.plan}.upgrade`)"
-    icon="i-lucide:circle-fading-arrow-up"
-    color="primary"
-    :to="localePath('upgrade')"
-    :ui="{
-      base: 'w-full flex justify-center items-center'
-    }"
-  />
+  <UpgradeButton v-else />
 </template>
 
 <script lang="ts" setup>

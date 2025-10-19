@@ -10,12 +10,8 @@
       icon="i-lucide:plus"
     />
 
-    <UButton
+    <UpgradeButton
       v-else
-      :label="$t(`plans.${userStore.user.plan}.upgrade`)"
-      icon="i-lucide:circle-fading-arrow-up"
-      color="primary"
-      :to="localePath('upgrade')"
     />
 
     <template

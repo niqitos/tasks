@@ -49,6 +49,7 @@ model User {
   salt      String
   avatar    String?
   plan      UserPlan  @default(free)
+  planData  Json?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
   deletedAt DateTime?
@@ -62,7 +63,7 @@ model User {
   workspaceMembers  WorkspaceMember[]
   taskAssignees     TaskAssignee[]
   invitedMembers    WorkspaceMember[] @relation("WorkspaceInviter")
-  taskHistory       TaskHistory[]
+  activityLogs      ActivityLog[]
   storedCards       StoredCard[]
   subscriptions     Subscription[]
 }
@@ -116,8 +117,6 @@ model Board {
   creator   User   @relation("BoardCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 
   tasks           Task[]        @relation("BoardTasks")
-  taskHistoryFrom TaskHistory[] @relation("FromBoardHistory")
-  taskHistoryTo   TaskHistory[] @relation("ToBoardHistory")
 
   @@index([workspaceId, position])
 }
@@ -143,32 +142,29 @@ model Task {
   assignees   TaskAssignee[]
   files       File[]
   comments    Comment[]
-  taskHistory TaskHistory[]
 
   @@index([boardId, position])
 }
 
-model TaskHistory {
-  id     String @id @default(uuid())
-  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  taskId String
+model ActivityLog {
+  id          BigInt    @id @default(autoincrement())
+  logName     String?
+  description String
 
-  fromBoard   Board?  @relation("FromBoardHistory", fields: [fromBoardId], references: [id])
-  fromBoardId String?
+  subjectId   String?
+  subjectType String?
 
-  toBoard   Board?  @relation("ToBoardHistory", fields: [toBoardId], references: [id])
-  toBoardId String?
+  event       String?
 
-  updatedBy   User?   @relation(fields: [updatedById], references: [id], onDelete: SetNull)
-  updatedById String?
+  causedBy    User?   @relation(fields: [causedById], references: [id], onDelete: SetNull)
+  causedById  String?
 
-  updatedAt DateTime @default(now())
-  note    String?
+  properties  Json?
 
-  @@index([taskId])
-  @@index([fromBoardId])
-  @@index([toBoardId])
-  @@index([updatedById])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  @@index([logName])
 }
 
 model TaskAssignee {

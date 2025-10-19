@@ -6,11 +6,11 @@
     <template #body>
       <div class="grid grid-cols-12 gap-4">
         <div
-          class="col-span-4 sm:col-span-2"
+          class="col-span-4 sm:col-span-3"
           v-text="$t('settings.edit.language')"
         />
 
-        <div class="col-span-8 sm:col-span-10">
+        <div class="col-span-8 sm:col-span-9">
           <ULocaleSelect
             v-model="locale"
             variant="none"
@@ -23,11 +23,11 @@
         </div>
 
         <div
-          class="col-span-4 sm:col-span-2"
+          class="col-span-4 sm:col-span-3"
           v-text="$t('settings.edit.theme')"
         />
 
-        <div class="col-span-8 sm:col-span-10">
+        <div class="col-span-8 sm:col-span-9">
           <UColorModeSelect
             variant="none"
             class="cursor-pointer"

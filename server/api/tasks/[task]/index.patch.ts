@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
 import prisma from '@@/server/utils/prisma'
+import { getUpdatedFields } from '@@/server/utils/diff'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -50,14 +51,15 @@ export default defineEventHandler(async (event) => {
 
     const now = new Date()
 
-    prisma.taskHistory.create({
+    await prisma.activityLog.create({
       data: {
-        taskId,
-        fromBoardId: taskTryingToUpdate.boardId,
-        toBoardId: task.boardId,
-        updatedById: decodedToken.id,
-        updatedAt: now,
-        note: 'updated'
+        logName: 'default',
+        description: 'Task updated',
+        subjectId: task.id,
+        subjectType: 'Task',
+        event: 'updated',
+        causedById:  decodedToken.id,
+        properties: getUpdatedFields(taskTryingToUpdate, task, ['updatedAt'])
       }
     })
   } catch (err) {

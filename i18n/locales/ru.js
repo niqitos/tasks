@@ -367,7 +367,7 @@ export default {
     },
     description: {
       label: 'Описание',
-      placeholder: 'Начните печатать...'
+      placeholder: 'Напишите что-нибудь...'
     },
     files: {
       create: {
@@ -381,6 +381,15 @@ export default {
       },
       label: 'Прикрепленные файлы',
       attached: ' У задачи прикрепленные файлы'
+    },
+    startEndDates: {
+      startAt: 'Начало в',
+      endAt: 'Окончание в',
+      placeholder: 'Выберите даты начала и окончания'
+    },
+    complete: {
+      false: 'Отметить как выполнено',
+      true: 'Отметить как не выполнено'
     }
   },
   logout: {

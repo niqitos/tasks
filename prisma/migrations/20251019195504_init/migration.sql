@@ -17,6 +17,7 @@ CREATE TABLE "User" (
     "salt" TEXT NOT NULL,
     "avatar" TEXT,
     "plan" "UserPlan" NOT NULL DEFAULT 'free',
+    "planData" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
@@ -85,16 +86,19 @@ CREATE TABLE "Task" (
 );
 
 -- CreateTable
-CREATE TABLE "TaskHistory" (
-    "id" TEXT NOT NULL,
-    "taskId" TEXT NOT NULL,
-    "fromBoardId" TEXT,
-    "toBoardId" TEXT,
-    "updatedById" TEXT,
+CREATE TABLE "ActivityLog" (
+    "id" BIGSERIAL NOT NULL,
+    "logName" TEXT,
+    "description" TEXT NOT NULL,
+    "subjectId" TEXT,
+    "subjectType" TEXT,
+    "event" TEXT,
+    "causedById" TEXT,
+    "properties" JSONB,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "note" TEXT,
 
-    CONSTRAINT "TaskHistory_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ActivityLog_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -191,16 +195,7 @@ CREATE INDEX "Board_workspaceId_position_idx" ON "Board"("workspaceId", "positio
 CREATE INDEX "Task_boardId_position_idx" ON "Task"("boardId", "position");
 
 -- CreateIndex
-CREATE INDEX "TaskHistory_taskId_idx" ON "TaskHistory"("taskId");
-
--- CreateIndex
-CREATE INDEX "TaskHistory_fromBoardId_idx" ON "TaskHistory"("fromBoardId");
-
--- CreateIndex
-CREATE INDEX "TaskHistory_toBoardId_idx" ON "TaskHistory"("toBoardId");
-
--- CreateIndex
-CREATE INDEX "TaskHistory_updatedById_idx" ON "TaskHistory"("updatedById");
+CREATE INDEX "ActivityLog_logName_idx" ON "ActivityLog"("logName");
 
 -- CreateIndex
 CREATE INDEX "TaskAssignee_userId_idx" ON "TaskAssignee"("userId");
@@ -245,16 +240,7 @@ ALTER TABLE "Task" ADD CONSTRAINT "Task_boardId_fkey" FOREIGN KEY ("boardId") RE
 ALTER TABLE "Task" ADD CONSTRAINT "Task_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "TaskHistory" ADD CONSTRAINT "TaskHistory_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskHistory" ADD CONSTRAINT "TaskHistory_fromBoardId_fkey" FOREIGN KEY ("fromBoardId") REFERENCES "Board"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskHistory" ADD CONSTRAINT "TaskHistory_toBoardId_fkey" FOREIGN KEY ("toBoardId") REFERENCES "Board"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "TaskHistory" ADD CONSTRAINT "TaskHistory_updatedById_fkey" FOREIGN KEY ("updatedById") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ActivityLog" ADD CONSTRAINT "ActivityLog_causedById_fkey" FOREIGN KEY ("causedById") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "TaskAssignee" ADD CONSTRAINT "TaskAssignee_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;

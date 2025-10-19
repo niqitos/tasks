@@ -134,7 +134,7 @@ const submit = async (payload: FormSubmitEvent<Schema>) => {
 
     toast.add({
       title: t('error.title'),
-      description: t('error.500'),
+      description: error.data?.message || t('error.500'),
       icon: 'i-lucide:circle-check',
       color: 'error',
       duration: 3000
