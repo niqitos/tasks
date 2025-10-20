@@ -34,10 +34,8 @@
     :label="board.name"
     color="neutral"
     variant="link"
-    trailing-icon="i-lucide:pen"
     :ui="{
-      base: 'text-base p-0',
-      trailingIcon: 'size-4'
+      base: 'text-base p-0'
     }"
     @click="openRename"
   />

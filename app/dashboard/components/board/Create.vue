@@ -14,7 +14,8 @@
       icon="i-lucide:plus"
       :loading
       :ui="{
-        root: 'w-full'
+        root: 'w-full',
+        leading: 'py-0.5'
       }"
       @keyup.enter="store"
     />

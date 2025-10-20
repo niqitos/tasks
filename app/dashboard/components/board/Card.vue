@@ -21,7 +21,7 @@
       <UDropdownMenu
         :items="items"
         :content="{
-          align: 'start',
+          align: 'end',
           side: 'bottom',
           sideOffset: 8
         }"
