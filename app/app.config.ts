@@ -7,6 +7,24 @@ export default defineAppConfig({
       slots: {
         base: 'cursor-pointer'
       }
+    },
+    input: {
+      variants: {
+        size: {
+          md: {
+            base: 'text-base'
+          }
+        }
+      }
+    },
+    textarea: {
+      variants: {
+        size: {
+          md: {
+            base: 'text-base'
+          }
+        }
+      }
     }
   }
 })
