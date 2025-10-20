@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
   app: {
     head: {
       meta: [
@@ -91,7 +90,11 @@ export default defineNuxtConfig({
     './app/dashboard',
     './app/marketing'
   ],
-
+  routeRules: {
+    '/dashboard/**': {
+      ssr: false
+    }
+  },
   imports: {
     dirs: [
       // Auto-import stores from layers
