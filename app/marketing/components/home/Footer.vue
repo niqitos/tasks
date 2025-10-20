@@ -1,19 +1,23 @@
 <template>
-  <UFooter>
+  <UFooter
+    :ui="{
+      container: 'flex justify-center py-4'
+    }"
+  >
     <template #right>
       <ULocaleSelect
         v-model="locale"
         variant="none"
         :locales="locales"
         :ui="{
-          base: 'cursor-pointer hidden sm:block',
+          base: 'cursor-pointer'
         }"
         @update:model-value="setLocale($event as SupportedLocale)"
       />
 
       <UColorModeSelect
         variant="none"
-        class="cursor-pointer hidden sm:block"
+        class="cursor-pointer"
       />
     </template>
   </UFooter>

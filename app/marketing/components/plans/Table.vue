@@ -5,7 +5,7 @@
       v-text="$t('plans.title')"
     />
 
-    <div class="flex justify-end">
+    <div class="flex justify-end mb-4 md:mb-0">
       <USwitch
         v-model="cycle"
         :label="t(`plans.cycle.${planStore.cycle}.title`)"
