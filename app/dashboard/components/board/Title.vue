@@ -36,7 +36,7 @@
     variant="link"
     trailing-icon="i-lucide:pen"
     :ui="{
-      base: 'p-0',
+      base: 'text-base p-0',
       trailingIcon: 'size-4'
     }"
     @click="openRename"

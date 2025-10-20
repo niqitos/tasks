@@ -2,7 +2,6 @@
   <UTextarea
     v-if="roleStore.canCreateTasks"
     v-model="name"
-    size="lg"
     :rows="1"
     autoresize
     :placeholder="$t('task.create.placeholder')"

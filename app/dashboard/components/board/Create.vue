@@ -8,7 +8,6 @@
     <UTextarea
       v-if="roleStore.canCreateBoards"
       v-model="name"
-      size="lg"
       :rows="1"
       autoresize
       :placeholder="$t('board.create.placeholder')"
