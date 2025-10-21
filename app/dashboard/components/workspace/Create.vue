@@ -81,7 +81,6 @@
 <script lang="ts" setup>
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
-import { BackgroundType } from '@prisma/client'
 
 const { t } = useI18n()
 const toast = useToast()
