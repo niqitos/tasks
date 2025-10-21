@@ -1,9 +1,13 @@
 <template>
   <LoadingScreen />
 
-  <DashboardHeader />
+  <DashboardHeader
+    :class="workspaceStore.background"
+  />
 
-  <UMain>
+  <UMain
+    :class="workspaceStore.background"
+  >
     <slot />
   </UMain>
 
@@ -11,3 +15,7 @@
 
   <SettingsEdit />
 </template>
+
+<script lang="ts" setup>
+const workspaceStore = useWorkspaceStore()
+</script>

@@ -66,6 +66,10 @@
           />
         </UFormField>
 
+        <FieldColorSelect
+          v-model="state.color"
+        />
+
         <UButton
           trailing-icon="i-lucide:arrow-right"
           :label="$t('workspaces.members.add.title')"
@@ -105,8 +109,10 @@
                 alt: `${member.user?.name}${member.user?.lastname ? ` ${member.user?.lastname}` : ''}`
               }"
               size="xl"
+              :ui="{
+                avatar: `border-2 border-${member.color}`
+              }"
             />
-
 
             <WorkspaceMembersDelete
               v-if="member.user?.id !== workspaceStore.current.creatorId"
@@ -135,14 +141,16 @@ const userSearchRef = ref<any>(null)
 
 const schema = z.object({
   user: z.string(t('workspaces.members.add.user.required')),
-  role: z.string(t('workspaces.members.add.user.required'))
+  role: z.string(t('workspaces.members.add.user.required')),
+  color: z.string().optional(),
 })
 
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
   user: undefined,
-  role: undefined
+  role: undefined,
+  color: 'transparent'
 })
 
 const open = ref<boolean>(false)

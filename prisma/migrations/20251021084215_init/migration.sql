@@ -7,6 +7,9 @@ CREATE TYPE "UserPlan" AS ENUM ('free', 'team', 'business', 'enterprise');
 -- CreateEnum
 CREATE TYPE "Currency" AS ENUM ('UAH', 'USD', 'EUR', 'GBP', 'PLN', 'CZK', 'CAD', 'BYN', 'CNY', 'RUB', 'BTC');
 
+-- CreateEnum
+CREATE TYPE "BackgroundType" AS ENUM ('color', 'image');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -30,6 +33,8 @@ CREATE TABLE "Workspace" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
+    "backgroundType" "BackgroundType" NOT NULL DEFAULT 'color',
+    "background" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
@@ -44,6 +49,7 @@ CREATE TABLE "WorkspaceMember" (
     "workspaceId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "role" "WorkspaceRole" NOT NULL DEFAULT 'guest',
+    "color" TEXT NOT NULL,
     "invitedAt" TIMESTAMP(3),
     "joinedAt" TIMESTAMP(3),
     "invitedById" TEXT,
@@ -58,6 +64,7 @@ CREATE TABLE "Board" (
     "name" TEXT NOT NULL,
     "description" TEXT,
     "position" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "color" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),

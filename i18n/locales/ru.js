@@ -40,6 +40,40 @@ export default {
       label: 'Администратор'
     }
   },
+  background: {
+    type: {
+      label: 'Тип фона',
+      color: {
+        label: 'Цвет'
+      },
+      image: {
+        label: 'Изображение'
+      }
+    }
+  },
+  color: {
+    transparent: {
+      label: 'Без фона'
+    },
+    primary: {
+      label: 'Основной'
+    },
+    secondary: {
+      label: 'Вспомогательный'
+    },
+    success: {
+      label: 'Зелёный'
+    },
+    info: {
+      label: 'Синий'
+    },
+    warning: {
+      label: 'Желтый'
+    },
+    error: {
+      label: 'Красный'
+    }
+  },
   register: {
     title: 'Зарегистрируйте бесплатную учетную запись',
     description: 'Зарегистрируйте бесплатную учетную запись',

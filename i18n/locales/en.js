@@ -40,6 +40,40 @@ export default {
       label: 'Admin'
     }
   },
+  background: {
+    type: {
+      label: 'Background Type',
+      color: {
+        label: 'Color'
+      },
+      image: {
+        label: 'Image'
+      }
+    }
+  },
+  color: {
+    transparent: {
+      label: 'None'
+    },
+    primary: {
+      label: 'Primary'
+    },
+    secondary: {
+      label: 'Secondary'
+    },
+    success: {
+      label: 'Green'
+    },
+    info: {
+      label: 'Blue'
+    },
+    warning: {
+      label: 'Yellow'
+    },
+    error: {
+      label: 'Red'
+    }
+  },
   register: {
     title: 'Sign up for a free account',
     description: 'Sign up for a free account',

@@ -40,6 +40,28 @@
           />
         </UFormField>
 
+        <FieldBackgroundTypeSelet
+          v-model="state.backgroundType"
+        />
+
+        <FieldColorSelect
+          v-if="state.backgroundType === 'color'"
+          v-model="state.color"
+          @update:model-value="workspaceStore.tempBackground = `bg-${state.color}-500/50`"
+        />
+
+        <UFormField
+          v-else-if="state.backgroundType === 'image'"
+          :label="$t('background.type.image.label')"
+          name="image"
+        >
+          <UFileUpload
+            v-model="file"
+            accept="image/*"
+            class="w-full"
+          />
+        </UFormField>
+
         <UButton
           trailing-icon="i-lucide:arrow-right"
           :label="$t('workspaces.create.title')"
@@ -59,6 +81,7 @@
 <script lang="ts" setup>
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
+import { BackgroundType } from '@prisma/client'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -68,17 +91,25 @@ const boardStore = useBoardStore()
 
 const schema = z.object({
   name: z.string(t('workspaces.name.required')).min(1, t('workspaces.name.required')),
-  description: z.string().optional()
+  description: z.string().optional(),
+  backgroundType: z.string(),
+  color: z.string().optional(),
+  image: z.string().optional()
 })
 
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
   name: '',
-  description: ''
+  description: '',
+  backgroundType: 'color',
+  color: 'transparent',
+  image: undefined
 })
 
 const emit = defineEmits(['created'])
+
+const file = ref<File>()
 
 const loading = ref<boolean>(false)
 
@@ -88,7 +119,13 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
   try {
     const workspace = await $fetch('/api/workspaces', {
       method: 'POST',
-      body: event.data
+      body: {
+        ...event.data,
+        background: {
+          color: event.data.color,
+          image: event.data.image
+        }
+      }
     })
 
     workspaceStore.workspaces.push(workspace)

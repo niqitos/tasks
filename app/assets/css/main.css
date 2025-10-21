@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+@source inline('bg-primary-500/50');
+@source inline('bg-secondary-500/50');
+@source inline('bg-success-500/50');
+@source inline('bg-info-500/50');
+@source inline('bg-warning-500/50');
+@source inline('bg-error-500/50');
+
 @keyframes fadeIn {
   0% {
     opacity: 0;

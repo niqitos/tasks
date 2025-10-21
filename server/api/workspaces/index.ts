@@ -65,6 +65,9 @@ export default defineEventHandler(async (event) => {
                         avatar: true
                       }
                     }
+                  },
+                  where: {
+                    deletedAt: null
                   }
                 },
                 comments: true,

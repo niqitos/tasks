@@ -25,6 +25,8 @@ export default defineEventHandler(async (event) => {
       data: {
         name: body.name,
         description: body.description,
+        backgroundType: body.backgroundType,
+        background: body.background,
         creatorId: decodedToken.id,
         members: {
           create: {
@@ -91,6 +93,9 @@ export default defineEventHandler(async (event) => {
                         avatar: true
                       }
                     }
+                  },
+                  where: {
+                    deletedAt: null
                   }
                 },
                 comments: true,

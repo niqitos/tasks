@@ -58,17 +58,30 @@ useRobotsRule({
 })
 
 const boardStore = useBoardStore()
+const workspaceStore = useWorkspaceStore()
 
 const events = computed(() => boardStore.boards
   .map((b: any) => b.tasks)
   .flat()
   .filter((t: any) => t.startAt)
-  .map((t: any) => ({
-    title: t.name,
-    start: t.startAt,
-    end: t.endAt || t.startAt,
-    url: localePath({ name: 'calendar-index-tasks-task', params: { task: t.id } })
-  }))
+  .map((t: any) => {
+    const event = {
+      title: `${t.name.length > 90 ? t.name.slice(0, 90) + '…' : t.name}${t.assignees.length ? ` • ${t.assignees[0].user.name}${t.assignees[0].user.lastname ? ` ${t.assignees[0].user.lastname}` : ''}` : ''}`,
+      allDay: t.endAt > t.startAt,
+      start: t.startAt,
+      end: t.endAt || t.startAt,
+      color: t.assignees.length
+        ? (
+          workspaceStore.current.members.find((m: any) => m.user.id === t.assignees[0].user.id)?.color
+            ? `var(--ui-${workspaceStore.current.members.find((m: any) => m.user.id === t.assignees[0].user.id)?.color})`
+            : 'var(--ui-primary)'
+        )
+        : 'var(--ui-color-neutral-500)',
+      url: localePath({ name: 'calendar-index-tasks-task', params: { task: t.id } })
+    }
+
+    return event
+  })
 )
 
 const options = ref<CalendarOptions>({

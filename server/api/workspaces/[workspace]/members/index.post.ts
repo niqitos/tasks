@@ -71,6 +71,7 @@ export default defineEventHandler(async (event) => {
         workspaceId: workspace,
         userId: body.user,
         role: body.role,
+        color: body.color,
         invitedById: decodedToken.id
       },
       include: {
