@@ -19,11 +19,14 @@ import type { CalendarOptions } from '@fullcalendar/core'
 import allLocales from '@fullcalendar/core/locales-all'
 
 definePageMeta({
-  middleware: ['auth'],
-  layout: 'dashboard'
+  layout: 'dashboard',
+  middleware: [
+    'auth',
+    'calendar'
+  ]
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const config = useRuntimeConfig()
 const route = useRoute()
@@ -54,34 +57,7 @@ useRobotsRule({
   follow: false
 })
 
-const workspaceStore = useWorkspaceStore()
 const boardStore = useBoardStore()
-
-const workspaces = ref<any>(await $fetch('/api/workspaces'))
-
-watch(
-  () => workspaces.value,
-  () => {
-    if (workspaces.value.length > 0) {
-      workspaceStore.workspaces = workspaces.value
-
-      let workspace = workspaceStore.workspaces.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
-
-      if (!workspace) {
-        workspace = workspaceStore.workspaces[0]
-
-        localStorage.setItem('workspace.current.id', workspace.id)
-      }
-
-      workspaceStore.current = workspace
-
-      boardStore.boards = workspaceStore.current.boards
-    }
-  },
-  {
-    immediate: true
-  }
-)
 
 const events = computed(() => boardStore.boards
   .map((b: any) => b.tasks)
@@ -96,7 +72,7 @@ const events = computed(() => boardStore.boards
 )
 
 const options = ref<CalendarOptions>({
-  locale: 'uk',
+  locale: locale.value,
   locales: allLocales,
   plugins: [
     dayGridPlugin,
