@@ -4,7 +4,7 @@
     :title="$t('task.edit')"
     :ui="{
       header: 'flex justify-between items-center',
-      body: 'overflow-clip',
+      body: 'flex-0 overflow-clip',
       content: 'min-w-full sm:min-w-[calc(100%-3rem)] lg:min-w-240 max-h-dvh overflow-auto rounded-none sm:rounded-lg',
       footer: 'p-0 sm:p-0'
     }"

@@ -449,7 +449,11 @@ export default {
     },
     comments: {
       label: 'Комментарии',
-      placeholder: 'Напишите комментарий...'
+      placeholder: 'Напишите комментарий...',
+      reply: {
+        label: 'Ответить',
+        placeholder: 'Напишите ответ...'
+      }
     }
   },
   logout: {

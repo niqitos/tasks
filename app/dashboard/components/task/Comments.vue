@@ -60,7 +60,7 @@
                 <span v-text="`${comment.author?.name}${comment.author?.lastname ? ` ${comment.author?.lastname}` : ''}`" />
 
                 <UButton
-                  :label="replyingTo === comment.id ? 'Cancel' : 'Reply'"
+                  :label="replyingTo === comment.id ? $t('cancel') : $t('task.comments.reply.label')"
                   variant="link"
                   size="xs"
                   :ui="{
@@ -70,8 +70,6 @@
                 />
               </template>
             </UUser>
-
-
           </div>
 
           <div
@@ -83,7 +81,7 @@
             <UTextarea
               v-if="replyingTo === comment.id"
               v-model="replyContent"
-              placeholder="Write a reply..."
+              :placeholder="$t('task.comments.reply.placeholder')"
               autoresize
               :rows="2"
               :ui="{
@@ -93,7 +91,7 @@
             >
               <template #trailing>
                 <UButton
-                  :label="'Reply'"
+                  icon="i-lucide:arrow-up"
                   :disabled="!replyContent.trim()"
                   @click="submitComment(comment.id)"
                 />

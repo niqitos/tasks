@@ -4,7 +4,9 @@
   >
     <UButton
       v-if="roleStore.canAddAssigneesToTask(task)"
-      :label="$t('task.assign.button')"
+      v-bind="{
+        [task.assignees.length ? 'title' : 'label']: $t('task.assign.button')
+      }"
       color="neutral"
       variant="outline"
       icon="i-lucide:plus"
@@ -37,10 +39,8 @@ const props = defineProps({
   }
 })
 
-const localePath = useLocalePath()
 
 const roleStore = useRoleStore()
-const userStore = useUserStore()
 const workspaceStore = useWorkspaceStore()
 
 const open = ref<boolean>(false)

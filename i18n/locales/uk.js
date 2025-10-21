@@ -449,7 +449,11 @@ export default {
     },
     comments: {
       label: 'Коментарі',
-      placeholder: 'Напишіть коментар...'
+      placeholder: 'Напишіть коментар...',
+      reply: {
+        label: 'Відповісти',
+        placeholder: 'Напишіть відповідь...'
+      }
     }
   },
   logout: {

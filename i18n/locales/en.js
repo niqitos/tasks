@@ -449,7 +449,11 @@ export default {
     },
     comments: {
       label: 'Comments',
-      placeholder: 'Write a comment...'
+      placeholder: 'Write a comment...',
+      reply: {
+        label: 'Reply',
+        placeholder: 'Write a reply...'
+      }
     }
   },
   logout: {
