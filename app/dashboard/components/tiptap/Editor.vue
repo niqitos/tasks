@@ -4,18 +4,19 @@
     class="w-full"
     name="description"
   >
-    <UContainer
-        class="mx-auto w-full flex-grow flex flex-col rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 sm:px-2.5 lg:px-2.5 pb-1.5 text-sm gap-3.5 text-highlighted bg-default ring ring-inset ring-accented resize-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
-        @click="editor?.commands.focus()"
-    >
-        <TiptapToolbar
-        :editor="editor"
-        />
+    <TiptapToolbar
+      :editor="editor"
+      class="mb-2"
+    />
 
-        <EditorContent
+    <UContainer
+      class="mx-auto w-full flex-grow flex flex-col rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 sm:px-2.5 lg:px-2.5 py-1.5 text-sm gap-3.5 text-highlighted bg-default ring ring-inset ring-accented resize-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+      @click="editor?.commands.focus()"
+    >
+      <EditorContent
         :editor="editor"
         class="prose prose-neutral dark:prose-invert"
-        />
+      />
     </UContainer>
   </UFormField>
 </template>
@@ -173,24 +174,6 @@ onBeforeUnmount(() => {
     --tiptap-ai-insertion-color: var(--tt-brand-color-400)
 }
 
-.tiptap.ProseMirror {
-    --tt-checklist-bg-color: var(--tt-gray-light-a-100);
-    --tt-checklist-bg-active-color: var(--tt-gray-light-a-900);
-    --tt-checklist-border-color: var(--tt-gray-light-a-200);
-    --tt-checklist-border-active-color: var(--tt-gray-light-a-900);
-    --tt-checklist-check-icon-color: var(--white);
-    --tt-checklist-text-active: var(--tt-gray-light-a-500)
-}
-
-.dark .tiptap.ProseMirror {
-    --tt-checklist-bg-color: var(--tt-gray-dark-a-100);
-    --tt-checklist-bg-active-color: var(--tt-gray-dark-a-900);
-    --tt-checklist-border-color: var(--tt-gray-dark-a-200);
-    --tt-checklist-border-active-color: var(--tt-gray-dark-a-900);
-    --tt-checklist-check-icon-color: var(--black);
-    --tt-checklist-text-active: var(--tt-gray-dark-a-500)
-}
-
 .tiptap.ProseMirror ol,.tiptap.ProseMirror ul {
     margin-top: 1.5em;
     margin-bottom: 1.5em;
@@ -285,25 +268,6 @@ onBeforeUnmount(() => {
     cursor: pointer;
     background-color: var(--tt-checklist-bg-color);
     transition: background-color 80ms ease-out,border-color 80ms ease-out
-}
-
-.tiptap.ProseMirror ul[data-type=taskList] li label span:before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    width: .75em;
-    height: .75em;
-    background-color: var(--tt-checklist-check-icon-color);
-    opacity: 0;
-    -webkit-mask: url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22currentColor%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21.4142%204.58579C22.1953%205.36683%2022.1953%206.63317%2021.4142%207.41421L10.4142%2018.4142C9.63317%2019.1953%208.36684%2019.1953%207.58579%2018.4142L2.58579%2013.4142C1.80474%2012.6332%201.80474%2011.3668%202.58579%2010.5858C3.36683%209.80474%204.63317%209.80474%205.41421%2010.5858L9%2014.1716L18.5858%204.58579C19.3668%203.80474%2020.6332%203.80474%2021.4142%204.58579Z%22%20fill%3D%22currentColor%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;
-    mask: url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22currentColor%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21.4142%204.58579C22.1953%205.36683%2022.1953%206.63317%2021.4142%207.41421L10.4142%2018.4142C9.63317%2019.1953%208.36684%2019.1953%207.58579%2018.4142L2.58579%2013.4142C1.80474%2012.6332%201.80474%2011.3668%202.58579%2010.5858C3.36683%209.80474%204.63317%209.80474%205.41421%2010.5858L9%2014.1716L18.5858%204.58579C19.3668%203.80474%2020.6332%203.80474%2021.4142%204.58579Z%22%20fill%3D%22currentColor%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat
-}
-
-.tiptap.ProseMirror ul[data-type=taskList] li label input[type=checkbox]:checked+span {
-    background: var(--tt-checklist-bg-active-color);
-    border-color: var(--tt-checklist-border-active-color)
 }
 
 .tiptap.ProseMirror ul[data-type=taskList] li label input[type=checkbox]:checked+span:before {

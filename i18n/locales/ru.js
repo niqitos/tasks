@@ -446,6 +446,10 @@ export default {
     complete: {
       false: 'Отметить как выполнено',
       true: 'Отметить как не выполнено'
+    },
+    comments: {
+      label: 'Комментарии',
+      placeholder: 'Напишите комментарий...'
     }
   },
   logout: {

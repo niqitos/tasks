@@ -1,7 +1,7 @@
 <template>
   <UFieldGroup
     v-if="editor"
-    class="-mx-2.5 sm:mx-auto flex-wrap"
+    class="sm:mx-auto flex-wrap gap-1.5"
   >
     <UButton
       v-for="(action, index) in textActions"
@@ -12,6 +12,9 @@
       :icon="action.icon"
       :title="action.label"
       :disabled="action.disabled"
+      :ui="{
+        base: '!rounded-lg'
+      }"
       @click="action.command()"
     />
   </UFieldGroup>

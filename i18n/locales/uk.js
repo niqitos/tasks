@@ -446,6 +446,10 @@ export default {
     complete: {
       false: 'Позначити як виконано',
       true: 'Позначити як не виконано'
+    },
+    comments: {
+      label: 'Коментарі',
+      placeholder: 'Напишіть коментар...'
     }
   },
   logout: {

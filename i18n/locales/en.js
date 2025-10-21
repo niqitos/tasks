@@ -446,6 +446,10 @@ export default {
     complete: {
       false: 'Mark as complete',
       true: 'Mark as incomplete'
+    },
+    comments: {
+      label: 'Comments',
+      placeholder: 'Write a comment...'
     }
   },
   logout: {

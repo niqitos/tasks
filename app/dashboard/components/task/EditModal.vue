@@ -4,7 +4,9 @@
     :title="$t('task.edit')"
     :ui="{
       header: 'flex justify-between items-center',
-      content: 'min-w-80 sm:min-w-120 md:min-w-160 lg:min-w-200'
+      body: 'overflow-clip',
+      content: 'min-w-full sm:min-w-[calc(100%-3rem)] lg:min-w-240 max-h-dvh overflow-auto rounded-none sm:rounded-lg',
+      footer: 'p-0 sm:p-0'
     }"
     @update:open="close"
   >
@@ -31,119 +33,129 @@
     </template>
 
     <template #body>
-      <div
-        v-if="task?.creator"
-        class="flex justify-between mb-4"
-      >
-        <TaskCreator
-          :user="task.creator"
-        />
-
-        <div class="flex flex-col items-end text-xs">
-          <div
-            class="text-muted"
-            v-text="$t('task.createdAt')"
-          />
-
-          <div
-            v-text="createdAt"
-          />
-        </div>
-      </div>
-
-      <UForm
-        v-if="task"
-        :schema="schema"
-        :state="state"
-        class="space-y-4"
-        @submit="submit"
-      >
-        <UFormField
-          :label="$t('task.name.label')"
-          class="w-full"
-          name="name"
-          required
+      <template v-if="task">
+        <div
+          v-if="task?.creator"
+          class="flex justify-between mb-4"
         >
-          <UTextarea
-            v-model="state.name"
-            :rows="1"
-            autoresize
-            :ui="{
-              root: 'w-full'
-            }"
-            @update:model-value="debouncedFn()"
+          <TaskCreator
+            :user="task.creator"
           />
-        </UFormField>
 
-        <ClientOnly>
-          <TiptapEditor
-            :content="state.description ?? ''"
-            @change="($event: any) => {
-              if (state.description === $event) return
-              debouncedFn()
-              state.description = $event
-            }"
-          />
-        </ClientOnly>
-
-        <UFileUpload
-          v-if="roleStore.canAddFilesToTask(task)"
-          v-model="files"
-          :label="$t('task.files.create.label')"
-          :description="`SVG, PNG, JPG, GIF, WEBP, DOC, EXCEL ${$t('or')} PDF (${$t('task.files.create.max')} 2${$t('mb')})`"
-          accept=".svg,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx,.xlsx,.pdf"
-          multiple
-          class="w-full min-h-16 mt-4"
-          :ui="{
-            base: 'p-0'
-          }"
-          @update:model-value="uploadFiles"
-        />
-
-        <UpgradeButton v-else />
-
-        <UFormField
-          v-if="task.files.length"
-          :label="$t('task.files.label')"
-        >
-          <TaskFile
-            v-for="(file, index) in task.files"
-            :key="index"
-            v-model:task="task"
-            :file
-          />
-        </UFormField>
-
-        <TaskStartEndDates
-          v-model:task="task"
-          @updated="debouncedFn()"
-        />
-
-        <TaskComplete
-          v-model:completedAt="task.completedAt"
-          @updated="debouncedFn()"
-        />
-
-        <UFormField
-          :label="$t('task.assignees', task.assignees.length)"
-        >
-          <div class="flex gap-4">
-            <TaskAssignee
-              v-for="assignee in task.assignees"
-              v-model:task="task"
-              :assignee
+          <div class="flex flex-col items-end text-xs">
+            <div
+              class="text-muted"
+              v-text="$t('task.createdAt')"
             />
 
-            <TaskAssignModal
-              :task="task"
+            <div
+              v-text="createdAt"
             />
           </div>
-        </UFormField>
-      </UForm>
+        </div>
+
+        <UForm
+          :schema="schema"
+          :state="state"
+          class="space-y-4"
+          @submit="submit"
+        >
+          <UFormField
+            :label="$t('task.name.label')"
+            class="w-full"
+            name="name"
+            required
+          >
+            <UTextarea
+              v-model="state.name"
+              :rows="1"
+              autoresize
+              :ui="{
+                root: 'w-full'
+              }"
+              @update:model-value="debouncedFn()"
+            />
+          </UFormField>
+
+          <ClientOnly>
+            <TiptapEditor
+              :content="state.description ?? ''"
+              @change="($event: any) => {
+                if (state.description === $event) return
+                debouncedFn()
+                state.description = $event
+              }"
+            />
+          </ClientOnly>
+
+          <UFileUpload
+            v-if="roleStore.canAddFilesToTask(task)"
+            v-model="files"
+            :label="$t('task.files.create.label')"
+            :description="`SVG, PNG, JPG, GIF, WEBP, DOC, EXCEL ${$t('or')} PDF (${$t('task.files.create.max')} 2${$t('mb')})`"
+            accept=".svg,.png,.jpg,.jpeg,.gif,.webp,.doc,.docx,.xlsx,.pdf"
+            multiple
+            class="w-full min-h-16 mt-4"
+            :ui="{
+              base: 'p-0'
+            }"
+            @update:model-value="uploadFiles"
+          />
+
+          <UpgradeButton v-else />
+
+          <UFormField
+            v-if="task.files.length"
+            :label="$t('task.files.label')"
+          >
+            <TaskFile
+              v-for="(file, index) in task.files"
+              :key="index"
+              v-model:task="task"
+              :file
+            />
+          </UFormField>
+
+          <TaskStartEndDates
+            v-model:task="task"
+            @updated="debouncedFn()"
+          />
+
+          <TaskComplete
+            v-model:completedAt="task.completedAt"
+            @updated="debouncedFn()"
+          />
+
+          <UFormField
+            :label="$t('task.assignees', task.assignees.length)"
+          >
+            <div class="flex gap-4">
+              <TaskAssignee
+                v-for="assignee in task.assignees"
+                v-model:task="task"
+                :assignee
+              />
+
+              <TaskAssignModal
+                :task="task"
+              />
+            </div>
+          </UFormField>
+        </UForm>
+      </template>
 
       <template v-else>
         <p v-text="$t('task.404')" />
       </template>
+    </template>
+
+    <template
+      v-if="task"
+      #footer
+    >
+      <TaskComments
+        :task
+      />
     </template>
   </UModal>
 </template>

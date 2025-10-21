@@ -209,7 +209,7 @@
   --transparent: rgba(255,255,255,0);
   --tt-shadow-elevated-md: 0px 16px 48px 0px rgba(17,24,39,0.04),0px 12px 24px 0px rgba(17,24,39,0.04),0px 6px 8px 0px rgba(17,24,39,0.02),0px 2px 3px 0px rgba(17,24,39,0.02);
   --tt-radius-xxs: 0.125rem;
-  --tt-radius-xs: 0.25rem;
+  --tt-radius-xs: 50%;
   --tt-radius-sm: 0.375rem;
   --tt-radius-md: 0.5rem;
   --tt-radius-lg: 0.75rem;
@@ -620,10 +620,10 @@ body {
 
 .tiptap.ProseMirror {
   --tt-checklist-bg-color: var(--tt-gray-light-a-100);
-  --tt-checklist-bg-active-color: var(--tt-gray-light-a-900);
+  --tt-checklist-bg-active-color: var(--ui-primary);
   --tt-checklist-border-color: var(--tt-gray-light-a-200);
-  --tt-checklist-border-active-color: var(--tt-gray-light-a-900);
-  --tt-checklist-check-icon-color: var(--white);
+  --tt-checklist-border-active-color: var(--ui-primary);
+  --tt-checklist-check-icon-color: var(--color-white);
   --tt-checklist-text-active: var(--tt-gray-light-a-500);
 
   --blockquote-bg-color: var(--tt-gray-light-900);
@@ -634,15 +634,22 @@ body {
   --tt-codeblock-bg: var(--tt-gray-light-a-50);
   --tt-codeblock-text: var(--tt-gray-light-a-800);
   --tt-codeblock-border: var(--tt-gray-light-a-200);
+
+  --tt-collaboration-carets-label: var(--tt-gray-light-900);
+  --link-text-color: var(--tt-brand-color-500);
+  --thread-text: var(--tt-gray-light-900);
+  --placeholder-color: var(--text-color-muted);
+  --thread-bg-color: var(--tt-color-yellow-inc-2);
+  --tiptap-ai-insertion-color: var(--tt-brand-color-600);
 }
 
 
 .dark .tiptap.ProseMirror {
   --tt-checklist-bg-color: var(--tt-gray-dark-a-100);
-  --tt-checklist-bg-active-color: var(--tt-gray-dark-a-900);
+  --tt-checklist-bg-active-color: var(--ui-primary);
   --tt-checklist-border-color: var(--tt-gray-dark-a-200);
-  --tt-checklist-border-active-color: var(--tt-gray-dark-a-900);
-  --tt-checklist-check-icon-color: var(--black);
+  --tt-checklist-border-active-color: var(--ui-primary);
+  --tt-checklist-check-icon-color: var(--color-black);
   --tt-checklist-text-active: var(--tt-gray-dark-a-500);
 
   --tt-collaboration-carets-label: var(--tt-gray-dark-100);
@@ -694,7 +701,8 @@ body {
 
   li p {
     margin-top: 0;
-    line-height: 1.25;
+    font-size: 1rem!important;
+    line-height: 1.5!important;
   }
 
   ol {
@@ -729,6 +737,7 @@ body {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    padding-top: .25rem;
   }
 
   ul[data-type=taskList] li:not(:has(>p:first-child)) {
@@ -746,7 +755,7 @@ body {
 
   ul[data-type=taskList] li label {
     position: relative;
-    padding-top: .375rem;
+    padding-top: 0!important;
     padding-right: .5rem;
   }
 
@@ -759,8 +768,8 @@ body {
 
   ul[data-type=taskList] li label span {
     display: block;
-    width: 1em;
-    height: 1em;
+    width: 1.5rem!important;
+    height: 1.5rem!important;
     border: 1px solid var(--tt-checklist-border-color);
     border-radius: var(--tt-radius-xs,.25rem);
     position: relative;
@@ -775,8 +784,8 @@ body {
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
-    width: .75em;
-    height: .75em;
+    width: 1rem;
+    height: 1rem;
     background-color: var(--tt-checklist-check-icon-color);
     opacity: 0;
     -webkit-mask: url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22currentColor%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21.4142%204.58579C22.1953%205.36683%2022.1953%206.63317%2021.4142%207.41421L10.4142%2018.4142C9.63317%2019.1953%208.36684%2019.1953%207.58579%2018.4142L2.58579%2013.4142C1.80474%2012.6332%201.80474%2011.3668%202.58579%2010.5858C3.36683%209.80474%204.63317%209.80474%205.41421%2010.5858L9%2014.1716L18.5858%204.58579C19.3668%203.80474%2020.6332%203.80474%2021.4142%204.58579Z%22%20fill%3D%22currentColor%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;
@@ -1025,15 +1034,6 @@ body {
     content: "";
     border-radius: 0;
   }
-}
-
-.tiptap.ProseMirror {
-  --tt-collaboration-carets-label: var(--tt-gray-light-900);
-  --link-text-color: var(--tt-brand-color-500);
-  --thread-text: var(--tt-gray-light-900);
-  --placeholder-color: var(--text-color-muted);
-  --thread-bg-color: var(--tt-color-yellow-inc-2);
-  --tiptap-ai-insertion-color: var(--tt-brand-color-600);
 }
 
 
