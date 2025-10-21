@@ -16,6 +16,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import FullCalendar from '@fullcalendar/vue3'
 import type { CalendarOptions } from '@fullcalendar/core'
+import allLocales from '@fullcalendar/core/locales-all'
 
 definePageMeta({
   middleware: ['auth'],
@@ -95,6 +96,8 @@ const events = computed(() => boardStore.boards
 )
 
 const options = ref<CalendarOptions>({
+  locale: 'uk',
+  locales: allLocales,
   plugins: [
     dayGridPlugin,
     timeGridPlugin,
