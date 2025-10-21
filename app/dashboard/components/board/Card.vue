@@ -1,7 +1,10 @@
 <template>
   <UCard
     :ui="{
-      root: 'flex-1 rounded bg-elevated min-w-80',
+      root: [
+        'flex-1 rounded bg-elevated min-w-80',
+        board.color ? `bg-${board.color}-300 dark:bg-${board.color}-900` : ''
+      ],
       body: 'p-3 sm:p-3'
     }"
     draggable="true"

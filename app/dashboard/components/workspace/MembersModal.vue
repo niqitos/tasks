@@ -142,7 +142,7 @@ const userSearchRef = ref<any>(null)
 const schema = z.object({
   user: z.string(t('workspaces.members.add.user.required')),
   role: z.string(t('workspaces.members.add.user.required')),
-  color: z.string().optional(),
+  color: z.string().optional()
 })
 
 type Schema = z.output<typeof schema>

@@ -38,6 +38,10 @@
           />
         </UFormField>
 
+        <FieldColorSelect
+          v-model="state.color"
+        />
+
         <UButton
           trailing-icon="i-lucide:arrow-right"
           :label="$t('board.update.title')"
@@ -72,14 +76,16 @@ const workspaceStore = useWorkspaceStore()
 
 const schema = z.object({
   name: z.string(t('board.name.required')).min(1, t('board.name.required')),
-  description: z.string().optional()
+  description: z.string().optional(),
+  color: z.string().optional(),
 })
 
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
   name: props.board?.name ?? '',
-  description: props.board?.description ?? ''
+  description: props.board?.description ?? '',
+  color: props.board?.color ?? 'transparent'
 })
 
 const open = defineModel<boolean>('open', {
@@ -122,6 +128,7 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
     })
 
     workspaceStore.current.boards.find((b: any) => b.id === boardId).name = event.data.name
+    workspaceStore.current.boards.find((b: any) => b.id === boardId).color = event.data.color
 
     loading.value = false
   } catch (error: any) {
