@@ -142,7 +142,7 @@ const userSearchRef = ref<any>(null)
 const schema = z.object({
   user: z.string(t('workspaces.members.add.user.required')),
   role: z.string(t('workspaces.members.add.user.required')),
-  color: z.string().optional()
+  color: z.string().nullable()
 })
 
 type Schema = z.output<typeof schema>
@@ -150,7 +150,7 @@ type Schema = z.output<typeof schema>
 const state = reactive<Partial<Schema>>({
   user: undefined,
   role: undefined,
-  color: 'transparent'
+  color: null
 })
 
 const open = ref<boolean>(false)

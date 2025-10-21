@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center items-center min-h-[inherit] w-full">
-    <div class="space-y-4 min-w-64">
+    <div class="space-y-4 min-w-76">
       <h2
         class="text-2xl font-bold"
         v-text="$t('workspaces.create.title')"
@@ -93,7 +93,7 @@ const schema = z.object({
   name: z.string(t('workspaces.name.required')).min(1, t('workspaces.name.required')),
   description: z.string().optional(),
   backgroundType: z.string(),
-  color: z.string().optional(),
+  color: z.string().nullable(),
   image: z.string().optional()
 })
 
@@ -103,7 +103,7 @@ const state = reactive<Partial<Schema>>({
   name: '',
   description: '',
   backgroundType: 'color',
-  color: 'transparent',
+  color: null,
   image: undefined
 })
 

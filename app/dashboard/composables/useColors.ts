@@ -15,7 +15,7 @@ export const useColors = () => {
 
   const colors = ref<any[]>([
     {
-      value: 'transparent',
+      value: null,
       label: t('color.transparent.label')
     },
     // {

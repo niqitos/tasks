@@ -77,7 +77,7 @@ const workspaceStore = useWorkspaceStore()
 const schema = z.object({
   name: z.string(t('board.name.required')).min(1, t('board.name.required')),
   description: z.string().optional(),
-  color: z.string().optional(),
+  color: z.string().nullable(),
 })
 
 type Schema = z.output<typeof schema>
@@ -85,7 +85,7 @@ type Schema = z.output<typeof schema>
 const state = reactive<Partial<Schema>>({
   name: props.board?.name ?? '',
   description: props.board?.description ?? '',
-  color: props.board?.color ?? 'transparent'
+  color: props.board?.color ?? null
 })
 
 const open = defineModel<boolean>('open', {
