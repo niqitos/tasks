@@ -176,6 +176,9 @@ export default {
     },
     features: {
       title: 'Функции',
+      calendar: {
+        title: 'Календарь'
+      },
       support: {
         title: 'Поддержка'
       }

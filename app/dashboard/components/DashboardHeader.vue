@@ -70,27 +70,42 @@ const localePath = useLocalePath()
 const route = useRoute()
 
 const workspaceStore = useWorkspaceStore()
+const roleStore = useRoleStore()
 
-const menu = computed(() => ([
-  [
-    {
-      label: userStore.fullname,
-      avatar: {
-        src: userStore.user.avatar,
-        alt: `${userStore.user.name}${userStore.user.lastname ? ` ${userStore.user.lastname}` : ''}`,
-        icon: userStore.user.name || userStore.user.lastname ? '' : 'i-lucide:user'
-      },
-      type: 'label'
-    }
-  ],
-  [
-    {
-      icon: route.path === localePath('dashboard') ? 'i-lucide:calendar-days' : 'i-lucide:square-kanban',
-      to: route.path === localePath('dashboard') ? localePath('calendar') : localePath('dashboard'),
-      label: route.path === localePath('dashboard') ? t('view.calendar') : t('view.boards')
-    }
-  ],
-  [
+const menu = computed<any>(() => {
+  const items: any = [
+    [
+      {
+        label: userStore.fullname,
+        avatar: {
+          src: userStore.user.avatar,
+          alt: `${userStore.user.name}${userStore.user.lastname ? ` ${userStore.user.lastname}` : ''}`,
+          icon: userStore.user.name || userStore.user.lastname ? '' : 'i-lucide:user'
+        },
+        type: 'label'
+      }
+    ]
+  ]
+
+  if (roleStore.canViewCalendar && route.path === localePath('dashboard')) {
+    items.push([
+      {
+        icon: 'i-lucide:calendar-days',
+        to: localePath('calendar'),
+        label: t('view.calendar')
+      }
+    ])
+  } else if (roleStore.canViewBoards && route.path === localePath('calendar')) {
+    items.push([
+      {
+        icon: 'i-lucide:square-kanban',
+        to: localePath('dashboard'),
+        label: t('view.boards')
+      }
+    ])
+  }
+
+  items.push([
     {
       label: t('settings.edit.button'),
       icon: 'i-lucide:settings',
@@ -121,8 +136,10 @@ const menu = computed(() => ([
       class: 'text-error hover:!text-error data-highlighted:text-error data-[state=open]:text-error',
       onSelect: ((e: Event) => logout())
     }
-  ]
-]))
+  ])
+
+  return items
+})
 
 const logout = () => {
   jwtCookie.value = null

@@ -176,6 +176,9 @@ export default {
     },
     features: {
       title: 'Features',
+      calendar: {
+        title: 'Calendar'
+      },
       support: {
         title: 'Support'
       }

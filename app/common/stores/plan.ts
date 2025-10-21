@@ -20,7 +20,12 @@ export const usePlanStore = defineStore('plan', () => {
         members: {
           max: 1
         }
-      }
+      },
+      view: {
+        boards: true,
+        calendar: false
+      },
+      support: false
     },
     team: {
       workspaces: {
@@ -40,7 +45,12 @@ export const usePlanStore = defineStore('plan', () => {
         members: {
           max: 10
         }
-      }
+      },
+      view: {
+        boards: true,
+        calendar: true
+      },
+      support: true
     },
     business: {
       workspaces: {
@@ -60,7 +70,12 @@ export const usePlanStore = defineStore('plan', () => {
         members: {
           max: unlimited.value
         }
-      }
+      },
+      view: {
+        boards: true,
+        calendar: true
+      },
+      support: true
     },
     enterprise: {
       workspaces: {
@@ -80,6 +95,10 @@ export const usePlanStore = defineStore('plan', () => {
         members: {
           max: unlimited.value
         }
+      },
+      view: {
+        boards: true,
+        calendar: true
       }
     }
   })

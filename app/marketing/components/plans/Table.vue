@@ -156,12 +156,21 @@ const sections = ref([
     title: t('plans.features.title'),
     features: [
       {
+        title: t('plans.features.calendar.title'),
+        tiers: {
+          free: planStore.limitations.free.view.calendar,
+          team: planStore.limitations.team.view.calendar,
+          business: planStore.limitations.business.view.calendar,
+          // enterprise: planStore.limitations.enterprise.view.calendar
+        }
+      },
+      {
         title: t('plans.features.support.title'),
         tiers: {
-          free: false,
-          team: true,
-          business: true,
-          // enterprise: true
+          free: planStore.limitations.free.support,
+          team: planStore.limitations.team.support,
+          business: planStore.limitations.business.support,
+          // enterprise: planStore.limitations.enterprise.support
         }
       }
     ]
