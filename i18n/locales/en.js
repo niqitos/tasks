@@ -221,6 +221,14 @@ export default {
     title: 'Dashboard',
     description: 'Dashboard'
   },
+  calendar: {
+    title: 'Calendar',
+    description: 'Calendar'
+  },
+  view: {
+    boards: 'Boards',
+    calendar: 'Calendar'
+  },
   success: {
     title: 'Success!'
   },
@@ -318,9 +326,20 @@ export default {
       }
     },
     update: {
+      title: 'Edit board',
+      submit: 'Submit',
       success: {
         description: 'Board updated successfully'
       }
+    },
+    name: {
+      label: 'Name',
+      placeholder: 'Enter board name',
+      required: 'Board name is required'
+    },
+    description: {
+      label: 'Description',
+      placeholder: 'Enter board description'
     },
     delete: {
       button: 'Delete board',

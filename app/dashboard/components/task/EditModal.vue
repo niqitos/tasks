@@ -25,7 +25,7 @@
           icon="i-lucide:x"
           color="neutral"
           variant="link"
-          @click="open = false"
+          @click="open = false;close()"
         />
       </div>
     </template>
@@ -151,20 +151,26 @@
 <script lang="ts" setup>
 import * as z from 'zod'
 
-definePageMeta({
-  middleware: ['auth']
+const props = defineProps({
+  toPath: {
+    type: String,
+    required: true
+  },
+  closePath: {
+    type: String,
+    required: true
+  }
 })
 
 const config = useRuntimeConfig()
 const supabase = useSupabase()
-const localePath = useLocalePath()
 const route = useRoute()
 const toast = useToast()
 const { t } = useI18n()
 
 const roleStore = useRoleStore()
 
-const task = ref<any>(await $fetch(`/api/tasks/${route.params.id}`))
+const task = ref<any>(await $fetch(`/api/tasks/${route.params.task}`))
 
 const files = ref<File[]>([])
 
@@ -188,7 +194,7 @@ const toastRef = ref<any>(null)
 
 const board = computed(() => boardStore.boards.find((b: any) => b.id === task.value?.boardId))
 
-const open = computed<boolean>(() => route.path === localePath('dashboard-index-tasks-id') && !!task)
+const open = computed<boolean>(() => route.path === props.toPath && !!task)
 
 const createdAt = computed(() => {
   const date = new Date(task.value?.createdAt)
@@ -209,7 +215,7 @@ const submit = async () => {
   loading.value = true
 
   try {
-    await $fetch(`/api/tasks/${route.params.id}`, {
+    await $fetch(`/api/tasks/${route.params.task}`, {
       method: 'PATCH',
       body: {
         ...state,
@@ -220,10 +226,10 @@ const submit = async () => {
     })
 
     if (board.value) {
-      const index = board.value.tasks.findIndex((b: any) => b.id === route.params.id)
+      const index = board.value.tasks.findIndex((b: any) => b.id === route.params.task)
 
       if (index !== -1) {
-        board.value.tasks[index] = { ...board.value.tasks[index], ...state }
+        boardStore.boards.find((b: any) => b.id === task.value?.boardId).tasks[index] = task.value
       }
     }
 
@@ -316,6 +322,6 @@ const uploadFiles = async () => {
 }
 
 const close = () => {
-  navigateTo(localePath('dashboard'))
+  navigateTo(props.closePath)
 }
 </script>

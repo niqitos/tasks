@@ -221,6 +221,14 @@ export default {
     title: 'Панель керування',
     description: 'Панель керування'
   },
+  calendar: {
+    title: 'Календар',
+    description: 'Календар'
+  },
+  view: {
+    boards: 'Дошки',
+    calendar: 'Календар'
+  },
   success: {
     title: 'Успіх!'
   },
@@ -318,9 +326,20 @@ export default {
       }
     },
     update: {
+      title: 'Оновити дошку',
+      submit: 'Оновити',
       success: {
         description: 'Дошку успішно оновлено'
       }
+    },
+    name: {
+      label: 'Назва',
+      placeholder: 'Введіть назву дошки',
+      required: 'Назва дошки обов’язкова'
+    },
+    description: {
+      label: 'Опис',
+      placeholder: 'Введіть опис дошки'
     },
     delete: {
       button: 'Видалити дошку',

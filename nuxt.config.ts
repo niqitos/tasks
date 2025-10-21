@@ -91,6 +91,9 @@ export default defineNuxtConfig({
     './app/marketing'
   ],
   routeRules: {
+    '/calendar/**': {
+      ssr: false
+    },
     '/dashboard/**': {
       ssr: false
     }

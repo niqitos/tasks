@@ -8,9 +8,10 @@
     @dragover.prevent
     @drop="onDropCard"
   >
-    <div class="flex items-center justify-between font-bold mb-3">
-      <BoardTitle
-        :board="board"
+    <div class="flex items-center justify-between mb-3">
+      <span
+        class="text-sm"
+        v-text="board.name"
       />
 
       <BoardDelete
@@ -58,6 +59,11 @@
       })"
     />
 
+    <BoardEdit
+      v-model:open="editing"
+      :board="board"
+    />
+
     <TaskCreate
       :board="board"
     />
@@ -80,9 +86,17 @@ const props = defineProps({
 
 const boardStore = useBoardStore()
 
+const editing = ref<boolean>(false)
 const deleting = ref<boolean>(false)
 
 const items = ref<DropdownMenuItem[]>([
+  {
+    label: $t('board.update.title'),
+    icon: 'i-lucide:pen',
+    onSelect(e: Event) {
+      editing.value = true
+    }
+  },
   {
     label: $t('board.delete.button'),
     icon: 'i-lucide:trash',

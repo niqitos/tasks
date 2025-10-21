@@ -71,11 +71,10 @@ const props = defineProps({
   }
 })
 
-const router = useRouter()
 const localePath = useLocalePath()
 
-const show = (id: string) => {
-  router.push(localePath({ name: 'dashboard-index-tasks-id', params: { id } }))
+const show = (task: string) => {
+  return navigateTo(localePath({ name: 'dashboard-index-tasks-task', params: { task } }))
 }
 
 const name = computed(() => props.task.name.length > 90 ? props.task.name.slice(0, 90) + '…' : props.task.name)

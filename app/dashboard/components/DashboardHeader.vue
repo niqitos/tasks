@@ -67,6 +67,7 @@ const jwtCookie = useCookie('TasksJWT')
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 const localePath = useLocalePath()
+const route = useRoute()
 
 const workspaceStore = useWorkspaceStore()
 
@@ -84,10 +85,12 @@ const menu = computed(() => ([
   ],
   [
     {
-      label: t('home.title'),
-      to: localePath('index'),
-      icon: 'i-lucide:house'
-    },
+      icon: route.path === localePath('dashboard') ? 'i-lucide:calendar-days' : 'i-lucide:square-kanban',
+      to: route.path === localePath('dashboard') ? localePath('calendar') : localePath('dashboard'),
+      label: route.path === localePath('dashboard') ? t('view.calendar') : t('view.boards')
+    }
+  ],
+  [
     {
       label: t('settings.edit.button'),
       icon: 'i-lucide:settings',

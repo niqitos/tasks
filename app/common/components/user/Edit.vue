@@ -67,8 +67,8 @@ const schema = z.object({
 type Schema = z.output<typeof schema>
 
 const state = reactive<Partial<Schema>>({
-  name: userStore.user.name,
-  lastname: userStore.user.lastname || ''
+  name: userStore.user?.name,
+  lastname: userStore.user?.lastname || ''
 })
 
 const loading = ref<boolean>(false)

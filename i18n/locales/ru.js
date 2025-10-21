@@ -221,6 +221,14 @@ export default {
     title: 'Панель управления',
     description: 'Панель управления'
   },
+  calendar: {
+    title: 'Календарь',
+    description: 'Календарь'
+  },
+  view: {
+    boards: 'Доcки',
+    calendar: 'Календарь'
+  },
   success: {
     title: 'Успех!'
   },
@@ -318,9 +326,20 @@ export default {
       }
     },
     update: {
+      title: 'Обновить доску',
+      submit: 'Обновить',
       success: {
         description: 'Доска успешно обновлена'
       }
+    },
+    name: {
+      label: 'Название',
+      placeholder: 'Введите название доски',
+      required: 'Название доски обязательно'
+    },
+    description: {
+      label: 'Описание',
+      placeholder: 'Введите описание доски'
     },
     delete: {
       button: 'Удалить доску',

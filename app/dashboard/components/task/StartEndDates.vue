@@ -85,9 +85,9 @@ const clear = () => {
 watch(
   model,
   (newVal) => {
-    console.log(task.value.startAt)
     task.value.startAt = newVal.start ? newVal.start.toDate('UTC') : null
     task.value.endAt = newVal.end ? newVal.end.toDate('UTC') : null
+
     emit('updated')
   },
   {
