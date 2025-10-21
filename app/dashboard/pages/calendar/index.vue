@@ -12,6 +12,7 @@
 
 <script lang="ts" setup>
 import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import FullCalendar from '@fullcalendar/vue3'
 import type { CalendarOptions } from '@fullcalendar/core'
@@ -96,23 +97,26 @@ const events = computed(() => boardStore.boards
 const options = ref<CalendarOptions>({
   plugins: [
     dayGridPlugin,
+    timeGridPlugin,
     interactionPlugin
   ],
   initialView: 'dayGridMonth',
   dateClick: (info: any) => {
-    console.log(info.dateStr)
+    const calendarApi = fullCalendarRef.value.getApi()
+
+    calendarApi.changeView('timeGridDay', info.dateStr)
   },
   stickyHeaderDates: true,
   editable: true,
   headerToolbar: {
     left: 'prevYear,prev,today,next,nextYear',
     center: 'title',
-    right: 'dayGridDay,dayGridWeek,dayGridMonth,dayGridYear'
+    right: 'timeGridDay,dayGridWeek,dayGridMonth,dayGridYear'
   },
   footerToolbar: {
     left: 'prevYear,prev,today,next,nextYear',
     center: '',
-    right: 'dayGridDay,dayGridWeek,dayGridMonth,dayGridYear'
+    right: 'timeGridDay,dayGridWeek,dayGridMonth,dayGridYear'
   },
   events: events.value,
   eventClick: (info: any) => {

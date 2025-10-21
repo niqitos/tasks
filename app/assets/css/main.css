@@ -1120,9 +1120,9 @@ NOTE: for old browsers, will need to restart watcher after changing a variable
     }
   }
   .fc-button-primary {
-    @apply z-10 focus:shadow-none focus:ring-[3px];
+    @apply z-10 focus:shadow-none focus:ring-0 active:shadow-none active:ring-0 focus:focus:!shadow-none focus:focus:!ring-0;
     &.fc-button-active {
-      @apply z-10 focus:shadow-none focus:ring-[3px];
+      @apply z-10 focus:shadow-none focus:ring-0 active:shadow-none active:ring-0 focus:focus:!shadow-none focus:focus:!ring-0;
     }
   }
 }
@@ -1196,4 +1196,8 @@ NOTE: for old browsers, will need to restart watcher after changing a variable
 
 .fc .fc-toolbar.fc-header-toolbar {
   @apply mb-4;
+}
+
+.fc .fc-daygrid-day-number {
+  @apply mx-2
 }
