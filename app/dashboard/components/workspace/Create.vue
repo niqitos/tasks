@@ -47,7 +47,7 @@
         <FieldColorSelect
           v-if="state.backgroundType === 'color'"
           v-model="state.color"
-          @update:model-value="workspaceStore.tempBackground = `bg-${state.color}-500/50`"
+          @update:model-value="workspaceStore.tempBackground = `bg-${state.color}-300 dark:bg-${state.color}-950`"
         />
 
         <UFormField

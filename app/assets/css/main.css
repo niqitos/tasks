@@ -2,23 +2,17 @@
 @import "@nuxt/ui";
 
 @source inline('bg-primary-300');
-@source inline('dark:bg-primary-900');
-@source inline('bg-primary-500/50');
+@source inline('dark:bg-primary-950');
 @source inline('bg-secondary-300');
-@source inline('dark:bg-secondary-900');
-@source inline('bg-secondary-500/50');
+@source inline('dark:bg-secondary-950');
 @source inline('bg-success-300');
-@source inline('dark:bg-success-900');
-@source inline('bg-success-500/50');
+@source inline('dark:bg-success-950');
 @source inline('bg-info-300');
-@source inline('dark:bg-info-900');
-@source inline('bg-info-500/50');
+@source inline('dark:bg-info-950');
 @source inline('bg-warning-300');
-@source inline('dark:bg-warning-900');
-@source inline('bg-warning-500/50');
+@source inline('dark:bg-warning-950');
 @source inline('bg-error-300');
-@source inline('dark:bg-error-900');
-@source inline('bg-error-500/50');
+@source inline('dark:bg-error-950');
 
 @keyframes fadeIn {
   0% {
