@@ -186,7 +186,8 @@ export default defineNuxtConfig({
 
   sitemap: {
     exclude: [
-      '/dashboard'
+      '/dashboard/**',
+      '/calendar/**'
     ]
   }
 })
