@@ -25,6 +25,13 @@ export default defineEventHandler(async (event) : Promise<any> => {
     const inboxItemTryingToUpdate = await prisma.inboxItem.findUnique({
       where: {
         id: itemId
+      },
+      include: {
+        inbox: {
+          select: {
+            userId: true
+          }
+        }
       }
     })
 
@@ -35,7 +42,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
       })
     }
 
-    if (inboxItemTryingToUpdate.creatorId !== decodedToken.id) {
+    if (inboxItemTryingToUpdate.inbox.userId !== decodedToken.id) {
       throw createError({
         statusCode: 401,
         statusMessage: 'Does not have permission to update Inbox Item'

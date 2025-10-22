@@ -25,6 +25,43 @@ export default defineEventHandler(async (event) : Promise<any> => {
     const taskTryingToUpdate = await prisma.task.findUnique({
       where: {
         id: taskId
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            inboxes: {
+              select: {
+                id: true
+              },
+              where: {
+                default: true
+              }
+            }
+          }
+        },
+        assignees: {
+          select: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                email: true,
+                avatar: true,
+                plan: true,
+                inboxes: {
+                  select: {
+                    id: true
+                  },
+                  where: {
+                    default: true
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     })
 
@@ -62,6 +99,22 @@ export default defineEventHandler(async (event) : Promise<any> => {
         properties: getUpdatedFields(taskTryingToUpdate, task, ['updatedAt'])
       }
     })
+
+    if (taskTryingToUpdate.completedAt !== task.completedAt) {
+      taskTryingToUpdate.assignees.forEach(async (taskAssignee: any) => {
+        await prisma.inboxItem.create({
+          data: {
+            type: task.completedAt ? 'taskCompleted' : 'taskReopened',
+            message: `inbox.messages.task.${task.completedAt ? 'completed' : 'reopened'}`,
+            relatedType: 'Task',
+            relatedId: task.id,
+            taskId: task.id,
+            inboxId: taskAssignee.user.inboxes[0].id,
+            creatorId: decodedToken.id
+          }
+        })
+      })
+    }
   } catch (err) {
     console.log(err)
   }

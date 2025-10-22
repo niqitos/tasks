@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
 
   try {
     const body = await readBody(event)
-    const workspace = await getRouterParam(event, 'workspace') as string
+    const workspaceId = await getRouterParam(event, 'workspace') as string
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
 
     const existingWorkspaceMemberTrying = await prisma.workspaceMember.findFirst({
       where: {
-        workspaceId: workspace,
+        workspaceId,
         userId: body.user,
         deletedAt: {
           not: null,
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
       return await prisma.workspaceMember.update({
         where: {
           workspaceId_userId: {
-            workspaceId: workspace,
+            workspaceId,
             userId: body.user,
           },
           deletedAt: {
@@ -60,6 +60,34 @@ export default defineEventHandler(async (event) : Promise<any> => {
       })
     }
 
+    const workspace = await prisma.workspace.findFirst({
+      where: {
+        id: workspaceId
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            inboxes: {
+              select: {
+                id: true
+              },
+              where: {
+                default: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!workspace) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Workspace does not exist',
+      })
+    }
+
     // if (existingWorkspaceMemberTrying.creatorId !== decodedToken.id) {
     //   throw createError({
     //     statusCode: 401,
@@ -69,7 +97,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
 
     const workspaceMember = await prisma.workspaceMember.create({
       data: {
-        workspaceId: workspace,
+        workspaceId,
         userId: body.user,
         role: body.role,
         color: body.color,
@@ -83,9 +111,29 @@ export default defineEventHandler(async (event) : Promise<any> => {
             lastname: true,
             email: true,
             avatar: true,
-            plan: true
+            plan: true,
+            inboxes: {
+              select: {
+                id: true
+              },
+              where: {
+                default: true
+              }
+            }
           }
         }
+      }
+    })
+
+    await prisma.inboxItem.create({
+      data: {
+        type: 'workspaceCreated',
+        message: 'inbox.messages.workspace.member.created',
+        relatedType: 'WorkspaceMember',
+        relatedId: workspace.id,
+        workspaceId: workspace.id,
+        inboxId: workspaceMember.user.inboxes[0].id,
+        creatorId: workspaceMember.invitedById
       }
     })
 

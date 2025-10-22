@@ -47,18 +47,18 @@
         </UTooltip>
       </div>
 
-      <UAvatarGroup
+      <div
         v-show="task.assignees.length"
-        :ui="{
-          root: 'flex flex-row flex-1 justify-end-safe'
-        }"
+        class="flex flex-row flex-1 justify-end-safe"
       >
-        <TaskCardAssignee
-          v-for="assignee in task.assignees"
-          :key="assignee.user?.id"
-          :user="assignee.user"
-        />
-      </UAvatarGroup>
+        <UAvatarGroup>
+          <TaskCardAssignee
+            v-for="assignee in task.assignees"
+            :key="assignee.user?.id"
+            :user="assignee.user"
+          />
+        </UAvatarGroup>
+      </div>
     </div>
   </UCard>
 </template>

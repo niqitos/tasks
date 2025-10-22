@@ -10,7 +10,7 @@
     />
 
     <UContainer
-      class="mx-auto w-full flex-grow flex flex-col rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 sm:px-2.5 lg:px-2.5 py-1.5 text-sm gap-3.5 text-highlighted bg-default ring ring-inset ring-accented resize-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+      class="mx-auto w-full flex-grow flex flex-col rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 sm:px-2.5 lg:px-2.5 py-1.5 text-sm gap-3.5 text-highlighted bg-default ring ring-inset ring-accented resize-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary min-h-32"
       @click="editor?.commands.focus()"
     >
       <EditorContent
@@ -54,6 +54,7 @@ const emit = defineEmits(['change'])
 
 const editor = useEditor({
   content: props.content,
+  rows: 3,
   extensions: [
     StarterKit,
     Placeholder.configure({

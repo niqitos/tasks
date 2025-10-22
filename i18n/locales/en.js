@@ -279,7 +279,23 @@ export default {
     },
     messages: {
       workspace: {
-        created: 'Project {name} Created'
+        created: 'Project {workspace} created',
+        member: {
+          created: 'You were added to project {workspace}',
+          deleted: 'You were removed from project {workspace}'
+        }
+      },
+      task: {
+        created: 'Task {task} created',
+        assignee: {
+          created: 'You were assigned to task {task}',
+          deleted: 'You were unassigned from task {task}'
+        },
+        completed: 'Task {task} completed',
+        reopened: 'Task {task} reopened',
+        comment: {
+          created: 'New comment added to task {task}: {comment}'
+        }
       }
     }
   },

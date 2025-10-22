@@ -72,7 +72,6 @@
 
 <script setup lang="ts">
 import { breakpointsTailwind } from '@vueuse/core'
-import type { InboxItem } from '@/common/types'
 import type { TabsItem } from '@nuxt/ui'
 
 definePageMeta({

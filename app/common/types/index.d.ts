@@ -8,20 +8,6 @@ export interface User {
   avatar?: string
 }
 
-export interface InboxItem {
-  id: number
-  isRead?: boolean
-  important?: boolean
-  message: string
-  // body: string
-  relatedType: string
-  createdAt: string
-  workspace?: any
-  task?: any
-  comment?: any
-  creator: User
-}
-
 export interface Member {
   name: string
   username: string

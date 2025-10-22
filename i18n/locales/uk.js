@@ -279,7 +279,23 @@ export default {
     },
     messages: {
       workspace: {
-        created: 'Проєкт {name} створено'
+        created: 'Проєкт {workspace} створено',
+        member: {
+          created: 'Вас додано в проєкт {workspace}',
+          deleted: 'Вас вилучили з проєкту {workspace}',
+        }
+      },
+      task: {
+        created: 'Задачу {workspace} створено',
+        assignee: {
+          created: 'Ваc було призначена виконавцем задачі {task}',
+          deleted: 'Вас зняли з задачі {task}'
+        },
+        completed: 'Задача {task} виконана',
+        reopened: 'Задачу {task} повторно відкрито',
+        comment: {
+          created: 'Новий коментар до задачі {task}: {comment}'
+        }
       }
     }
   },

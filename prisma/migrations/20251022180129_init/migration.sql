@@ -14,7 +14,7 @@ CREATE TYPE "BackgroundType" AS ENUM ('color', 'image');
 CREATE TYPE "Color" AS ENUM ('primary', 'secondary', 'success', 'info', 'warning', 'error');
 
 -- CreateEnum
-CREATE TYPE "InboxItemType" AS ENUM ('workspaceCreated', 'workspaceUpdated', 'workspaceMemberAdded', 'workspaceMemberRemoved', 'taskCreated', 'taskUpdated', 'taskAssigned', 'taskUnassigned', 'taskCompleted', 'taskReopened', 'commentAdded');
+CREATE TYPE "InboxItemType" AS ENUM ('workspaceCreated', 'workspaceUpdated', 'workspaceDeleted', 'workspaceMemberAdded', 'workspaceMemberRemoved', 'taskCreated', 'taskUpdated', 'taskDeleted', 'taskAssigned', 'taskUnassigned', 'taskCompleted', 'taskReopened', 'commentAdded');
 
 -- CreateEnum
 CREATE TYPE "InboxRelatedType" AS ENUM ('Workspace', 'WorkspaceMember', 'Board', 'Task', 'TaskAssignee', 'File', 'Comment', 'Inbox', 'InboxItem');

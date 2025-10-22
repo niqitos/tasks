@@ -41,9 +41,8 @@
           </div>
 
           <p
-            class="truncate"
             :class="[!inboxItem.isRead && 'font-semibold']"
-            v-text="$t(inboxItem.message, { name: 'Name' })"
+            v-text="trimInboxItemTitle(inboxItem)"
           />
 
           <!-- <p
@@ -58,27 +57,32 @@
 
 <script setup lang="ts">
 import { format, isToday } from 'date-fns'
-import type { InboxItem } from '@/common/types'
+const props = defineProps<{
+  inboxItems: InboxItem[]
+}>()
 
-const props = defineProps({
-  inboxItems: {
-    type: Array as PropType<InboxItem[]>,
-    required: true
-  }
-})
+const { inboxItemTitle } = useInbox()
 
 const inboxItemsRefs = ref<Element[]>([])
 
-const selectedInboxItem = defineModel<InboxItem | null>()
+const selectedInboxItem = defineModel<InboxItem | null>({
+  required: true
+})
 
 const fullname = (user: any) => `${user.name}${user.lastname ? ` ${user.lastname}` : ''}`
+
+const trimInboxItemTitle = (value: InboxItem) => {
+  const inboxItem = inboxItemTitle(value)
+
+  return inboxItem.length > 90 ? inboxItem.slice(0, 90) + '…' : inboxItem
+}
 
 watch(selectedInboxItem, () => {
   if (!selectedInboxItem.value) {
     return
   }
 
-  const ref = inboxItemsRefs.value[selectedInboxItem.value.id]
+  const ref = inboxItemsRefs.value[selectedInboxItem.value?.id]
 
   if (ref) {
     ref.scrollIntoView({ block: 'nearest' })

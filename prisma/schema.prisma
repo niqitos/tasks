@@ -57,10 +57,12 @@ enum Color {
 enum InboxItemType {
   workspaceCreated
   workspaceUpdated
+  workspaceDeleted
   workspaceMemberAdded
   workspaceMemberRemoved
   taskCreated
   taskUpdated
+  taskDeleted
   taskAssigned
   taskUnassigned
   taskCompleted

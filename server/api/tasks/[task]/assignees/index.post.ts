@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
 
   try {
     const body = await readBody(event)
-    const task = await getRouterParam(event, 'task') as string
+    const taskId = await getRouterParam(event, 'task') as string
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
 
     const existingTaskAssigneeTrying = await prisma.taskAssignee.findFirst({
       where: {
-        taskId: task,
+        taskId,
         userId: body.user,
         deletedAt: {
           not: null,
@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
       return await prisma.taskAssignee.update({
         where: {
           taskId_userId: {
-            taskId: task,
+            taskId,
             userId: body.user
           },
           deletedAt: {
@@ -60,6 +60,34 @@ export default defineEventHandler(async (event) : Promise<any> => {
       })
     }
 
+    const task = await prisma.task.findFirst({
+      where: {
+        id: taskId
+      },
+      include: {
+        creator: {
+          select: {
+            id: true,
+            inboxes: {
+              select: {
+                id: true
+              },
+              where: {
+                default: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!task) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Task does not exist',
+      })
+    }
+
     // if (existingTaskAssigneeTrying.creatorId !== decodedToken.id) {
     //   throw createError({
     //     statusCode: 401,
@@ -67,9 +95,9 @@ export default defineEventHandler(async (event) : Promise<any> => {
     //   })
     // }
 
-    const newTaskAssignee = await prisma.taskAssignee.create({
+    const taskAssignee = await prisma.taskAssignee.create({
       data: {
-        taskId: task,
+        taskId,
         userId: body.user,
         assignerId: decodedToken.id
       },
@@ -81,13 +109,33 @@ export default defineEventHandler(async (event) : Promise<any> => {
             lastname: true,
             email: true,
             avatar: true,
-            plan: true
+            plan: true,
+            inboxes: {
+              select: {
+                id: true
+              },
+              where: {
+                default: true
+              }
+            }
           }
         }
       }
     })
 
-    return newTaskAssignee
+    await prisma.inboxItem.create({
+      data: {
+        type: 'taskCreated',
+        message: 'inbox.messages.task.assignee.created',
+        relatedType: 'TaskAssignee',
+        relatedId: task.id,
+        taskId: task.id,
+        inboxId: taskAssignee.user.inboxes[0].id,
+        creatorId: taskAssignee.assignerId
+      }
+    })
+
+    return taskAssignee
   } catch (err) {
     console.log(err)
     throw createError({

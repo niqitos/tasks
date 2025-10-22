@@ -68,13 +68,13 @@
 
 <script setup lang="ts">
 import { format } from 'date-fns'
-import type { InboxItem } from '@/common/types'
 
 const model = defineModel<InboxItem>({
   required: true
 })
 
 const { t } = useI18n()
+const { inboxItemTitle } = useInbox()
 
 const emits = defineEmits(['close'])
 
@@ -105,21 +105,9 @@ const dropdownItems = computed(() => [
 
 const fullname = computed(() => `${model.value?.creator.name}${model.value?.creator.lastname ? ` ${model.value?.creator.lastname}` : ''}`)
 
-const title = computed(() => {
-  if (model.value?.relatedType === 'Workspace') {
-    return t(model.value?.message, { name: model.value?.workspace.name })
-  }
+const title = computed(() => inboxItemTitle(model.value))
 
-  return ''
-})
-
-const body = computed(() => {
-  if (model.value?.relatedType === 'Workspace') {
-    return t(model.value?.message, { name: model.value?.workspace.name })
-  }
-
-  return ''
-})
+const body = computed(() => inboxItemTitle(model.value))
 
 const update = async (body: any) : Promise<any> => {
   await useFetch(`/api/inbox/items/${model.value?.id}`, {
@@ -133,11 +121,17 @@ const update = async (body: any) : Promise<any> => {
   }
 }
 
-onMounted(async () : Promise<any> => {
-  if (!model.value.isRead) {
-    await update({
-      isRead: true
-    })
+watch(
+  model,
+  async () : Promise<any> => {
+    if (!model.value.isRead) {
+      await update({
+        isRead: true
+      })
+    }
+  },
+  {
+    immediate: true
   }
-})
+)
 </script>

@@ -8,13 +8,13 @@ declare type InboxItem = {
   important: boolean
   relatedId: string
   relatedType: InboxRelatedType
-  workspace?: Workspace
+  workspace: Workspace
   workspaceId?: string
   task?: Task
   taskId?: string
   comment?: Comment
   commentId?: string
-  creator?: User
+  creator: User
   creatorId?: string
   createdAt?: Date
 }

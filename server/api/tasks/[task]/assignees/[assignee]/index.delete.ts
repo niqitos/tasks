@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
 
   try {
     const task = await getRouterParam(event, 'task')
-    const assignee = Number(await getRouterParam(event, 'assignee'))
+    const assigneeId = Number(await getRouterParam(event, 'assignee'))
 
     const cookies = parseCookies(event)
     const token = cookies.TasksJWT
@@ -23,7 +23,27 @@ export default defineEventHandler(async (event) : Promise<any> => {
 
     const taskAssigneeTryingToDelete = await prisma.taskAssignee.findUnique({
       where: {
-        id: assignee
+        id: assigneeId
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastname: true,
+            email: true,
+            avatar: true,
+            plan: true,
+            inboxes: {
+              select: {
+                id: true
+              },
+              where: {
+                default: true
+              }
+            }
+          }
+        }
       }
     })
 
@@ -43,7 +63,19 @@ export default defineEventHandler(async (event) : Promise<any> => {
 
     await prisma.taskAssignee.delete({
       where: {
-        id: assignee
+        id: assigneeId
+      }
+    })
+
+    await prisma.inboxItem.create({
+      data: {
+        type: 'taskDeleted',
+        message: 'inbox.messages.task.assignee.created',
+        relatedType: 'TaskAssignee',
+        relatedId: taskAssigneeTryingToDelete.taskId,
+        taskId: taskAssigneeTryingToDelete.taskId,
+        inboxId: taskAssigneeTryingToDelete.user.inboxes[0].id,
+        creatorId: taskAssigneeTryingToDelete.assignerId
       }
     })
   } catch (err) {

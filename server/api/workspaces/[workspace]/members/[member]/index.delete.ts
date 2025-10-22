@@ -24,6 +24,26 @@ export default defineEventHandler(async (event) : Promise<any> => {
     const workspaceMemberTryingToDelete = await prisma.workspaceMember.findUnique({
       where: {
         id: memberId
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            lastname: true,
+            email: true,
+            avatar: true,
+            plan: true,
+            inboxes: {
+              select: {
+                id: true
+              },
+              where: {
+                default: true
+              }
+            }
+          }
+        }
       }
     })
 
@@ -44,6 +64,18 @@ export default defineEventHandler(async (event) : Promise<any> => {
     await prisma.workspaceMember.delete({
       where: {
         id: memberId
+      }
+    })
+
+    await prisma.inboxItem.create({
+      data: {
+        type: 'workspaceCreated',
+        message: 'inbox.messages.workspace.member.deleted',
+        relatedType: 'WorkspaceMember',
+        relatedId: workspaceMemberTryingToDelete.workspaceId,
+        workspaceId: workspaceMemberTryingToDelete.workspaceId,
+        inboxId: workspaceMemberTryingToDelete.user.inboxes[0].id,
+        creatorId: workspaceMemberTryingToDelete.invitedById
       }
     })
   } catch (err) {

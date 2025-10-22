@@ -29,7 +29,38 @@ export default defineEventHandler(async (event) : Promise<any> => {
       })
     }
 
-    return await prisma.comment.create({
+    const task = await prisma.task.findUnique({
+      where: {
+        id: taskId
+      },
+      include: {
+        assignees: {
+          select: {
+            user: {
+              select: {
+                inboxes: {
+                  select: {
+                    id: true
+                  },
+                  where: {
+                    default: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!task) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Task does not exist',
+      })
+    }
+
+    const comment = await prisma.comment.create({
       data: {
         content,
         taskId,
@@ -41,6 +72,23 @@ export default defineEventHandler(async (event) : Promise<any> => {
         replies: true
       }
     })
+
+    task.assignees.forEach(async (taskAssignee: any) => {
+      await prisma.inboxItem.create({
+        data: {
+          type: 'commentAdded',
+          message: 'inbox.messages.task.comment.created',
+          relatedType: 'Comment',
+          relatedId: comment.id,
+          commentId: comment.id,
+          taskId: task.id,
+          inboxId: taskAssignee.user.inboxes[0].id,
+          creatorId: decodedToken.id
+        }
+      })
+    })
+
+    return comment
   } catch (err) {
     console.log(err)
   }
