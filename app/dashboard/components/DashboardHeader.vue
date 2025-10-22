@@ -92,7 +92,7 @@ const menu = computed<any>(() => {
     ]
   ]
 
-  if (roleStore.canViewCalendar && route.path.startsWith(localePath('dashboard'))) {
+  if (route.path.startsWith(localePath('dashboard'))) {
     items.push([
       {
         icon: 'i-lucide:calendar-days',
@@ -100,7 +100,7 @@ const menu = computed<any>(() => {
         label: t('view.calendar')
       }
     ])
-  } else if (roleStore.canViewCalendar && route.path.startsWith(localePath('calendar'))) {
+  } else if ((roleStore.canViewCalendar && route.path.startsWith(localePath('calendar'))) || route.path.startsWith(localePath('inbox'))) {
     items.push([
       {
         icon: 'i-lucide:square-kanban',

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-[calc(100vh-var(--ui-header-height))] overflow-clip">
+  <UDashboardGroup class="h-[calc(100vh-var(--ui-header-height))] relative">
     <UDashboardPanel
       id="inbox-1"
       :default-size="25"
@@ -67,7 +67,7 @@
         </template>
       </USlideover>
     </ClientOnly>
-  </div>
+  </UDashboardGroup>
 </template>
 
 <script setup lang="ts">
@@ -92,6 +92,7 @@ const tabItems = [
     value: 'unread'
   }
 ]
+
 const selectedTab = ref('all')
 
 const { data: messages } = await useFetch<InboxItem[]>('/api/inbox', { default: () => [] })

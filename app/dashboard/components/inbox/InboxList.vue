@@ -28,7 +28,7 @@
           <div
             :class="[
               'flex items-center justify-between',
-              !inboxItem.isRead && 'font-semibold'
+              !inboxItem.isRead ? 'font-semibold' : 'text-muted'
             ]"
           >
             <div class="flex items-center gap-3">
