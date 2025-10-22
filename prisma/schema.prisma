@@ -54,6 +54,32 @@ enum Color {
   error
 }
 
+enum InboxItemType {
+  workspaceCreated
+  workspaceUpdated
+  workspaceMemberAdded
+  workspaceMemberRemoved
+  taskCreated
+  taskUpdated
+  taskAssigned
+  taskUnassigned
+  taskCompleted
+  taskReopened
+  commentAdded
+}
+
+enum InboxRelatedType {
+  Workspace
+  WorkspaceMember
+  Board
+  Task
+  TaskAssignee
+  File
+  Comment
+  Inbox
+  InboxItem
+}
+
 model User {
   id        String    @id @default(uuid())
   name      String
@@ -80,6 +106,8 @@ model User {
   activityLogs      ActivityLog[]
   storedCards       StoredCard[]
   subscriptions     Subscription[]
+  inboxes           Inbox[]
+  inboxItems        InboxItem[]       @relation("InboxItemCreator")
 }
 
 model Workspace {
@@ -97,6 +125,7 @@ model Workspace {
 
   boards  Board[]           @relation("WorkspaceBoards")
   members WorkspaceMember[]
+  inboxItems InboxItem[]
 }
 
 model WorkspaceMember {
@@ -160,6 +189,7 @@ model Task {
   assignees   TaskAssignee[]
   files       File[]
   comments    Comment[]
+  inboxItems  InboxItem[]
 
   @@index([boardId, position])
 }
@@ -237,6 +267,8 @@ model Comment {
   parentId String?
   parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies  Comment[] @relation("CommentReplies")
+
+  inboxItems InboxItem[] @relation("CommentInboxItems")
 }
 
 model StoredCard {
@@ -277,3 +309,42 @@ model Subscription {
   @@index([storedCardId])
 }
 
+model Inbox {
+  id          String      @id @default(uuid())
+  name        String
+  preferences Json
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  default     Boolean     @default(false)
+  items       InboxItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
+}
+
+model InboxItem {
+  id          String      @id @default(uuid())
+  inbox       Inbox       @relation(fields: [inboxId], references: [id], onDelete: Cascade)
+  inboxId     String
+
+  type        InboxItemType
+  message     String
+  isRead      Boolean     @default(false)
+  important   Boolean     @default(false)
+
+  relatedId   String
+  relatedType InboxRelatedType
+
+  workspace   Workspace?  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String?
+
+  task        Task?       @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  taskId      String?
+
+  comment     Comment?    @relation("CommentInboxItems", fields: [commentId], references: [id], onDelete: Cascade)
+  commentId   String?
+
+  creator   User?       @relation("InboxItemCreator", fields: [creatorId], references: [id], onDelete: SetNull)
+  creatorId String?
+
+  createdAt   DateTime    @default(now())
+}

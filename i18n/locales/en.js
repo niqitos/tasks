@@ -254,6 +254,23 @@ export default {
       upgrade: 'Get More'
     }
   },
+  inbox: {
+    title: 'Inbox',
+    default: 'Inbox',
+    items: {
+      mark: {
+        read: 'Mark as read',
+        unread: 'Mark as unread',
+        important: 'Mark as important',
+        unimportant: 'Mark as unimportant'
+      }
+    },
+    messages: {
+      workspace: {
+        created: 'Project {name} Created'
+      }
+    }
+  },
   dashboard: {
     title: 'Dashboard',
     description: 'Dashboard'

@@ -83,6 +83,11 @@ const menu = computed<any>(() => {
           icon: userStore.user.name || userStore.user.lastname ? '' : 'i-lucide:user'
         },
         type: 'label'
+      },
+      {
+        icon: 'i-lucide:inbox',
+        to: localePath('inbox'),
+        label: t('inbox.title')
       }
     ]
   ]

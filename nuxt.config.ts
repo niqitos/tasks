@@ -96,6 +96,9 @@ export default defineNuxtConfig({
     },
     '/dashboard/**': {
       ssr: false
+    },
+    '/inbox/**': {
+      ssr: false
     }
   },
   imports: {
@@ -186,8 +189,9 @@ export default defineNuxtConfig({
 
   sitemap: {
     exclude: [
+      '/calendar/**',
       '/dashboard/**',
-      '/calendar/**'
+      '/inbox/**'
     ]
   }
 })

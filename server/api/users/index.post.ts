@@ -51,6 +51,20 @@ export default defineEventHandler(async (event) => {
 
     setCookie(event, 'TasksJWT', token)
 
+    await prisma.inbox.create({
+      data: {
+        name: 'inbox.default',
+        preferences: {
+          notify: {
+            mail: true,
+            push: true
+          }
+        },
+        userId: user.id,
+        default: true
+      }
+    })
+
     return { data: 'success!' }
   } catch (error: any) {
     if (error?.code === 'P2002') {

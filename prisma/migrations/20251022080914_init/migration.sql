@@ -10,6 +10,15 @@ CREATE TYPE "Currency" AS ENUM ('UAH', 'USD', 'EUR', 'GBP', 'PLN', 'CZK', 'CAD',
 -- CreateEnum
 CREATE TYPE "BackgroundType" AS ENUM ('color', 'image');
 
+-- CreateEnum
+CREATE TYPE "Color" AS ENUM ('primary', 'secondary', 'success', 'info', 'warning', 'error');
+
+-- CreateEnum
+CREATE TYPE "InboxItemType" AS ENUM ('workspaceCreated', 'workspaceUpdated', 'workspaceMemberAdded', 'workspaceMemberRemoved', 'taskCreated', 'taskUpdated', 'taskAssigned', 'taskUnassigned', 'taskCompleted', 'taskReopened', 'commentAdded');
+
+-- CreateEnum
+CREATE TYPE "InboxRelatedType" AS ENUM ('Workspace', 'WorkspaceMember', 'Board', 'Task', 'TaskAssignee', 'File', 'Comment', 'Inbox', 'InboxItem');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -49,7 +58,7 @@ CREATE TABLE "WorkspaceMember" (
     "workspaceId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "role" "WorkspaceRole" NOT NULL DEFAULT 'guest',
-    "color" TEXT NOT NULL,
+    "color" "Color" NOT NULL DEFAULT 'primary',
     "invitedAt" TIMESTAMP(3),
     "joinedAt" TIMESTAMP(3),
     "invitedById" TEXT,
@@ -183,6 +192,38 @@ CREATE TABLE "Subscription" (
     CONSTRAINT "Subscription_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Inbox" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "preferences" JSONB NOT NULL,
+    "userId" TEXT NOT NULL,
+    "default" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Inbox_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "InboxItem" (
+    "id" TEXT NOT NULL,
+    "inboxId" TEXT NOT NULL,
+    "type" "InboxItemType" NOT NULL,
+    "message" TEXT NOT NULL,
+    "isRead" BOOLEAN NOT NULL DEFAULT false,
+    "important" BOOLEAN NOT NULL DEFAULT false,
+    "relatedId" TEXT NOT NULL,
+    "relatedType" "InboxRelatedType" NOT NULL,
+    "workspaceId" TEXT,
+    "taskId" TEXT,
+    "commentId" TEXT,
+    "creatorId" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "InboxItem_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -281,3 +322,21 @@ ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_storedCardId_fkey" FOREIGN KEY ("storedCardId") REFERENCES "StoredCard"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Inbox" ADD CONSTRAINT "Inbox_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InboxItem" ADD CONSTRAINT "InboxItem_inboxId_fkey" FOREIGN KEY ("inboxId") REFERENCES "Inbox"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InboxItem" ADD CONSTRAINT "InboxItem_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InboxItem" ADD CONSTRAINT "InboxItem_taskId_fkey" FOREIGN KEY ("taskId") REFERENCES "Task"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InboxItem" ADD CONSTRAINT "InboxItem_commentId_fkey" FOREIGN KEY ("commentId") REFERENCES "Comment"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InboxItem" ADD CONSTRAINT "InboxItem_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

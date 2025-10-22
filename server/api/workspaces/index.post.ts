@@ -134,9 +134,29 @@ export default defineEventHandler(async (event) => {
             name: true,
             lastname: true,
             avatar: true,
-            plan: true
+            plan: true,
+            inboxes: {
+              select: {
+                id: true
+              },
+              where: {
+                default: true
+              }
+            }
           }
         }
+      }
+    })
+
+    await prisma.inboxItem.create({
+      data: {
+        type: 'workspaceCreated',
+        message: 'inbox.messages.workspace.created',
+        relatedType: 'Workspace',
+        relatedId: workspace.id,
+        workspaceId: workspace.id,
+        inboxId: workspace.creator.inboxes[0].id,
+        creatorId: workspace.creator.id
       }
     })
 

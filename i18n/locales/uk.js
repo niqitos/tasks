@@ -254,6 +254,23 @@ export default {
       upgrade: 'Отримати більше'
     }
   },
+  inbox: {
+    title: 'Повідомлення',
+    default: 'Вхідні',
+    items: {
+      mark: {
+        read: 'Позначити як прочитане',
+        unread: 'Позначити як непрочитане',
+        important: 'Позначити як важливе',
+        unimportant: 'Позначити як неважливе'
+      }
+    },
+    messages: {
+      workspace: {
+        created: 'Проєкт {name} створено'
+      }
+    }
+  },
   dashboard: {
     title: 'Панель керування',
     description: 'Панель керування'

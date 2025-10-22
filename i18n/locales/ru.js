@@ -254,6 +254,23 @@ export default {
       upgrade: 'Получить больше'
     }
   },
+  inbox: {
+    title: 'Уведомления',
+    default: 'Входящие',
+    items: {
+      mark: {
+        read: 'Отметить как прочитанное',
+        unread: 'Отметить как непрочитанное',
+        important: 'Отметить как важное',
+        unimportant: 'Отметить как неважное'
+      }
+    },
+    messages: {
+      workspace: {
+        created: 'Проект {name} создан'
+      }
+    }
+  },
   dashboard: {
     title: 'Панель управления',
     description: 'Панель управления'

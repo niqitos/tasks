@@ -270,10 +270,6 @@ onBeforeUnmount(() => {
     transition: background-color 80ms ease-out,border-color 80ms ease-out
 }
 
-.tiptap.ProseMirror ul[data-type=taskList] li label input[type=checkbox]:checked+span:before {
-    opacity: 1
-}
-
 .tiptap.ProseMirror ul[data-type=taskList] li div {
     flex: 1 1;
     min-width: 0
