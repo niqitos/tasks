@@ -54,7 +54,7 @@ watch(
 
       let workspace = workspaceStore.workspaces.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
 
-      if (!workspace) {
+      if (!workspace && workspaceStore.workspaces.length > 0 && workspaceStore.workspaces[0]) {
         workspace = workspaceStore.workspaces[0]
 
         localStorage.setItem('workspace.current.id', workspace.id)
@@ -62,7 +62,7 @@ watch(
 
       workspaceStore.current = workspace
 
-      boardStore.boards = workspaceStore.current.boards
+      boardStore.boards = workspaceStore.current?.boards || []
     }
   },
   {

@@ -1,5 +1,5 @@
 export const useBoardStore = defineStore('board', () => {
-  const boards = ref<any[]>([])
+  const boards = ref<Board[]>([])
 
   return {
     boards

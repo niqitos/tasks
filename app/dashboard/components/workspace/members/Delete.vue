@@ -51,9 +51,9 @@ const open = ref<boolean>(false)
 const loading = ref<boolean>(false)
 // const board = ref<any>(workspaceStore.current.boards.find((b: any) => b.id === props.task.boardId))
 
-const remove = async () => {
+const remove = async () : Promise<any> => {
   try {
-    await $fetch(`/api/workspaces/${workspaceStore.current.id}/members/${props.member.id}`, {
+    await $fetch(`/api/workspaces/${workspaceStore.current?.id}/members/${props.member.id}`, {
       method: 'DELETE'
     })
 

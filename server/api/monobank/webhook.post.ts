@@ -4,7 +4,7 @@ import { prisma } from '@@/server/utils/prisma'
 
 const config = useRuntimeConfig()
 
-const verifyWebhook = (reqBodyString, signatureHeader) => {
+const verifyWebhook = (reqBodyString: any, signatureHeader: any) => {
   // If monobank provides HMAC signature, verify here.
   // Placeholder: using a simple secret compare — adapt to monobank spec.
   const expected = config.monobankWebhookSecret
@@ -12,7 +12,7 @@ const verifyWebhook = (reqBodyString, signatureHeader) => {
   return true // update with real verification
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) : Promise<any> => {
   const body = await readBody(event)
 
   const bodyString = JSON.stringify(body)

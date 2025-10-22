@@ -76,16 +76,10 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from '@nuxt/ui'
 
-const props = defineProps({
-  board: {
-    type: Object,
-    required: true
-  },
-  boardIndex: {
-    type: Number,
-    required: true
-  }
-})
+const props = defineProps<{
+  board: Board
+  boardIndex: number
+}>()
 
 const boardStore = useBoardStore()
 
@@ -110,7 +104,7 @@ const items = ref<DropdownMenuItem[]>([
   }
 ])
 
-const dragstart = (event: any, { fromBoardIndex, fromTaskIndex }: any) => {
+const dragstart = (event: any, { fromBoardIndex, fromTaskIndex }: any) : void => {
   event.dataTransfer.setData('drag-type', 'task')
   event.dataTransfer.effectAllowed = 'move'
   event.dataTransfer.dropEffect = 'move'
@@ -118,7 +112,7 @@ const dragstart = (event: any, { fromBoardIndex, fromTaskIndex }: any) => {
   event.dataTransfer.setData('from-task-index', fromTaskIndex)
 }
 
-const drop = (event: any, { toBoardIndex, toTaskIndex }: any) => {
+const drop = (event: any, { toBoardIndex, toTaskIndex }: any) : void => {
   const dragType = event.dataTransfer.getData('drag-type')
 
   if (dragType !== 'task') {
@@ -128,13 +122,13 @@ const drop = (event: any, { toBoardIndex, toTaskIndex }: any) => {
   const fromBoardIndex = event.dataTransfer.getData('from-board-index')
   const fromTaskIndex = event.dataTransfer.getData('from-task-index')
 
-  const task: any = boardStore.boards[fromBoardIndex].tasks.splice(fromTaskIndex, 1)[0]
-  boardStore.boards[toBoardIndex].tasks.splice(toTaskIndex, 0, task)
+  const task: any = boardStore.boards[fromBoardIndex]?.tasks.splice(fromTaskIndex, 1)[0]
+  boardStore.boards[toBoardIndex]?.tasks.splice(toTaskIndex, 0, task)
 
   store(fromBoardIndex, toBoardIndex)
 }
 
-const onDropCard = (event: any) => {
+const onDropCard = (event: any) : void => {
   const dragType = event.dataTransfer.getData('drag-type')
 
   if (dragType !== 'task') {
@@ -145,30 +139,33 @@ const onDropCard = (event: any) => {
   const fromTaskIndex = event.dataTransfer.getData('from-task-index')
   const toBoardIndex = props.boardIndex
 
-  const task = boardStore.boards[fromBoardIndex].tasks.splice(fromTaskIndex, 1)[0]
-  boardStore.boards[toBoardIndex].tasks.push(task)
+  const task = boardStore.boards[fromBoardIndex]?.tasks.splice(fromTaskIndex, 1)[0]
+
+  if (task) {
+    boardStore.boards[toBoardIndex]?.tasks.push(task)
+  }
 
   store(fromBoardIndex, toBoardIndex)
 }
 
-const store = (fromBoardIndex: number, toBoardIndex: number) => {
-  boardStore.boards[fromBoardIndex].tasks.forEach(async (task: any, index: number) => {
+const store = (fromBoardIndex: number, toBoardIndex: number) : void => {
+  boardStore.boards[fromBoardIndex]?.tasks.forEach(async (task: any, index: number) : Promise<any> => {
     await $fetch(`/api/tasks/${task.id}`, {
       method: 'PATCH',
       body: {
         position: index + 1,
-        boardId: boardStore.boards[fromBoardIndex].id
+        boardId: boardStore.boards[fromBoardIndex]?.id
       }
     })
   })
 
   if (fromBoardIndex !== toBoardIndex) {
-    boardStore.boards[toBoardIndex].tasks.forEach(async (task: any, index: number) => {
+    boardStore.boards[toBoardIndex]?.tasks.forEach(async (task: any, index: number) : Promise<any> => {
       await $fetch(`/api/tasks/${task.id}`, {
         method: 'PATCH',
         body: {
           position: index + 1,
-          boardId: boardStore.boards[toBoardIndex].id
+          boardId: boardStore.boards[toBoardIndex]?.id
         }
       })
     })

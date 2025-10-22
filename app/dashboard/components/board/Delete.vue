@@ -26,12 +26,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  board: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  board: Board
+}>()
 
 const { t } = useI18n()
 const toast = useToast()
@@ -41,19 +38,20 @@ const workspaceStore = useWorkspaceStore()
 const open = defineModel<boolean>('open', {
   default: false
 })
+
 const loading = ref<boolean>(false)
 
-const remove = async () => {
+const remove = async () : Promise<any> => {
 
   try {
     await $fetch(`/api/boards/${props.board.id}`, {
       method: 'DELETE'
     })
 
-    const index = workspaceStore.current.boards.findIndex((b: any) => b.id === props.board.id)
+    const index = workspaceStore.current?.boards.findIndex((b: any) => b.id === props.board.id)
 
-    if (index !== -1) {
-      workspaceStore.current.boards.splice(index, 1)
+    if (index && index !== -1) {
+      workspaceStore.current?.boards.splice(index, 1)
     }
 
     open.value = false

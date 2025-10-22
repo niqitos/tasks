@@ -48,6 +48,8 @@
 </template>
 
 <script lang="ts" setup>
+import type { ButtonProps } from '@nuxt/ui'
+
 definePageMeta({
   middleware: ['home']
 })
@@ -81,7 +83,7 @@ useRobotsRule({
   follow: true
 })
 
-const links = ref([
+const links = ref<ButtonProps[]>([
   {
     label: t('home.hero.links.start'),
     to: localePath('dashboard'),

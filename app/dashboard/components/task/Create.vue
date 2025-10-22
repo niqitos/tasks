@@ -18,35 +18,31 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  board: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  board: Board
+}>()
 
 const userStore = useUserStore()
 const roleStore = useRoleStore()
 
-const localePath = useLocalePath()
 const toast = useToast()
 const { t } = useI18n()
 
 const name = ref('')
 const loading = ref<boolean>(false)
 
-const store = async (e: Event) => {
+const store = async (e: Event) : Promise<any> => {
   loading.value = true
 
   try {
-    const task = await $fetch('/api/tasks', {
+    const task = await $fetch<Task>('/api/tasks', {
       method: 'POST',
       body: {
         name: name.value,
         description: '',
         position: props.board.tasks.length + 1,
         boardId: props.board.id,
-        creatorId: userStore.user.id
+        creatorId: userStore.user?.id
       }
     })
 

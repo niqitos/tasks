@@ -72,7 +72,7 @@ const events = computed(() => boardStore.boards
       end: t.endAt || t.startAt,
       color: t.assignees.length
         ? (
-          workspaceStore.current.members.find((m: any) => m.user.id === t.assignees[0].user.id)?.color
+          workspaceStore.current?.members.find((m: any) => m.user.id === t.assignees[0].user.id)?.color
             ? `var(--ui-${workspaceStore.current.members.find((m: any) => m.user.id === t.assignees[0].user.id)?.color})`
             : 'var(--ui-primary)'
         )

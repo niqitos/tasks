@@ -30,9 +30,9 @@ const workspaceStore = useWorkspaceStore()
 
 const localModal = ref<any>(null)
 
-const model = defineModel()
+const model = defineModel<string>()
 
-const search = useDebounceFn(async () => {
+const search = useDebounceFn(async () : Promise<any> => {
   if (searchTerm.value.length === 0) {
     items.value = []
 
@@ -42,12 +42,13 @@ const search = useDebounceFn(async () => {
   loading.value = true
 
   try {
-    const params = new URLSearchParams({
-      q: searchTerm.value,
-      excludeWorkspaceId: workspaceStore.current?.id
-    });
+    const params = new URLSearchParams();
+    params.append('q', searchTerm.value);
+    if (workspaceStore.current?.id !== undefined && workspaceStore.current?.id !== null) {
+      params.append('excludeWorkspaceId', String(workspaceStore.current.id));
+    }
 
-    const res = await $fetch(`/api/users/search?${params}`)
+    const res = await $fetch<User[]>(`/api/users/search?${params}`)
 
     items.value = res?.map((user: any) => ({
       id: user.id,

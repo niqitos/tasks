@@ -13,6 +13,7 @@
     />
 
     <BoardCreate
+      v-if="workspaceStore.current"
       :workspace="workspaceStore.current"
     />
 
@@ -46,7 +47,7 @@ const drop = (event: any, toBoardIndex: any) => {
 }
 
 const store = () => {
-  boardStore.boards.forEach(async (board: any, index: number) => {
+  boardStore.boards.forEach(async (board: any, index: number) : Promise<any> => {
     await $fetch(`/api/boards/${board.id}`, {
       method: 'PATCH',
       body: {

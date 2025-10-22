@@ -1,6 +1,6 @@
 <template>
   <UButton
-    :label="$t(`plans.${userStore.user.plan}.upgrade`)"
+    :label="$t(`plans.${userStore.user?.plan}.upgrade`)"
     icon="i-lucide:circle-fading-arrow-up"
     color="primary"
     variant="subtle"

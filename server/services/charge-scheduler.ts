@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 import { addMonths } from 'date-fns' // or implement manually
 // import prisma client
 
-const chargeSubscription = async (subscription: any) => {
+const chargeSubscription = async (subscription: any) : Promise<any> => {
   const config = useRuntimeConfig()
 
   const storedCard = await prisma.storedCard.findUnique({ where: { id: subscription.storedCardId }})

@@ -55,7 +55,7 @@
       >
         <TaskCardAssignee
           v-for="assignee in task.assignees"
-          :key="assignee.user.id"
+          :key="assignee.user?.id"
           :user="assignee.user"
         />
       </UAvatarGroup>
@@ -64,12 +64,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  task: {
-    required: true,
-    type: Object
-  }
-})
+const props = defineProps<{
+  task: Task
+}>()
 
 const localePath = useLocalePath()
 

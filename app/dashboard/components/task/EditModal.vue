@@ -223,7 +223,7 @@ const createdAt = computed(() => {
   })
 })
 
-const submit = async () => {
+const submit = async () : Promise<any> => {
   loading.value = true
 
   try {
@@ -241,7 +241,7 @@ const submit = async () => {
       const index = board.value.tasks.findIndex((b: any) => b.id === route.params.task)
 
       if (index !== -1) {
-        boardStore.boards.find((b: any) => b.id === task.value?.boardId).tasks[index] = task.value
+        board.value.tasks[index] = task.value
       }
     }
 
@@ -272,17 +272,17 @@ const submit = async () => {
   }
 }
 
-const debouncedFn = useDebounceFn(async () => {
+const debouncedFn = useDebounceFn(async () : Promise<any> => {
   await submit()
 }, 1000)
 
-const uploadFiles = async () => {
+const uploadFiles = async () : Promise<any> => {
   try {
     if (!files.value.length) {
       return
     }
 
-    files.value.forEach(async (f: any) => {
+    files.value.forEach(async (f: any) : Promise<any> => {
       const filename = `${Date.now()}-${f.name.toString().toLowerCase().trim().replace(/\s+/g, '_').replace(/[^\w.-]/g, '')}`
 
       const { data, error } = await supabase
@@ -300,7 +300,7 @@ const uploadFiles = async () => {
         })
       }
 
-      const file = await $fetch(`/api/tasks/${task.value?.id}/files`, {
+      const file = await $fetch<AttachmentFile>(`/api/tasks/${task.value?.id}/files`, {
         method: 'POST',
         body: {
           filename,
@@ -312,13 +312,18 @@ const uploadFiles = async () => {
 
       task.value?.files.push(file)
 
-      workspaceStore.current
-        .boards
-        .find((b: any) => b.id === task.value.boardId)
-        .tasks
-        .find((t: any) => t.id === task.value.id)
-        .files
-        .push(file)
+      const current = workspaceStore.current
+      if (current && Array.isArray(current.boards)) {
+        const board = current.boards.find((b: Board) => b.id === task.value.boardId)
+
+        if (board && Array.isArray(board.tasks)) {
+          const taskInStore = board.tasks.find((t: any) => t.id === task.value.id)
+
+          if (taskInStore && Array.isArray(taskInStore.files)) {
+            taskInStore.files.push(file)
+          }
+        }
+      }
     })
 
     files.value = []

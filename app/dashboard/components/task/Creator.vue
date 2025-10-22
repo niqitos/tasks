@@ -18,12 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  user: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  user: User
+}>()
 
 const fullName = computed(() => `${props.user.name}${props.user.lastname ? ` ${props.user.lastname}` : ''}`)
 </script>

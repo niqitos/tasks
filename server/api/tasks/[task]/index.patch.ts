@@ -3,7 +3,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import { prisma } from '@@/server/utils/prisma'
 import { getUpdatedFields } from '@@/server/utils/diff'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) : Promise<any> => {
   const config = useRuntimeConfig()
 
   try {

@@ -1,7 +1,7 @@
 export const useUserStore = defineStore('user', () => {
-  const user = ref<any>({})
+  const user = ref<User>()
 
-  const fullname = computed(() => `${user.value.name}${user.value.lastname ? ` ${user.value.lastname}` : ''}`)
+  const fullname = computed<string>(() => `${user.value?.name}${user.value?.lastname ? ` ${user.value.lastname}` : ''}`)
 
   const edit = ref<boolean>(false)
 

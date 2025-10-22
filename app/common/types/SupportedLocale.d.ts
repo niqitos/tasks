@@ -1,1 +1,1 @@
-declare type SupportedLocale = 'uk' | 'en'
+declare type SupportedLocale = 'uk' | 'ru' | 'en'

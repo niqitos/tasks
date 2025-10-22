@@ -71,9 +71,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
 import { breakpointsTailwind } from '@vueuse/core'
 import type { InboxItem } from '@/common/types'
+import type { TabsItem } from '@nuxt/ui'
 
 definePageMeta({
   middleware: ['auth'],
@@ -82,7 +82,7 @@ definePageMeta({
 
 const { t } = useI18n()
 
-const tabItems = [
+const tabItems = ref<TabsItem[]>([
   {
     label: t('inbox.filter.all'),
     value: 'all'
@@ -91,14 +91,14 @@ const tabItems = [
     label: t('inbox.filter.unread'),
     value: 'unread'
   }
-]
+])
 
-const selectedTab = ref('all')
+const selectedTab = ref<'all' | 'unread'>('all')
 
 const { data: messages } = await useFetch<InboxItem[]>('/api/inbox', { default: () => [] })
 
 // Filter messages based on the selected tab
-const filteredInboxItems = computed<any[]>(() => {
+const filteredInboxItems = computed<InboxItem[]>(() => {
   if (selectedTab.value === 'unread') {
     return messages.value.filter(message => !message.isRead)
   }
@@ -119,7 +119,6 @@ const isInboxItemPanelOpen = computed({
   }
 })
 
-// Reset selected message if it's not in the filtered messages
 watch(filteredInboxItems, () => {
   if (!filteredInboxItems.value.find(message => message.id === selectedInboxItem.value?.id)) {
     selectedInboxItem.value = null
@@ -128,7 +127,7 @@ watch(filteredInboxItems, () => {
 
 watch(selectedInboxItem, () => {
   const index = filteredInboxItems.value.findIndex(message => message.id === selectedInboxItem.value?.id)
-  if (index !== -1) {
+  if (selectedInboxItem.value && index !== -1) {
     filteredInboxItems.value[index] = selectedInboxItem.value
   }
 })

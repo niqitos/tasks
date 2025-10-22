@@ -2,7 +2,7 @@
 export const useColors = () => {
   const { t } = useI18n()
 
-  const backgroundTypes = ref<any[]>([
+  const backgroundTypes = ref<BackgroundType[]>([
     {
       value: 'color',
       label: t('background.type.color.label')
@@ -13,7 +13,7 @@ export const useColors = () => {
     }
   ])
 
-  const colors = ref<any[]>([
+  const colors = ref<Color[]>([
     {
       value: null,
       label: t('color.transparent.label')

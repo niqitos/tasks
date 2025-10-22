@@ -29,7 +29,7 @@ interface TextAction {
   icon: string
   command: () => void,
   disabled: boolean
-  active: boolean
+  active: () => boolean
 }
 
 const props = defineProps({

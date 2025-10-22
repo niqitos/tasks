@@ -1,6 +1,6 @@
 import { prisma } from '@@/server/utils/prisma'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) : Promise<any> => {
   const taskId = getRouterParam(event, 'taskId')
 
   return await prisma.comment.findMany({

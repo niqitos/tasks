@@ -1,6 +1,6 @@
 export const useWorkspaceStore = defineStore('workspace', () => {
-  const workspaces = ref<any[]>([])
-  const current = ref<any>(null)
+  const workspaces = ref<Workspace[]>([])
+  const current = ref<Workspace>()
 
   const tempBackground = ref<string>()
 

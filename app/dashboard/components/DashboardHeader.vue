@@ -78,9 +78,9 @@ const menu = computed<any>(() => {
       {
         label: userStore.fullname,
         avatar: {
-          src: userStore.user.avatar,
-          alt: `${userStore.user.name}${userStore.user.lastname ? ` ${userStore.user.lastname}` : ''}`,
-          icon: userStore.user.name || userStore.user.lastname ? '' : 'i-lucide:user'
+          src: userStore.user?.avatar,
+          alt: `${userStore.user?.name}${userStore.user?.lastname ? ` ${userStore.user.lastname}` : ''}`,
+          icon: userStore.user?.name || userStore.user?.lastname ? '' : 'i-lucide:user'
         },
         type: 'label'
       },
@@ -128,7 +128,7 @@ const menu = computed<any>(() => {
   ],
   [
     {
-      label: $t(`plans.${userStore.user.plan}.upgrade`),
+      label: $t(`plans.${userStore.user?.plan}.upgrade`),
       icon: 'i-lucide:circle-fading-arrow-up',
       class: 'text-primary hover:!text-primary data-highlighted:text-primary data-[state=open]:text-primary',
       to: localePath('upgrade')

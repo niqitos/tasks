@@ -38,12 +38,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  file: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  file: AttachmentFile
+}>()
 
 const config = useRuntimeConfig()
 const supabase = useSupabase()
@@ -54,7 +51,7 @@ const workspaceStore = useWorkspaceStore()
 
 const task = defineModel<any>('task')
 
-const remove = async () => {
+const remove = async () : Promise<any> => {
   try {
     const { data, error } = await supabase
       .storage
@@ -83,17 +80,21 @@ const remove = async () => {
       task.value.files.splice(taskFileIndex, 1);
     }
 
-    const workspaceBoardTaskFiles = workspaceStore.current
-      .boards
-      .find((b: any) => b.id === task.value.boardId)
-      .tasks
-      .find((t: any) => t.id === task.value.id)
-      .files
+    const current = workspaceStore.current
+    if (current && Array.isArray(current.boards)) {
+      const board = current.boards.find((b: Board) => b.id === task.value.boardId)
 
-    const workspaceBoardTaskFileIndex = workspaceBoardTaskFiles.findIndex((file: any) => file.id === props.file.id)
+      if (board && Array.isArray(board.tasks)) {
+        const taskInStore = board.tasks.find((t: any) => t.id === task.value.id)
 
-    if (workspaceBoardTaskFileIndex !== -1) {
-      workspaceBoardTaskFiles.splice(workspaceBoardTaskFileIndex, 1);
+        if (taskInStore && Array.isArray(taskInStore.files)) {
+          const workspaceBoardTaskFileIndex = taskInStore.files.findIndex((file: any) => file.id === props.file.id)
+
+          if (workspaceBoardTaskFileIndex !== -1) {
+            taskInStore.files.splice(workspaceBoardTaskFileIndex, 1);
+          }
+        }
+      }
     }
 
     toast.add({

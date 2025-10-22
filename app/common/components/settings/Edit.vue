@@ -39,6 +39,7 @@
 </template>
 
 <script lang="ts" setup>
+import type { Locale } from '@nuxt/ui'
 import type { LocaleObject } from '@nuxtjs/i18n'
 
 const { locale, locales: i18nLocales, setLocale: setI18nLocale } = useI18n()
@@ -46,13 +47,12 @@ const switchLocalePath = useSwitchLocalePath()
 
 const settingsStore = useSettingsStore()
 
-
-const locales = ref<any>(i18nLocales.value.map((l: LocaleObject) => ({
-  name: l.name?.substring(0, 3),
+const locales = ref<Locale<any>[]>(i18nLocales.value.map((l: LocaleObject) => ({
+  name: l.name ? l.name.substring(0, 3) : l.code,
   code: l.code,
-  dir: l.dir
+  dir: (l.dir ?? 'ltr') as any,
+  messages: {} as any
 })))
-
 
 const setLocale = (value: SupportedLocale) => {
   if (i18nLocales.value.filter((i: LocaleObject) => i.code !== value)) {

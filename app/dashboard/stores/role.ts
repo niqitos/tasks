@@ -19,7 +19,7 @@ export const useRoleStore = defineStore('role', () => {
     }
   ])
 
-  const limitations = computed<any>(() => planStore.limitations[workspaceStore.current?.creator.plan/*userStore.user?.plan*/])
+  const limitations = computed<any>(() => planStore.limitations[workspaceStore.current?.creator.plan/*userStore.user?.plan*/ || 'free'])
 
   const canCreateWorkspaces = computed<boolean>(() =>
     limitations.value?.workspaces.max === planStore.unlimited ||
@@ -28,17 +28,17 @@ export const useRoleStore = defineStore('role', () => {
 
   const canCreateBoards = computed<boolean>(() =>
     limitations.value?.workspaces.boards.max === planStore.unlimited ||
-    limitations.value?.workspaces.boards.max > workspaceStore.current?.boards.length
+    limitations.value?.workspaces.boards.max > (workspaceStore.current?.boards?.length ?? 0)
   )
 
   const canCreateTasks = computed<boolean>(() =>
     limitations.value?.workspaces.boards.tasks.max === planStore.unlimited ||
-    limitations.value?.workspaces.boards.tasks.max > workspaceStore.current?.boards.map((b: any) => b.tasks).flat().length
+    limitations.value?.workspaces.boards.tasks.max > (workspaceStore.current?.boards ?? []).map((b: any) => b.tasks).flat().length
   )
 
   const canAddMembersToWorkspace = computed<boolean>(() =>
     limitations.value?.workspaces.members.max === planStore.unlimited ||
-    limitations.value?.workspaces.members.max > workspaceStore.current?.members.length
+    limitations.value?.workspaces.members.max > (workspaceStore.current?.members ?? []).length
   )
 
   const canViewBoards = computed<boolean>(() => limitations.value?.view.boards)

@@ -32,13 +32,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  task: {
-    type: Object,
-    required: true
-  }
-})
-
+const props = defineProps<{
+  task: Task
+}>()
 
 const roleStore = useRoleStore()
 const workspaceStore = useWorkspaceStore()
@@ -46,8 +42,8 @@ const workspaceStore = useWorkspaceStore()
 const open = ref<boolean>(false)
 const searchTerm = ref<string>('')
 
-const { data: users, status } = await useFetch(`/api/workspaces/${workspaceStore.current.id}/members`, {
-  key: `/api/workspaces/${workspaceStore.current.id}/members`,
+const { data: users, status } = await useFetch(`/api/workspaces/${workspaceStore.current?.id}/members`, {
+  key: `/api/workspaces/${workspaceStore.current?.id}/members`,
   params: { q: searchTerm },
   transform: (data: any[]) => {
       return data?.map(member => ({
@@ -64,8 +60,8 @@ const { data: users, status } = await useFetch(`/api/workspaces/${workspaceStore
   lazy: true
 })
 
-const assign = async (user: any) => {
-  const response = await $fetch(`/api/tasks/${props.task.id}/assignees`, {
+const assign = async (user: any) : Promise<any> => {
+  const response = await $fetch<TaskAssignee>(`/api/tasks/${props.task.id}/assignees`, {
     method: 'POST',
     body: {
       user: user.id
@@ -74,13 +70,19 @@ const assign = async (user: any) => {
 
   props.task.assignees.push(response)
 
-  workspaceStore.current
-    .boards
-    .find((b: any) => b.id === props.task.boardId)
-    .tasks
-    .find((t: any) => t.id === props.task.id)
-    .assignees
-    .push(response)
+  // Safely update the workspace store only if the nested objects/arrays exist
+  const current = workspaceStore.current
+  if (current && Array.isArray(current.boards)) {
+    const board = current.boards.find((b: any) => b.id === props.task.boardId)
+
+    if (board && Array.isArray(board.tasks)) {
+      const taskInStore = board.tasks.find((t: any) => t.id === props.task.id)
+
+      if (taskInStore && Array.isArray(taskInStore.assignees)) {
+        taskInStore.assignees.push(response)
+      }
+    }
+  }
 
   open.value = false
 }

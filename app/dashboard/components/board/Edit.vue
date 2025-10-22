@@ -62,12 +62,9 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '@nuxt/ui'
 
-const props = defineProps({
-  board: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  board: Board
+}>()
 
 const { t } = useI18n()
 const toast = useToast()
@@ -96,11 +93,10 @@ const open = defineModel<boolean>('open', {
 
 const loading = ref<boolean>(false)
 
-const submit = async (event: FormSubmitEvent<Schema>) => {
+const submit = async (event: FormSubmitEvent<Schema>) : Promise<any> => {
   loading.value = true
 
-  const boardId = props.board?.id
-  if (!boardId) {
+  if (!props.board?.id) {
     loading.value = false
 
     toast.add({
@@ -114,7 +110,7 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
   }
 
   try {
-    await $fetch(`/api/boards/${boardId}`, {
+    await $fetch(`/api/boards/${props.board?.id}`, {
       method: 'PATCH',
       body: event.data
     })
@@ -127,8 +123,12 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
       duration: 3000
     })
 
-    workspaceStore.current.boards.find((b: any) => b.id === boardId).name = event.data.name
-    workspaceStore.current.boards.find((b: any) => b.id === boardId).color = event.data.color
+    const index = workspaceStore.current?.boards.findIndex((b: any) => b.id === props.board?.id)
+
+    if (index && index !== -1 && workspaceStore.current?.boards[index]) {
+      workspaceStore.current.boards[index].name = event.data.name
+      workspaceStore.current.boards[index].color = event.data.color || undefined
+    }
 
     loading.value = false
   } catch (error: any) {

@@ -34,35 +34,32 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  task: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  task: Task
+}>()
 
 const { t } = useI18n()
-const router = useRouter()
 const toast = useToast()
 const localePath = useLocalePath()
 
-const workspaceStore = useWorkspaceStore()
+const boardStore = useBoardStore()
 
 const open = ref<boolean>(false)
 const loading = ref<boolean>(false)
-const board = ref<any>(workspaceStore.current.boards.find((b: any) => b.id === props.task.boardId))
 
-const remove = async () => {
+const remove = async () : Promise<any> => {
   try {
     await $fetch(`/api/tasks/${props.task.id}`, {
       method: 'DELETE'
     })
 
-    if (board.value) {
-      const index = board.value.tasks.findIndex((b: any) => b.id === props.task.id)
+    const board = boardStore.boards.find((b: Board) => b.id === props.task.boardId)
+
+    if (board) {
+      const index = board.tasks.findIndex((t: Task) => t.id === props.task.id)
 
       if (index !== -1) {
-        board.value.tasks.splice(index, 1)
+        board.tasks.splice(index, 1)
       }
     }
 

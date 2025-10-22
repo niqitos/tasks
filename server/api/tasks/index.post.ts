@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
 import { prisma } from '@@/server/utils/prisma'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) : Promise<any> => {
   const config = useRuntimeConfig()
 
   try {
@@ -34,7 +34,8 @@ export default defineEventHandler(async (event) => {
             id: true,
             name: true,
             lastname: true,
-            avatar: true
+            avatar: true,
+            plan: true
           }
         },
         assignees: {
@@ -44,7 +45,8 @@ export default defineEventHandler(async (event) => {
                 id: true,
                 name: true,
                 lastname: true,
-                avatar: true
+                avatar: true,
+                plan: true
               }
             }
           },

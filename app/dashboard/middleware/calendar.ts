@@ -1,4 +1,4 @@
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineNuxtRouteMiddleware(async (to) : Promise<any> => {
   const localePath = useLocalePath()
 
   const roleStore = useRoleStore()
@@ -15,12 +15,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
     if (!workspace) {
       workspace = workspaceStore.workspaces[0]
 
-      localStorage.setItem('workspace.current.id', workspace.id)
+      if (workspace && workspace.id != null) {
+        localStorage.setItem('workspace.current.id', String(workspace.id))
+      }
     }
 
     workspaceStore.current = workspace
 
-    boardStore.boards = workspaceStore.current.boards
+    boardStore.boards = workspaceStore.current?.boards ?? []
   }
 
   if (roleStore.canViewCalendar) {

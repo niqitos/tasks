@@ -24,12 +24,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  assignee: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  assignee: TaskAssignee
+}>()
 
 const workspaceStore = useWorkspaceStore()
 
@@ -37,28 +34,26 @@ const task = defineModel<any>('task')
 
 const fullName = computed(() => `${props.assignee.user.name}${props.assignee.user.lastname ? ` ${props.assignee.user.lastname}` : ''}`)
 
-const unassign = async () => {
+const unassign = async () : Promise<any> => {
   await $fetch(`/api/tasks/${task.value.id}/assignees/${props.assignee.id}`, {
     method: 'DELETE'
   })
 
-  const taskAssigneeIndex = task.value.assignees.findIndex((assignee: any) => assignee.userId === props.assignee.user.id)
+  const taskAssigneeIndex = task.value.assignees.findIndex((assignee: TaskAssignee) => assignee.userId === props.assignee.user.id)
 
   if (taskAssigneeIndex !== -1) {
     task.value.assignees.splice(taskAssigneeIndex, 1);
   }
 
-  const workspaceBoardTaskAssignees = workspaceStore.current
-    .boards
-    .find((b: any) => b.id === task.value.boardId)
-    .tasks
-    .find((t: any) => t.id === task.value.id)
-    .assignees
+  const board = workspaceStore.current?.boards?.find((b: Board) => b.id === task.value.boardId)
+  const boardTask = board?.tasks?.find((t: Task) => t.id === task.value.id)
+  const workspaceBoardTaskAssignees = boardTask?.assignees ?? []
 
-  const workspaceBoardTaskAssigneeIndex = workspaceBoardTaskAssignees.findIndex((assignee: any) => assignee.userId === props.assignee.user.id)
+  const workspaceBoardTaskAssigneeIndex = workspaceBoardTaskAssignees.findIndex((assignee: TaskAssignee) => assignee.userId === props.assignee.user.id)
 
-  if (workspaceBoardTaskAssigneeIndex !== -1) {
-    workspaceBoardTaskAssignees.splice(workspaceBoardTaskAssigneeIndex, 1);
+  if (workspaceBoardTaskAssigneeIndex !== -1 && boardTask) {
+    // mutate only when the real assignees array exists on the found task
+    boardTask.assignees?.splice(workspaceBoardTaskAssigneeIndex, 1);
   }
 }
 </script>

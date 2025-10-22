@@ -138,12 +138,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
-  task: {
-    type: Object as any,
-    required: true
-  }
-})
+const props = defineProps<{
+  task: Task
+}>()
 
 const comments = ref<any>([])
 const newComment = ref('')
@@ -154,7 +151,7 @@ const { data } = await useFetch(`/api/tasks/${props.task.id}/comments`)
 
 comments.value = data.value || []
 
-const submitComment = async (parentId: string | null = null) => {
+const submitComment = async (parentId: string | null = null) : Promise<any> => {
   const content = parentId ? replyContent.value : newComment.value
   if (!content.trim()) return
 

@@ -12,7 +12,7 @@ function authHeaders() {
   }
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) : Promise<any> => {
   const body = await readBody(event)
 
   const { userId, amount, description, returnUrl } = body

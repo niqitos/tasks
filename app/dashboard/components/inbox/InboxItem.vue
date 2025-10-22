@@ -121,7 +121,7 @@ const body = computed(() => {
   return ''
 })
 
-const update = async (body: any) => {
+const update = async (body: any) : Promise<any> => {
   await useFetch(`/api/inbox/items/${model.value?.id}`, {
     method: 'PATCH',
     body
@@ -133,7 +133,7 @@ const update = async (body: any) => {
   }
 }
 
-onMounted(async () => {
+onMounted(async () : Promise<any> => {
   if (!model.value.isRead) {
     await update({
       isRead: true

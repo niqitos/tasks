@@ -112,11 +112,11 @@ const file = ref<File>()
 
 const loading = ref<boolean>(false)
 
-const submit = async (event: FormSubmitEvent<Schema>) => {
+const submit = async (event: FormSubmitEvent<Schema>) : Promise<any> => {
   loading.value = true
 
   try {
-    const workspace = await $fetch('/api/workspaces', {
+    const workspace = await $fetch<Workspace>('/api/workspaces', {
       method: 'POST',
       body: {
         ...event.data,
@@ -131,7 +131,7 @@ const submit = async (event: FormSubmitEvent<Schema>) => {
 
     workspaceStore.current = workspace
 
-    boardStore.boards = workspaceStore.current.boards
+    boardStore.boards = workspace.boards
 
     toast.add({
       title: t('success.title'),

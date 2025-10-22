@@ -25,14 +25,10 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
-  workspace: {
-    type: Object,
-    required: true
-  }
-})
+const props = defineProps<{
+  workspace: Workspace
+}>()
 
-const localePath = useLocalePath()
 const { t } = useI18n()
 const toast = useToast()
 
@@ -42,22 +38,22 @@ const userStore = useUserStore()
 const name = ref<string>('')
 const loading = ref<boolean>(false)
 
-const store = async () => {
+const store = async () : Promise<any> => {
   loading.value = true
 
   try {
-    const task = await $fetch('/api/boards', {
+    const board = await $fetch<Board>('/api/boards', {
       method: 'POST',
       body: {
         name: name.value,
         description: '',
         position: props.workspace.boards.length + 1,
         workspaceId: props.workspace.id,
-        creatorId: userStore.user.id
+        creatorId: userStore.user?.id
       }
     })
 
-    props.workspace.boards.push(task)
+    props.workspace.boards.push(board)
 
     name.value = ''
 

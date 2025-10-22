@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) : Promise<any> => {
   const body = await readBody(event)
   const token = body.token
   const config = useRuntimeConfig()

@@ -3,7 +3,7 @@ import validator from 'validator'
 import jwt from 'jsonwebtoken'
 import { prisma } from '@@/server/utils/prisma'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async (event) : Promise<any> => {
   const config = useRuntimeConfig()
   const t = await useTranslation(event)
 

@@ -1,4 +1,4 @@
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineNuxtRouteMiddleware(async (to) : Promise<any> => {
   const localePath = useLocalePath()
   const token = useCookie('TasksJWT')
   const userStore = useUserStore()
@@ -21,7 +21,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
       return navigateTo(localePath('login'))
     }
 
-    const user = await $fetch('/api/auth/user')
+    const user = await $fetch<User>('/api/auth/user')
 
     userStore.user = user
 

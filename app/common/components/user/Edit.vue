@@ -73,11 +73,11 @@ const state = reactive<Partial<Schema>>({
 
 const loading = ref<boolean>(false)
 
-const submit = async (event: FormSubmitEvent<Schema>) => {
+const submit = async (event: FormSubmitEvent<Schema>) : Promise<any> => {
   loading.value = true
 
   try {
-    await $fetch(`/api/users/${userStore.user.id}`, {
+    await $fetch(`/api/users/${userStore.user?.id}`, {
       method: 'PATCH',
       body: event.data
     })

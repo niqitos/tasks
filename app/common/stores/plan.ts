@@ -1,7 +1,7 @@
 export const usePlanStore = defineStore('plan', () => {
-  const unlimited = ref<string>('unlimited')
+  const unlimited = ref<unlimited>('unlimited')
 
-  const limitations = reactive<any>({
+  const limitations = reactive<Record<SupportedPlan, limitation>>({
     free: {
       workspaces: {
         max: 1,
@@ -99,13 +99,14 @@ export const usePlanStore = defineStore('plan', () => {
       view: {
         boards: true,
         calendar: true
-      }
+      },
+      support: true
     }
   })
 
-  const currency = ref<string>('USD')
+  const currency = ref<SupportedCurrency>('USD')
 
-  const currencies = reactive<any>({
+  const currencies = reactive<Record<SupportedCurrency, Currency>>({
     USD: {
       symbol: '$',
       name: 'US Dollar',
@@ -123,9 +124,9 @@ export const usePlanStore = defineStore('plan', () => {
     }
   })
 
-  const cycle = ref<'monthly'|'annually'>('monthly')
+  const cycle = ref<SupportedCycle>('monthly')
 
-  const cycles = reactive<any>({
+  const cycles = reactive<Record<SupportedCycle, Cycle>>({
     monthly: {
       label: 'monthly'
     },
@@ -134,29 +135,61 @@ export const usePlanStore = defineStore('plan', () => {
     }
   })
 
-  const prices = reactive<any>({
+  const prices = reactive<Record<SupportedPlan, Record<SupportedCurrency, Record<SupportedCycle, number|false>>>>({
     free: {
-      [currencies.USD.code]: {
-        [cycles.monthly.label]: 0,
-        [cycles.annually.label]: 0
+      USD: {
+        monthly: 0,
+        annually: 0
+      },
+      EUR: {
+        monthly: 0,
+        annually: 0
+      },
+      GBP: {
+        monthly: 0,
+        annually: 0
       }
     },
     team: {
-      [currencies.USD.code]: {
-        [cycles.monthly.label]: 2.99,
-        [cycles.annually.label]: 29.99
+      USD: {
+        monthly: 2.99,
+        annually: 29.99
+      },
+      EUR: {
+        monthly: 2.99,
+        annually: 29.99
+      },
+      GBP: {
+        monthly: 2.99,
+        annually: 29.99
       }
     },
     business: {
-      [currencies.USD.code]: {
-        [cycles.monthly.label]: 8.99,
-        [cycles.annually.label]: 89.99
+      USD: {
+        monthly: 8.99,
+        annually: 89.99
+      },
+      EUR: {
+        monthly: 8.99,
+        annually: 89.99
+      },
+      GBP: {
+        monthly: 8.99,
+        annually: 89.99
       }
     },
     enterprise: {
-      [currencies.USD.code]: {
-        [cycles.monthly.label]: false,
-        [cycles.annually.label]: false
+      USD: {
+        monthly: false,
+        annually: false
+      },
+      EUR: {
+        monthly: false,
+        annually: false
+      },
+      GBP: {
+        monthly: false,
+        annually: false
       }
     }
   })

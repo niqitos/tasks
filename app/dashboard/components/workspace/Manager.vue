@@ -47,7 +47,7 @@ const open = ref<boolean>(false)
 const items = computed(() => {
   let items: any = [
     ...workspaceStore.workspaces.map((w: any) => ({
-      label: `${w.name} (${$t(`workspaces.${w.creatorId === userStore.user.id ? 'owner' : 'member'}`)})`,
+      label: `${w.name} (${$t(`workspaces.${w.creatorId === userStore.user?.id ? 'owner' : 'member'}`)})`,
       type: 'checkbox' as const,
       checked: w.id === workspaceStore.current?.id,
       onSelect: ((e: Event) => changeWorkspace(w))
@@ -67,7 +67,7 @@ const items = computed(() => {
     })
   } else {
     items.push({
-      label: $t(`plans.${userStore.user.plan}.upgrade`),
+      label: $t(`plans.${userStore.user?.plan}.upgrade`),
       icon: 'i-lucide:circle-fading-arrow-up',
       color: 'primary',
       to: localePath('upgrade')

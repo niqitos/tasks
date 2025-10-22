@@ -4,7 +4,7 @@ import { CronJob } from 'cron'
 export default defineNitroPlugin(() => {
   const job = new CronJob(
     '0 0 * * *', // every day at midnight
-    async () => {
+    async () : Promise<any> => {
       console.log('Running subscription scheduler...')
 
       await runDueSubscriptions()

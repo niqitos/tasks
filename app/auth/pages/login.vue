@@ -106,7 +106,7 @@ type Schema = z.output<typeof schema>
 
 const loading = ref<boolean>(false)
 
-const submit = async (payload: FormSubmitEvent<Schema>) => {
+const submit = async (payload: FormSubmitEvent<Schema>) : Promise<any> => {
   loading.value = true
 
   try {

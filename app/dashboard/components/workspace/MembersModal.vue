@@ -115,7 +115,7 @@
             />
 
             <WorkspaceMembersDelete
-              v-if="member.user?.id !== workspaceStore.current.creatorId"
+              v-if="member.user?.id !== workspaceStore.current?.creatorId"
               :member
             />
           </template>
@@ -156,16 +156,16 @@ const state = reactive<Partial<Schema>>({
 const open = ref<boolean>(false)
 const loading = ref<boolean>(false)
 
-const submit = async (event: FormSubmitEvent<Schema>) => {
+const submit = async (event: FormSubmitEvent<Schema>) : Promise<any> => {
   loading.value = true
 
   try {
-    const member = await $fetch(`/api/workspaces/${workspaceStore.current.id}/members`, {
+    const member = await $fetch<WorkspaceMember>(`/api/workspaces/${workspaceStore.current?.id}/members`, {
       method: 'POST',
       body: event.data
     })
 
-    workspaceStore.current.members.push(member)
+    workspaceStore.current?.members.push(member)
 
     toast.add({
       title: t('success.title'),
