@@ -106,10 +106,20 @@ const featuresList = computed(() => [
     size: 'lg:col-span-2'
   }, // BIG
   {
-    key: 'user_assign',
-    icon: 'i-lucide:users',
+    key: 'calendar',
+    icon: 'i-lucide:calendar',
+    size: 'lg:col-span-2'
+  }, // BIG
+  {
+    key: 'inbox',
+    icon: 'i-lucide:inbox',
     size: 'lg:col-span-1'
   }, // MEDIUM
+  {
+    key: 'user_assign',
+    icon: 'i-lucide:users',
+    size: 'lg:col-span-2'
+  }, // BIG
   {
     key: 'task_assign',
     icon: 'i-lucide:user-plus',
@@ -123,8 +133,8 @@ const featuresList = computed(() => [
   {
     key: 'comments',
     icon: 'i-lucide:messages-square',
-    size: 'lg:col-span-1'
-  }, // MEDIUM
+    size: 'lg:col-span-2'
+  }, // BIG
   {
     key: 'tiptap',
     icon: 'i-lucide:square-pen',

@@ -134,6 +134,14 @@ export default {
         title: 'Feature-Rich Tasks (Cards)',
         desc: 'Each task holds all necessary details: deadlines, priority, status, and related content.'
       },
+      calendar: {
+        title: 'Event calendar',
+        desc: 'Plan task flow for today, this week or this month.'
+      },
+      inbox: {
+        title: 'Inbox',
+        desc: 'Track project changes via email and push notifications.'
+      },
       user_assign: {
         title: 'Project User Management',
         desc: 'Assign roles (Admin, Member, Guest) and manage access permissions at the project level.'
