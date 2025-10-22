@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
-import prisma from '@@/server/utils/prisma'
+import { prisma } from '@@/server/utils/prisma'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()

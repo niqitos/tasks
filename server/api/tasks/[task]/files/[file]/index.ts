@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { JwtPayload } from 'jsonwebtoken'
-import prisma from '@@/server/utils/prisma'
+import { prisma } from '@@/server/utils/prisma'
 import { createClient } from '@supabase/supabase-js'
 
 export default defineEventHandler(async (event) => {

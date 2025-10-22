@@ -1,6 +1,6 @@
 import { readBody } from 'h3'
 import crypto from 'crypto'
-import prisma from '@@/server/utils/prisma'
+import { prisma } from '@@/server/utils/prisma'
 
 const config = useRuntimeConfig()
 
