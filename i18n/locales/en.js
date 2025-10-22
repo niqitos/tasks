@@ -257,6 +257,10 @@ export default {
   inbox: {
     title: 'Inbox',
     default: 'Inbox',
+    filter: {
+      all: 'All',
+      unread: 'Unread'
+    },
     items: {
       mark: {
         read: 'Mark as read',

@@ -32,9 +32,7 @@
     <div class="flex flex-col sm:flex-row justify-between gap-1 p-4 sm:px-6 border-b border-default">
       <div class="flex items-start gap-4 sm:my-1.5">
         <UAvatar
-          :avatar="{
-            src: model?.creator.avatar
-          }"
+          :src="model?.creator.avatar"
           :alt="fullname"
           size="3xl"
         />

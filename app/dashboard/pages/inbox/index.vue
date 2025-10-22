@@ -10,9 +10,9 @@
       <UDashboardNavbar
         :title="$t('inbox.title')"
       >
-        <template #leading>
+        <!-- <template #leading>
           <UDashboardSidebarCollapse />
-        </template>
+        </template> -->
 
         <template #trailing>
           <UBadge
@@ -80,13 +80,15 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+const { t } = useI18n()
+
 const tabItems = [
   {
-    label: 'All',
+    label: t('inbox.filter.all'),
     value: 'all'
   },
   {
-    label: 'Unread',
+    label: t('inbox.filter.unread'),
     value: 'unread'
   }
 ]

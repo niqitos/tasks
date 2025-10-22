@@ -257,6 +257,10 @@ export default {
   inbox: {
     title: 'Повідомлення',
     default: 'Вхідні',
+    filter: {
+      all: 'Всі',
+      unread: 'Непрочитані'
+    },
     items: {
       mark: {
         read: 'Позначити як прочитане',
