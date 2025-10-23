@@ -5,7 +5,7 @@ import { prisma } from '@@/server/utils/prisma'
 export default defineEventHandler(async (event) : Promise<any> => {
   const config = useRuntimeConfig()
 
-  try {
+  // try {
     const body = await readBody(event)
     const workspaceId = await getRouterParam(event, 'workspace') as string
 
@@ -137,11 +137,37 @@ export default defineEventHandler(async (event) : Promise<any> => {
       }
     })
 
-    return workspaceMember
-  } catch (err) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Could not verify jwt',
+    const fcmToken = await prisma.fcmToken.findFirst({
+      where: {
+        userId: workspaceMember.user.id
+      }
     })
-  }
+
+    if (!fcmToken) {
+      throw createError({
+        statusCode: 404,
+        message: 'User FCM token not found'
+      })
+    }
+
+    const result = await sendFCMNotification(
+      fcmToken.token,
+      {
+        title: 'Test title',
+        body: 'Test message'
+      },
+      {
+        link: '/',
+        userId: workspaceMember.user.id.toString(),
+        timestamp: new Date().toISOString()
+      }
+    )
+
+    return workspaceMember
+  // } catch (err) {
+  //   throw createError({
+  //     statusCode: 500,
+  //     statusMessage: 'Could not verify jwt',
+  //   })
+  // }
 })

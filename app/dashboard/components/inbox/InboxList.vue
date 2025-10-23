@@ -65,7 +65,7 @@ const { inboxItemTitle } = useInbox()
 
 const inboxItemsRefs = ref<Element[]>([])
 
-const selectedInboxItem = defineModel<InboxItem | null>({
+const selectedInboxItem = defineModel<InboxItem | undefined>({
   required: true
 })
 

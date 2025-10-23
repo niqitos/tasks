@@ -48,6 +48,7 @@ const { t } = useI18n()
 const jwtCookie = useCookie('TasksJWT')
 const userStore = useUserStore()
 const localePath = useLocalePath()
+const { logout } = useAuth()
 
 const navigationItems = computed<NavigationMenuItem[]>(() => {
   return [
@@ -71,9 +72,4 @@ const navigationItems = computed<NavigationMenuItem[]>(() => {
     }
   ]
 })
-
-const logout = () => {
-  jwtCookie.value = null
-  return navigateTo(localePath('login'), { external: true })
-}
 </script>

@@ -81,6 +81,8 @@ definePageMeta({
 
 const { t } = useI18n()
 
+const inboxStore = useInboxStore()
+
 const tabItems = ref<TabsItem[]>([
   {
     label: t('inbox.filter.all'),
@@ -94,15 +96,16 @@ const tabItems = ref<TabsItem[]>([
 
 const selectedTab = ref<'all' | 'unread'>('all')
 
-const { data: messages } = await useFetch<InboxItem[]>('/api/inbox', { default: () => [] })
+const { data } = await useFetch<InboxItem[]>('/api/inbox', { default: () => [] })
 
-// Filter messages based on the selected tab
+inboxStore.inboxItems = data.value
+
 const filteredInboxItems = computed<InboxItem[]>(() => {
   if (selectedTab.value === 'unread') {
-    return messages.value.filter(message => !message.isRead)
+    return inboxStore.inboxItems.filter(message => !message.isRead)
   }
 
-  return messages.value
+  return inboxStore.inboxItems
 })
 
 const selectedInboxItem = ref<InboxItem | null>()

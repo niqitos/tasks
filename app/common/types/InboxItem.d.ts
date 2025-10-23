@@ -1,6 +1,6 @@
 declare type InboxItem = {
   id: string
-  inbox: Inbox
+  inbox?: Inbox
   inboxId: string
   type: InboxItemType
   message: string
@@ -10,11 +10,11 @@ declare type InboxItem = {
   relatedType: InboxRelatedType
   workspace: Workspace
   workspaceId?: string
-  task?: Task
+  task: Task
   taskId?: string
-  comment?: Comment
+  comment: Comment
   commentId?: string
   creator: User
   creatorId?: string
-  createdAt?: Date
+  createdAt: Date
 }

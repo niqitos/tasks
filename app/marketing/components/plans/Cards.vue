@@ -66,7 +66,7 @@ const plans = computed(() => [
     ],
     button: {
       label: t('plans.team.action'),
-      to: ['team', 'business', 'enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
+      to: ['team', 'business', 'enterprise'].includes(userStore.user?.plan) ? localePath('dashboard') : localePath('upgrade')
     },
     scale: true,
     highlight: true
@@ -87,7 +87,7 @@ const plans = computed(() => [
     ],
     button: {
       label: t('plans.business.action'),
-      to: ['business', 'enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
+      to: ['business', 'enterprise'].includes(userStore.user?.plan) ? localePath('dashboard') : localePath('upgrade')
     }
   // },
   // {
@@ -106,7 +106,7 @@ const plans = computed(() => [
   //   ],
   //   button: {
   //     label: t('plans.enterprise.action'),
-  //     to: ['enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
+  //     to: ['enterprise'].includes(userStore.user?.plan) ? localePath('dashboard') : localePath('upgrade')
   //   }
   }
 ].map((tier: any) => {

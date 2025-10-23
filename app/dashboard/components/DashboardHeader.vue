@@ -63,7 +63,7 @@
 
 <script lang="ts" setup>
 const { t } = useI18n()
-const jwtCookie = useCookie('TasksJWT')
+const { logout } = useAuth()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 const localePath = useLocalePath()
@@ -145,10 +145,4 @@ const menu = computed<any>(() => {
 
   return items
 })
-
-const logout = () => {
-  jwtCookie.value = null
-
-  return navigateTo(localePath('login'), { external: true })
-}
 </script>

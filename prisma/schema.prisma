@@ -110,6 +110,7 @@ model User {
   subscriptions     Subscription[]
   inboxes           Inbox[]
   inboxItems        InboxItem[]       @relation("InboxItemCreator")
+  FcmTokens         FcmToken[]        @relation("FcmTokenUser")
 }
 
 model Workspace {
@@ -349,4 +350,23 @@ model InboxItem {
   creatorId String?
 
   createdAt   DateTime    @default(now())
+}
+
+model FcmToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  deviceId  String?
+  platform  String?
+  browser   String?
+  isActive  Boolean  @default(true)
+  lastUsed  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User?    @relation("FcmTokenUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([isActive])
 }

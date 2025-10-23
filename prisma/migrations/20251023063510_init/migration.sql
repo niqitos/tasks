@@ -224,6 +224,22 @@ CREATE TABLE "InboxItem" (
     CONSTRAINT "InboxItem_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "FcmToken" (
+    "id" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "deviceId" TEXT,
+    "platform" TEXT,
+    "browser" TEXT,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "lastUsed" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "FcmToken_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -262,6 +278,18 @@ CREATE INDEX "Subscription_userId_idx" ON "Subscription"("userId");
 
 -- CreateIndex
 CREATE INDEX "Subscription_storedCardId_idx" ON "Subscription"("storedCardId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "FcmToken_token_key" ON "FcmToken"("token");
+
+-- CreateIndex
+CREATE INDEX "FcmToken_userId_idx" ON "FcmToken"("userId");
+
+-- CreateIndex
+CREATE INDEX "FcmToken_token_idx" ON "FcmToken"("token");
+
+-- CreateIndex
+CREATE INDEX "FcmToken_isActive_idx" ON "FcmToken"("isActive");
 
 -- AddForeignKey
 ALTER TABLE "Workspace" ADD CONSTRAINT "Workspace_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -340,3 +368,6 @@ ALTER TABLE "InboxItem" ADD CONSTRAINT "InboxItem_commentId_fkey" FOREIGN KEY ("
 
 -- AddForeignKey
 ALTER TABLE "InboxItem" ADD CONSTRAINT "InboxItem_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FcmToken" ADD CONSTRAINT "FcmToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

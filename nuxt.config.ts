@@ -1,3 +1,6 @@
+import { join } from 'path'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
@@ -73,15 +76,37 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     jwtSecret: process.env.JWT_SECRET,
+
     monobankApiBase: process.env.MONOBANK_API_BASE,
     monobankMerchantId: process.env.MONOBANK_MERCHANT_ID,
     monobankSecret: process.env.MONOBANK_SECRET,
     monobankWebhookSecret: process.env.MONOBANK_WEBHOOK_SECRET,
+
+    pusherAppId: process.env.NUXT_PUSHER_APP_ID || '',
+    pusherSecret: process.env.NUXT_PUSHER_SECRET || '',
+
+    firebaseProjectId: process.env.NUXT_SERVER_FIREBASE_PROJECT_ID || '',
+    firebaseClientEmail: process.env.NUXT_SERVER_FIREBASE_CLIENT_EMAIL || '',
+    firebasePrivateKey: process.env.NUXT_SERVER_FIREBASE_PRIVATE_KEY || '',
     public: {
       appUrl: process.env.NUXT_PUBLIC_SITE_URL,
+
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY,
-      supabaseBucket: process.env.SUPABASE_BUCKET
+      supabaseBucket: process.env.SUPABASE_BUCKET,
+
+      pusherKey: process.env.NUXT_PUBLIC_PUSHER_KEY || '',
+      pusherCluster: process.env.NUXT_PUBLIC_PUSHER_CLUSTER || 'eu',
+      pusherUseTls: process.env.NUXT_PUBLIC_PUSHER_USE_TLS,
+
+      firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY,
+      firebaseAuthDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      firebaseProjectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID,
+      firebaseStorageBucket: process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+      firebaseMessagingSenderId: process.env.NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+      firebaseAppId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
+      firebaseMeasurementId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
+      firebaseVapidKey: process.env.NUXT_PUBLIC_FIREBASE_VAPID_KEY
     }
   },
   extends: [
@@ -193,5 +218,30 @@ export default defineNuxtConfig({
       '/dashboard/**',
       '/inbox/**'
     ]
+  },
+
+  nitro: {
+    preset: 'static',
+    hooks: {
+      'build:before': () => {
+        const templatePath = join(process.cwd(), 'public', 'firebase-messaging-sw.template.js')
+        const outputPath = join(process.cwd(), 'public', 'firebase-messaging-sw.js')
+
+        if (existsSync(templatePath)) {
+          let swContent = readFileSync(templatePath, 'utf8')
+
+          swContent = swContent
+            .replace('__FIREBASE_API_KEY__', process.env.FIREBASE_API_KEY || '')
+            .replace('__FIREBASE_AUTH_DOMAIN__', process.env.FIREBASE_AUTH_DOMAIN || '')
+            .replace('__FIREBASE_PROJECT_ID__', process.env.FIREBASE_PROJECT_ID || '')
+            .replace('__FIREBASE_STORAGE_BUCKET__', process.env.FIREBASE_STORAGE_BUCKET || '')
+            .replace('__FIREBASE_MESSAGING_SENDER_ID__', process.env.FIREBASE_MESSAGING_SENDER_ID || '')
+            .replace('__FIREBASE_APP_ID__', process.env.FIREBASE_APP_ID || '')
+            .replace('__FIREBASE_MEASUREMENT_ID__', process.env.FIREBASE_MEASUREMENT_ID || '')
+
+          writeFileSync(outputPath, swContent)
+        }
+      }
+    }
   }
 })
