@@ -1,4 +1,5 @@
 export const useWorkspaceStore = defineStore('workspace', () => {
+  const loading = ref<boolean>(true)
   const boardStore = useBoardStore()
 
   const workspaces = ref<Workspace[]>([])
@@ -36,6 +37,9 @@ export const useWorkspaceStore = defineStore('workspace', () => {
 
           boardStore.boards = current.value?.boards || []
         }
+      })
+      .finally(() => {
+        loading.value = false
       })
   }
 

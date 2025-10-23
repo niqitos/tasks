@@ -17,12 +17,16 @@
 </template>
 
 <script setup lang="ts">
-const visible = ref(true)
+const workspaceStore = useWorkspaceStore()
+
+const mounted = ref(true)
+
+const visible = computed(() => mounted.value && !workspaceStore.loading)
 
 onMounted(() => {
   nextTick(() => {
     setTimeout(() => {
-      visible.value = false
+      mounted.value = false
     }, 500)
   })
 })
