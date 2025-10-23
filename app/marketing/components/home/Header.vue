@@ -2,7 +2,7 @@
   <UHeader
     :ui="{
       body: 'p-3 sm:p-5',
-      container: 'max-w-full'
+      container: 'max-w-full lg:px-6'
     }"
   >
     <template #left>

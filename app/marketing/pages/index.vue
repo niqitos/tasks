@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row items-start min-h-[inherit] w-full overflow-y-visible py-4 sm:px-6 lg:px-8 overflow-x-auto space-x-4">
+  <div class="flex flex-row items-start min-h-[inherit] w-full overflow-y-visible py-4 lg:px-6 overflow-x-auto space-x-4">
     <UContainer class="py-12 lg:py-16">
       <UPageHero
         :headline="$t('home.hero.headline')"

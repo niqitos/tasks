@@ -1,8 +1,8 @@
 <template>
   <UHeader
     :ui="{
-      body: 'p-3  sm:p-5',
-      container: 'max-w-full'
+      body: 'p-3 sm:p-5',
+      container: 'max-w-full lg:px-6'
     }"
   >
     <template #left>
@@ -93,6 +93,8 @@ const route = useRoute()
 const workspaceStore = useWorkspaceStore()
 const roleStore = useRoleStore()
 const inboxStore = useInboxStore()
+
+inboxStore.getInbox()
 
 const menu = computed<any>(() => {
   const items: any = [

@@ -142,7 +142,6 @@ const setupFirebase = async () => {
 }
 
 onMounted(() => {
-  inboxStore.getInbox()
   setupPusher()
   setupFirebase()
 })

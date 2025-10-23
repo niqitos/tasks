@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row items-start min-h-[inherit] w-full overflow-y-visible py-4 px-4 sm:px-6 lg:px-8 overflow-x-auto space-x-4">
+  <div class="flex flex-row items-start min-h-[inherit] w-full overflow-y-visible py-4 px-4 sm:px-6 lg:px-6 overflow-x-auto space-x-4">
     <FullCalendar
       ref="fullCalendarRef"
       :options="options"
