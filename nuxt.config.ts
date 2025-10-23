@@ -224,7 +224,6 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'static',
     hooks: {
       'build:before': () => {
         const templatePath = join(process.cwd(), 'public', 'firebase-messaging-sw.template.js')
