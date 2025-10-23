@@ -21,7 +21,7 @@ const workspaceStore = useWorkspaceStore()
 
 const mounted = ref(true)
 
-const visible = computed(() => mounted.value && workspaceStore.loading)
+const visible = computed(() => mounted.value || workspaceStore.loading)
 
 onMounted(() => {
   nextTick(() => {
