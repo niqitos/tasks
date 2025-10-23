@@ -129,15 +129,15 @@
           <UFormField
             :label="$t('task.assignees', task.assignees.length)"
           >
-            <div class="flex gap-4">
+            <div class="flex gap-3 mt-2">
+              <TaskAssignModal
+                :task="task"
+              />
+
               <TaskAssignee
                 v-for="assignee in task.assignees"
                 v-model:task="task"
                 :assignee
-              />
-
-              <TaskAssignModal
-                :task="task"
               />
             </div>
           </UFormField>

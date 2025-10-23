@@ -44,13 +44,12 @@ useRobotsRule({
 const workspaceStore = useWorkspaceStore()
 const boardStore = useBoardStore()
 
+workspaceStore.setWorkspaces()
+
 watch(
   () => workspaceStore.workspaces.value,
   () => {
     workspaceStore.setWorkspaces()
-  },
-  {
-    immediate: true
   }
 )
 </script>

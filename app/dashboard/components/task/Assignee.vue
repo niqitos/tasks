@@ -1,14 +1,15 @@
 <template>
-  <div class="flex items-center gap-2 relative group">
+  <div class="flex items-center gap-2 relative group mr-4">
     <UAvatar
       :src="assignee.user.avatar || ''"
       :alt="fullName"
       :icon="fullName ? '' : 'i-lucide:user'"
     />
 
-    <div class="text-xs">
-      <div v-text="fullName" />
-    </div>
+    <div
+      class="text-xs"
+      v-text="fullName"
+    />
 
     <UButton
       color="neutral"
@@ -16,7 +17,7 @@
       size="xs"
       icon="i-lucide:x"
       :ui="{
-        base: 'absolute -right-2 -top-1 p-0 opacity-0 group-hover:opacity-100 transition-opacity'
+        base: 'absolute -right-4 p-0 opacity-0 group-hover:opacity-100 transition-opacity'
       }"
       @click="unassign"
     />
