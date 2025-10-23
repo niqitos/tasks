@@ -45,9 +45,6 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    // Subscribe to default topic
-    // await subscribeToTopic(token, 'all-users')
-
     return {
       success: true,
       message: 'FCM token saved successfully',

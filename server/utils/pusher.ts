@@ -11,7 +11,7 @@ const getPusherInstance = () => {
       key: config.public.pusherKey,
       secret: config.pusherSecret,
       cluster: config.public.pusherCluster,
-      useTLS: config.public.pusherUseTls
+      useTLS: config.public.pusherUseTls === 'true'
     })
   }
 

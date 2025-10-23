@@ -1,17 +1,17 @@
-import { runDueSubscriptions } from '@@/server/services/charge-scheduler'
-import { CronJob } from 'cron'
+// import { runDueSubscriptions } from '@@/server/services/charge-scheduler'
+// import { CronJob } from 'cron'
 
 export default defineNitroPlugin(() => {
-  const job = new CronJob(
-    '0 0 * * *', // every day at midnight
-    async () : Promise<any> => {
-      console.log('Running subscription scheduler...')
+  // const job = new CronJob(
+  //   '0 0 * * *', // every day at midnight
+  //   async () : Promise<any> => {
+  //     console.log('Running subscription scheduler...')
 
-      await runDueSubscriptions()
-    }
-  )
+  //     await runDueSubscriptions()
+  //   }
+  // )
 
-  job.start()
+  // job.start()
 
-  console.log('Subscription cron started')
+  // console.log('Subscription cron started')
 })
