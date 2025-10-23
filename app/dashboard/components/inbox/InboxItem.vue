@@ -3,7 +3,7 @@
     id="inbox-2"
   >
     <UDashboardNavbar
-      :title
+      :title="inboxItemTitle(model)"
       :toggle="false"
     >
       <template #leading>
@@ -60,7 +60,7 @@
     <div class="flex-1 p-4 sm:p-6 overflow-y-auto">
       <p
         class="whitespace-pre-wrap"
-        v-html="body"
+        v-html="inboxItemTitle(model, false)"
       />
     </div>
   </UDashboardPanel>
@@ -104,10 +104,6 @@ const dropdownItems = computed(() => [
 ])
 
 const fullname = computed(() => `${model.value?.creator.name}${model.value?.creator.lastname ? ` ${model.value?.creator.lastname}` : ''}`)
-
-const title = computed(() => inboxItemTitle(model.value))
-
-const body = computed(() => inboxItemTitle(model.value))
 
 const update = async (body: any) : Promise<any> => {
   await useFetch(`/api/inbox/items/${model.value?.id}`, {

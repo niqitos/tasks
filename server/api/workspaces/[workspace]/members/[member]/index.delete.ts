@@ -107,11 +107,9 @@ export default defineEventHandler(async (event) : Promise<any> => {
       }
     })
 
-    workspace.members
-      .forEach(async (member: WorkspaceMember) : Promise<any> => {
-        const event = await sendPusherNotification(`inbox.${member.user.id}`, 'workspace.member.removed', member)
-      })
-
+    workspace.members.forEach(async (member: WorkspaceMember) : Promise<any> => {
+      await sendPusherNotification(`inbox.${member.user.id}`, 'workspace.member.removed', member)
+    })
   } catch (err) {
     console.log(err)
   }

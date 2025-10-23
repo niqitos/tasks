@@ -31,8 +31,10 @@ export default defineEventHandler(async (event) : Promise<any> => {
       }
     })
 
+    let taskAssignee
+
     if (existingTaskAssigneeTrying) {
-      return await prisma.taskAssignee.update({
+      taskAssignee = await prisma.taskAssignee.update({
         where: {
           taskId_userId: {
             taskId,
@@ -77,6 +79,19 @@ export default defineEventHandler(async (event) : Promise<any> => {
               }
             }
           }
+        },
+        assignees: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                avatar: true,
+                plan: true
+              }
+            }
+          }
         }
       }
     })
@@ -95,47 +110,53 @@ export default defineEventHandler(async (event) : Promise<any> => {
     //   })
     // }
 
-    const taskAssignee = await prisma.taskAssignee.create({
-      data: {
-        taskId,
-        userId: body.user,
-        assignerId: decodedToken.id
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            lastname: true,
-            email: true,
-            avatar: true,
-            plan: true,
-            inboxes: {
-              select: {
-                id: true
-              },
-              where: {
-                default: true
+    if (!taskAssignee) {
+      taskAssignee = await prisma.taskAssignee.create({
+        data: {
+          taskId,
+          userId: body.user,
+          assignerId: decodedToken.id
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              lastname: true,
+              email: true,
+              avatar: true,
+              plan: true,
+              inboxes: {
+                select: {
+                  id: true
+                },
+                where: {
+                  default: true
+                }
               }
             }
           }
         }
-      }
-    })
+      })
+    }
 
     await prisma.inboxItem.create({
       data: {
-        type: 'taskCreated',
+        type: 'taskAssigned',
         message: 'inbox.messages.task.assignee.created',
         relatedType: 'TaskAssignee',
-        relatedId: task.id,
-        taskId: task.id,
+        relatedId: taskAssignee.taskId,
+        taskId: taskAssignee.taskId,
         inboxId: taskAssignee.user.inboxes[0].id,
-        creatorId: taskAssignee.assignerId
+        creatorId: decodedToken.id
       }
     })
 
-    await sendPusherNotification(`inbox.${taskAssignee.user.id}`, 'task.assigned', task)
+    await sendPusherNotification(`inbox.${taskAssignee.user.id}`, 'task.assigned', taskAssignee)
+
+    task.assignees.forEach(async (assignee: TaskAssignee) : Promise<any> => {
+      await sendPusherNotification(`inbox.${assignee.user.id}`, 'task.assigned', taskAssignee)
+    })
 
     return taskAssignee
   } catch (err) {

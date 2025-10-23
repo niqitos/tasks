@@ -30,7 +30,9 @@ export default defineEventHandler(async (event) : Promise<any> => {
         }
       }
     })
+
     let workspaceMember
+
     if (existingWorkspaceMemberTrying) {
       workspaceMember = await prisma.workspaceMember.update({
         where: {
@@ -184,7 +186,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
     await sendPusherNotification(`inbox.${workspaceMember.user.id}`, 'workspace.member.added', workspaceMember)
 
     workspace.members.forEach(async (member: WorkspaceMember) : Promise<any> => {
-      const event = await sendPusherNotification(`inbox.${member.user.id}`, 'workspace.member.added', member)
+      await sendPusherNotification(`inbox.${member.user.id}`, 'workspace.member.added', member)
     })
 
     return workspaceMember
