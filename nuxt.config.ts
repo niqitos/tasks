@@ -145,9 +145,9 @@ export default defineNuxtConfig({
       'web-app-manifest-192x192.png',
       'web-app-manifest-512x512.png'
     ],
-    client: {
-      installPrompt: true
-    },
+    // client: {
+    //   installPrompt: true
+    // },
     manifest: {
       name: 'Tasks',
       short_name: 'Tasks',
