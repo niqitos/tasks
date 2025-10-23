@@ -18,22 +18,25 @@ export const useWorkspaceStore = defineStore('workspace', () => {
     return ''
   })
 
-  const setWorkspaces = async () : Promise<any> => {
-    workspaces.value = await $fetch<Workspace[]>('/api/workspaces') || []
+  const setWorkspaces = () => {
+    useFetch<Workspace[]>('/api/workspaces')
+      .then(({ data }) => {
+        workspaces.value = data.value
 
-    if (workspaces.value.length > 0) {
-      let workspace = workspaces.value.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
+        if (workspaces.value.length > 0) {
+          let workspace = workspaces.value.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
 
-      if (!workspace && workspaces.value.length > 0 && workspaces.value[0]) {
-        workspace = workspaces.value[0]
+          if (!workspace && workspaces.value.length > 0 && workspaces.value[0]) {
+            workspace = workspaces.value[0]
 
-        localStorage.setItem('workspace.current.id', workspace.id)
-      }
+            localStorage.setItem('workspace.current.id', workspace.id)
+          }
 
-      current.value = workspace
+          current.value = workspace
 
-      boardStore.boards = current.value?.boards || []
-    }
+          boardStore.boards = current.value?.boards || []
+        }
+      })
   }
 
   return {

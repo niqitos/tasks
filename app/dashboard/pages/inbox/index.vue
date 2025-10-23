@@ -132,4 +132,6 @@ watch(selectedInboxItem, () => {
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isMobile = breakpoints.smaller('lg')
+
+workspaceStore.setWorkspaces()
 </script>

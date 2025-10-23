@@ -133,6 +133,8 @@ const submit = async (event: FormSubmitEvent<Schema>) : Promise<any> => {
 
     boardStore.boards = workspace.boards
 
+    workspaceStore.setWorkspaces()
+
     toast.add({
       title: t('success.title'),
       description: t('workspaces.create.success.description'),
