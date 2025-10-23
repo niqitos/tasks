@@ -23,5 +23,6 @@ declare type limitation = {
     boards: boolean,
     calendar: boolean
   },
+  inbox: boolean
   support: boolean
 }

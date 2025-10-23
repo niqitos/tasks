@@ -210,7 +210,7 @@ export default {
           }
         },
         members: {
-          title: 'Участники рабочей області',
+          title: 'Участники проєкту',
           limited: '0 учасників проєкту | {count} учасник проєкту | До {count} учасників проєкту | До {count} учасників проєкту',
           unlimited: 'Необмежені учасники проєкту'
         }
@@ -220,6 +220,9 @@ export default {
       title: 'Функції',
       calendar: {
         title: 'Календар'
+      },
+      inbox: {
+        title: 'Повідомлення'
       },
       support: {
         title: 'Підтримка'

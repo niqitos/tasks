@@ -62,6 +62,7 @@ const plans = computed(() => [
       t(`plans.limits.workspaces.boards.tasks.files.${planStore.limitations.team.workspaces.boards.tasks.files.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.team.workspaces.boards.tasks.files.max),
       t(`plans.limits.workspaces.boards.tasks.assignees.${planStore.limitations.team.workspaces.boards.tasks.assignees.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.team.workspaces.boards.tasks.assignees.max),
       t('plans.features.calendar.title'),
+      t('plans.features.inbox.title'),
       t('plans.team.features.support')
     ],
     button: {
@@ -83,6 +84,7 @@ const plans = computed(() => [
       t(`plans.limits.workspaces.boards.tasks.files.${planStore.limitations.business.workspaces.boards.tasks.files.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.business.workspaces.boards.tasks.files.max),
       t(`plans.limits.workspaces.boards.tasks.assignees.${planStore.limitations.business.workspaces.boards.tasks.assignees.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.business.workspaces.boards.tasks.assignees.max),
       t('plans.features.calendar.title'),
+      t('plans.features.inbox.title'),
       t('plans.business.features.support')
     ],
     button: {
@@ -102,6 +104,7 @@ const plans = computed(() => [
   //     t(`plans.limits.workspaces.boards.tasks.files.${planStore.limitations.enterprise.workspaces.boards.tasks.files.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.enterprise.workspaces.boards.tasks.files.max),
   //     t(`plans.limits.workspaces.boards.tasks.assignees.${planStore.limitations.enterprise.workspaces.boards.tasks.assignees.max === planStore.unlimited ? 'unlimited' : 'limited'}`, planStore.limitations.enterprise.workspaces.boards.tasks.assignees.max),
   //     t('plans.features.calendar.title'),
+  //     t('plans.features.inbox.title'),
   //     t('plans.enterprise.features.support')
   //   ],
   //   button: {

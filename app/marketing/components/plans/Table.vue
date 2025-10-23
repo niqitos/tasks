@@ -165,6 +165,15 @@ const sections = ref([
         }
       },
       {
+        title: t('plans.features.inbox.title'),
+        tiers: {
+          free: planStore.limitations.free.inbox,
+          team: planStore.limitations.team.inbox,
+          business: planStore.limitations.business.inbox,
+          // enterprise: planStore.limitations.enterprise.inbox
+        }
+      },
+      {
         title: t('plans.features.support.title'),
         tiers: {
           free: planStore.limitations.free.support,

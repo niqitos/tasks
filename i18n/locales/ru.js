@@ -221,6 +221,9 @@ export default {
       calendar: {
         title: 'Календарь'
       },
+      inbox: {
+        title: 'Уведомления'
+      },
       support: {
         title: 'Поддержка'
       }

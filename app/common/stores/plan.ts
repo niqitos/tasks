@@ -1,7 +1,7 @@
 export const usePlanStore = defineStore('plan', () => {
   const unlimited = ref<unlimited>('unlimited')
 
-  const limitations = reactive<Record<SupportedPlan, limitation>>({
+  const limitations = reactive<Record<SupportedPlan, Limitation>>({
     free: {
       workspaces: {
         max: 1,
@@ -25,6 +25,7 @@ export const usePlanStore = defineStore('plan', () => {
         boards: true,
         calendar: false
       },
+      inbox: false,
       support: false
     },
     team: {
@@ -50,6 +51,7 @@ export const usePlanStore = defineStore('plan', () => {
         boards: true,
         calendar: true
       },
+      inbox: true,
       support: true
     },
     business: {
@@ -75,6 +77,7 @@ export const usePlanStore = defineStore('plan', () => {
         boards: true,
         calendar: true
       },
+      inbox: true,
       support: true
     },
     enterprise: {
@@ -100,6 +103,7 @@ export const usePlanStore = defineStore('plan', () => {
         boards: true,
         calendar: true
       },
+      inbox: true,
       support: true
     }
   })
