@@ -20,7 +20,8 @@ export default defineEventHandler(async (event) : Promise<any> => {
           {
             members: {
               some: {
-                userId: decodedToken.id
+                userId: decodedToken.id,
+                deletedAt: null
               }
             }
           }
@@ -102,6 +103,9 @@ export default defineEventHandler(async (event) : Promise<any> => {
                 plan: true
               }
             }
+          },
+          where: {
+            deletedAt: null
           }
         },
         creator: {

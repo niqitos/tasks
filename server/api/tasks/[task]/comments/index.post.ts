@@ -86,6 +86,8 @@ export default defineEventHandler(async (event) : Promise<any> => {
           creatorId: decodedToken.id
         }
       })
+
+      await sendPusherNotification(`inbox.${taskAssignee.user.id}`, 'task.comment.created', comment)
     })
 
     return comment

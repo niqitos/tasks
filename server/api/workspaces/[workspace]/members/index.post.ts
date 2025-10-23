@@ -5,7 +5,7 @@ import { prisma } from '@@/server/utils/prisma'
 export default defineEventHandler(async (event) : Promise<any> => {
   const config = useRuntimeConfig()
 
-  // try {
+  try {
     const body = await readBody(event)
     const workspaceId = await getRouterParam(event, 'workspace') as string
 
@@ -30,9 +30,9 @@ export default defineEventHandler(async (event) : Promise<any> => {
         }
       }
     })
-
+    let workspaceMember
     if (existingWorkspaceMemberTrying) {
-      return await prisma.workspaceMember.update({
+      workspaceMember = await prisma.workspaceMember.update({
         where: {
           workspaceId_userId: {
             workspaceId,
@@ -53,7 +53,15 @@ export default defineEventHandler(async (event) : Promise<any> => {
               lastname: true,
               email: true,
               avatar: true,
-              plan: true
+              plan: true,
+              inboxes: {
+                select: {
+                  id: true
+                },
+                where: {
+                  default: true
+                }
+              }
             }
           }
         }
@@ -77,6 +85,19 @@ export default defineEventHandler(async (event) : Promise<any> => {
               }
             }
           }
+        },
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                avatar: true,
+                plan: true
+              }
+            }
+          }
         }
       }
     })
@@ -95,35 +116,37 @@ export default defineEventHandler(async (event) : Promise<any> => {
     //   })
     // }
 
-    const workspaceMember = await prisma.workspaceMember.create({
-      data: {
-        workspaceId,
-        userId: body.user,
-        role: body.role,
-        color: body.color,
-        invitedById: decodedToken.id
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            lastname: true,
-            email: true,
-            avatar: true,
-            plan: true,
-            inboxes: {
-              select: {
-                id: true
-              },
-              where: {
-                default: true
+    if (!workspaceMember) {
+      workspaceMember = await prisma.workspaceMember.create({
+        data: {
+          workspaceId,
+          userId: body.user,
+          role: body.role,
+          color: body.color,
+          invitedById: decodedToken.id
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              lastname: true,
+              email: true,
+              avatar: true,
+              plan: true,
+              inboxes: {
+                select: {
+                  id: true
+                },
+                where: {
+                  default: true
+                }
               }
             }
           }
         }
-      }
-    })
+      })
+    }
 
     await prisma.inboxItem.create({
       data: {
@@ -144,30 +167,31 @@ export default defineEventHandler(async (event) : Promise<any> => {
     })
 
     if (!fcmToken) {
-      throw createError({
-        statusCode: 404,
-        message: 'User FCM token not found'
-      })
+      const result = await sendFCMNotification(
+        fcmToken.token,
+        {
+          title: 'Test title',
+          body: 'Test message'
+        },
+        {
+          link: '/',
+          userId: workspaceMember.user.id.toString(),
+          timestamp: new Date().toISOString()
+        }
+      )
     }
 
-    const result = await sendFCMNotification(
-      fcmToken.token,
-      {
-        title: 'Test title',
-        body: 'Test message'
-      },
-      {
-        link: '/',
-        userId: workspaceMember.user.id.toString(),
-        timestamp: new Date().toISOString()
-      }
-    )
+    await sendPusherNotification(`inbox.${workspaceMember.user.id}`, 'workspace.member.added', workspaceMember)
+
+    workspace.members.forEach(async (member: WorkspaceMember) : Promise<any> => {
+      const event = await sendPusherNotification(`inbox.${member.user.id}`, 'workspace.member.added', member)
+    })
 
     return workspaceMember
-  // } catch (err) {
-  //   throw createError({
-  //     statusCode: 500,
-  //     statusMessage: 'Could not verify jwt',
-  //   })
-  // }
+  } catch (err) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: err.message,
+    })
+  }
 })

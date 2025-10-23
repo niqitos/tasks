@@ -15,7 +15,10 @@ import type { Channel } from 'pusher-js'
 const { locale } = useI18n()
 
 const { subscribe, unsubscribe, bind, unbind } = usePusher()
-// const messages = ref<Array<{ text: string; timestamp: string }>>([])
+
+const inboxStore = useInboxStore()
+const userStore = useUserStore()
+const workspaceStore = useWorkspaceStore()
 
 const { fcmToken, getFCMToken, onForegroundMessage } = useFirebaseMessaging()
 const firebaseMessages = ref<Array<{ text: string; source: string; timestamp: string }>>([])
@@ -23,21 +26,63 @@ const firebaseMessages = ref<Array<{ text: string; source: string; timestamp: st
 let channel: Channel | null = null
 
 const setupPusher = () => {
-  channel = subscribe('inbox')
+  if (!userStore.user) {
+    return
+  }
 
-  bind(channel, 'event', (data: any) => {
-    // pusherMessages.value.push({
-    //   text: data.message,
-    //   source: 'Pusher',
-    //   timestamp: new Date().toLocaleTimeString()
-    // })
+  channel = subscribe(`inbox.${userStore.user?.id}`)
+
+  bind(channel, 'task.updated', (data: any) => {
+    inboxStore.getInbox()
+
+    console.log(data)
+  })
+
+  bind(channel, 'task.assigned', (data: any) => {
+    inboxStore.getInbox()
+
+    console.log(data)
+  })
+
+  bind(channel, 'task.unassigned', (data: any) => {
+    inboxStore.getInbox()
+
+    console.log(data)
+  })
+
+  bind(channel, 'task.comment.created', (data: any) => {
+    inboxStore.getInbox()
+
+    console.log(data)
+  })
+
+  bind(channel, 'workspace.created', (data: any) => {
+    inboxStore.getInbox()
+
+    console.log(data)
+  })
+
+  bind(channel, 'workspace.member.added', async (data: any) => {
+    inboxStore.getInbox()
+
+    workspaceStore.setWorkspaces()
+  })
+
+  bind(channel, 'workspace.member.removed', (data: any) => {
+    inboxStore.getInbox()
+
+    workspaceStore.setWorkspaces()
   })
 }
 
 const setupFirebase = async () => {
+  if (!userStore.user) {
+    return
+  }
+
   const token = await getFCMToken()
 
-  if (!!token) {
+  if (token) {
     const oldToken = localStorage.getItem('fcmToken')
 
     if (token !== oldToken) {
@@ -97,14 +142,22 @@ const setupFirebase = async () => {
 }
 
 onMounted(() => {
+  inboxStore.getInbox()
   setupPusher()
   setupFirebase()
 })
 
 onBeforeUnmount(() => {
   if (channel) {
-    unbind(channel, 'event')
-    unsubscribe('inbox')
+    unbind(channel, 'task.updated')
+    unbind(channel, 'task.assigned')
+    unbind(channel, 'task.unassigned')
+    unbind(channel, 'task.comment.created')
+    unbind(channel, 'workspace.created')
+    unbind(channel, 'workspace.member.added')
+    unbind(channel, 'workspace.member.removed')
+
+    unsubscribe(`inbox.${userStore.user?.id}`)
   }
 })
 </script>

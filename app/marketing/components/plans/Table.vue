@@ -49,7 +49,7 @@ const tiers = computed(() => [
     description: t('plans.team.description'),
     button: {
       label: t('plans.team.action'),
-      to: ['team', 'business', 'enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
+      to: ['team', 'business', 'enterprise'].includes(userStore.user?.plan) ? localePath('dashboard') : localePath('upgrade')
     },
     scale: true,
     highlight: true
@@ -60,7 +60,7 @@ const tiers = computed(() => [
     description: t('plans.business.description'),
     button: {
       label: t('plans.business.action'),
-      to: ['business', 'enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
+      to: ['business', 'enterprise'].includes(userStore.user?.plan) ? localePath('dashboard') : localePath('upgrade')
     }
   // },
   // {
@@ -69,7 +69,7 @@ const tiers = computed(() => [
   //   description: t('plans.enterprise.description'),
   //   button: {
   //     label: t('plans.enterprise.action'),
-  //     to: ['enterprise'].includes(userStore.user.plan) ? localePath('dashboard') : localePath('upgrade')
+  //     to: ['enterprise'].includes(userStore.user?.plan) ? localePath('dashboard') : localePath('upgrade')
   //   }
   }
 ].map((tier: any) => {

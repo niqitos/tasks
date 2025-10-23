@@ -6,7 +6,7 @@ export default defineNuxtPlugin(() => {
   const pusher = new Pusher(config.public.pusherKey, {
     cluster: config.public.pusherCluster,
     encrypted: config.public.pusherUseTls,
-    authEndpoint: '/api/auth/pusher',
+    // authEndpoint: '/api/auth/pusher',
   })
 
   return {

@@ -1,7 +1,7 @@
 <template>
   <div class="overflow-y-auto divide-y divide-default">
     <div
-      v-for="(inboxItem, index) in inboxItems"
+      v-for="(inboxItem, index) in filteredInboxItems"
       :key="index"
       :ref="el => { inboxItemsRefs[inboxItem.id] = el as Element }"
     >
@@ -56,12 +56,14 @@
 </template>
 
 <script setup lang="ts">
-import { format, isToday } from 'date-fns'
 const props = defineProps<{
-  inboxItems: InboxItem[]
+  selectedTab: 'all' | 'unread'
 }>()
+import { format, isToday } from 'date-fns'
 
 const { inboxItemTitle } = useInbox()
+
+const inboxStore = useInboxStore()
 
 const inboxItemsRefs = ref<Element[]>([])
 
@@ -77,6 +79,14 @@ const trimInboxItemTitle = (value: InboxItem) => {
   return inboxItem.length > 90 ? inboxItem.slice(0, 90) + '…' : inboxItem
 }
 
+const filteredInboxItems = computed<InboxItem[]>(() => {
+  if (props.selectedTab === 'unread') {
+    return inboxStore.inboxItems.filter(message => !message.isRead)
+  }
+
+  return inboxStore.inboxItems
+})
+
 watch(selectedInboxItem, () => {
   if (!selectedInboxItem.value) {
     return
@@ -91,21 +101,21 @@ watch(selectedInboxItem, () => {
 
 defineShortcuts({
   arrowdown: () => {
-    const index = props.inboxItems.findIndex(inboxItem => inboxItem.id === selectedInboxItem.value?.id)
+    const index = inboxStore.inboxItems.findIndex((inboxItem: InboxItem) => inboxItem.id === selectedInboxItem.value?.id)
 
     if (index === -1) {
-      selectedInboxItem.value = props.inboxItems[0]
-    } else if (index < props.inboxItems.length - 1) {
-      selectedInboxItem.value = props.inboxItems[index + 1]
+      selectedInboxItem.value = inboxStore.inboxItems[0]
+    } else if (index < inboxStore.inboxItems.length - 1) {
+      selectedInboxItem.value = inboxStore.inboxItems[index + 1]
     }
   },
   arrowup: () => {
-    const index = props.inboxItems.findIndex(inboxItem => inboxItem.id === selectedInboxItem.value?.id)
+    const index = inboxStore.inboxItems.findIndex((inboxItem: InboxItem) => inboxItem.id === selectedInboxItem.value?.id)
 
     if (index === -1) {
-      selectedInboxItem.value = props.inboxItems[props.inboxItems.length - 1]
+      selectedInboxItem.value = inboxStore.inboxItems[inboxStore.inboxItems.length - 1]
     } else if (index > 0) {
-      selectedInboxItem.value = props.inboxItems[index - 1]
+      selectedInboxItem.value = inboxStore.inboxItems[index - 1]
     }
   }
 })

@@ -33,7 +33,7 @@
 
       <InboxList
         v-model="selectedInboxItem"
-        :inbox-items="filteredInboxItems"
+        :selected-tab="selectedTab"
       />
     </UDashboardPanel>
 
@@ -95,10 +95,6 @@ const tabItems = ref<TabsItem[]>([
 ])
 
 const selectedTab = ref<'all' | 'unread'>('all')
-
-const { data } = await useFetch<InboxItem[]>('/api/inbox', { default: () => [] })
-
-inboxStore.inboxItems = data.value
 
 const filteredInboxItems = computed<InboxItem[]>(() => {
   if (selectedTab.value === 'unread') {

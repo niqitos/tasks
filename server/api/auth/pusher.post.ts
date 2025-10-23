@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
     key: config.public.pusherKey,
     secret: config.pusherSecret,
     cluster: config.public.pusherCluster,
+    useTLS: config.public.pusherUseTls
   })
 
   const body = await readBody(event)

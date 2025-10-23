@@ -135,6 +135,8 @@ export default defineEventHandler(async (event) : Promise<any> => {
       }
     })
 
+    await sendPusherNotification(`inbox.${taskAssignee.user.id}`, 'task.assigned', task)
+
     return taskAssignee
   } catch (err) {
     console.log(err)

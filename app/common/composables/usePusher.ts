@@ -3,18 +3,16 @@ import type { Channel } from 'pusher-js'
 export const usePusher = () => {
   const { $pusher } = useNuxtApp()
 
-  const subscribe = (channelName: string) => $pusher.subscribe(channelName)
+  const subscribe = (channel: string) => $pusher.subscribe(channel)
 
-  const unsubscribe = (channelName: string) => {
-    $pusher.unsubscribe(channelName)
+  const unsubscribe = (channel: string) => $pusher.unsubscribe(channel)
+
+  const bind = (channel: Channel, event: string, callback: (data: any) => void) => {
+    channel.bind(event, callback)
   }
 
-  const bind = (channel: Channel, eventName: string, callback: (data: any) => void) => {
-    channel.bind(eventName, callback)
-  }
-
-  const unbind = (channel: Channel, eventName: string, callback?: (data: any) => void) => {
-    channel.unbind(eventName, callback)
+  const unbind = (channel: Channel, event: string, callback?: (data: any) => void) => {
+    channel.unbind(event, callback)
   }
 
   return {

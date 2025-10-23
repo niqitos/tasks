@@ -78,6 +78,8 @@ export default defineEventHandler(async (event) : Promise<any> => {
         creatorId: taskAssigneeTryingToDelete.assignerId
       }
     })
+
+    await sendPusherNotification(`inbox.${taskAssigneeTryingToDelete.user.id}`, 'task.unassigned', taskAssigneeTryingToDelete)
   } catch (err) {
     console.log(err)
   }

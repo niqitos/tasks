@@ -50,7 +50,35 @@ export default defineEventHandler(async (event) : Promise<any> => {
     if (!workspaceMemberTryingToDelete) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Task assignee does not exist',
+        statusMessage: 'Workspace member does not exist',
+      })
+    }
+
+    const workspace = await prisma.workspace.findFirst({
+      where: {
+        id: workspaceId
+      },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                lastname: true,
+                avatar: true,
+                plan: true
+              }
+            }
+          }
+        }
+      }
+    })
+
+    if (!workspace) {
+      throw createError({
+        statusCode: 401,
+        statusMessage: 'Workspace does not exist',
       })
     }
 
@@ -78,6 +106,12 @@ export default defineEventHandler(async (event) : Promise<any> => {
         creatorId: workspaceMemberTryingToDelete.invitedById
       }
     })
+
+    workspace.members
+      .forEach(async (member: WorkspaceMember) : Promise<any> => {
+        const event = await sendPusherNotification(`inbox.${member.user.id}`, 'workspace.member.removed', member)
+      })
+
   } catch (err) {
     console.log(err)
   }

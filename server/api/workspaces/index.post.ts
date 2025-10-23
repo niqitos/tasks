@@ -164,6 +164,8 @@ export default defineEventHandler(async (event) : Promise<any> => {
       }
     })
 
+    await sendPusherNotification(`inbox.${workspace.creator.id}`, 'workspace.created', workspace)
+
     return workspace
   } catch (err) {
     throw err

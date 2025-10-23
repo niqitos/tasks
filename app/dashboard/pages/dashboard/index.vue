@@ -44,26 +44,10 @@ useRobotsRule({
 const workspaceStore = useWorkspaceStore()
 const boardStore = useBoardStore()
 
-const workspaces = ref<any>(await $fetch('/api/workspaces'))
-
 watch(
-  () => workspaces.value,
+  () => workspaceStore.workspaces.value,
   () => {
-    if (workspaces.value.length > 0) {
-      workspaceStore.workspaces = workspaces.value
-
-      let workspace = workspaceStore.workspaces.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
-
-      if (!workspace && workspaceStore.workspaces.length > 0 && workspaceStore.workspaces[0]) {
-        workspace = workspaceStore.workspaces[0]
-
-        localStorage.setItem('workspace.current.id', workspace.id)
-      }
-
-      workspaceStore.current = workspace
-
-      boardStore.boards = workspaceStore.current?.boards || []
-    }
+    workspaceStore.setWorkspaces()
   },
   {
     immediate: true

@@ -33,9 +33,12 @@
       >
         <UButton
           :avatar="{
-            src: userStore.user.avatar,
+            src: userStore.user?.avatar,
             alt: userStore.fullname,
-            icon: userStore.fullname ? '' : 'i-lucide:user'
+            icon: userStore.fullname ? '' : 'i-lucide:user',
+            chip: inboxStore.inboxItemsRead.length ? {
+              inset: true
+            } : false
           }"
           color="neutral"
           variant="link"
@@ -45,6 +48,24 @@
             leadingAvatarSize: 'md'
           }"
         />
+
+        <template #item-leading="{ item }">
+          <UChip
+            v-if="item.to === localePath('inbox') && inboxStore.inboxItemsRead.length"
+            color="primary"
+          >
+            <UIcon
+              :name="item.icon"
+              class="shrink-0 group-data-highlighted:text-default group-data-[state=open]:text-default transition-colors size-5 text-inherit group-hover:!text-inherit"
+            />
+          </UChip>
+
+          <UIcon
+            v-else
+            :name="item.icon"
+            class="shrink-0 group-data-highlighted:text-default group-data-[state=open]:text-default transition-colors size-5 text-inherit group-hover:!text-inherit"
+          />
+        </template>
       </UDropdownMenu>
     </template>
 
@@ -71,6 +92,7 @@ const route = useRoute()
 
 const workspaceStore = useWorkspaceStore()
 const roleStore = useRoleStore()
+const inboxStore = useInboxStore()
 
 const menu = computed<any>(() => {
   const items: any = [

@@ -113,6 +113,8 @@ export default defineEventHandler(async (event) : Promise<any> => {
             creatorId: decodedToken.id
           }
         })
+
+        await sendPusherNotification(`inbox.${taskAssignee.user.id}`, 'task.updated', task)
       })
     }
   } catch (err) {

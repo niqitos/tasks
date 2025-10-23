@@ -1,4 +1,6 @@
 export const useWorkspaceStore = defineStore('workspace', () => {
+  const boardStore = useBoardStore()
+
   const workspaces = ref<Workspace[]>([])
   const current = ref<Workspace>()
 
@@ -16,10 +18,29 @@ export const useWorkspaceStore = defineStore('workspace', () => {
     return ''
   })
 
+  const setWorkspaces = async () : Promise<any> => {
+    workspaces.value = await $fetch<Workspace[]>('/api/workspaces') || []
+
+    if (workspaces.value.length > 0) {
+      let workspace = workspaces.value.find((w: any) => w.id === localStorage.getItem('workspace.current.id'))
+
+      if (!workspace && workspaces.value.length > 0 && workspaces.value[0]) {
+        workspace = workspaces.value[0]
+
+        localStorage.setItem('workspace.current.id', workspace.id)
+      }
+
+      current.value = workspace
+
+      boardStore.boards = current.value?.boards || []
+    }
+  }
+
   return {
     tempBackground,
     workspaces,
     current,
-    background
+    background,
+    setWorkspaces
   }
 })
