@@ -44,6 +44,7 @@ export const useWorkspaceStore = defineStore('workspace', () => {
   }
 
   return {
+    loading,
     tempBackground,
     workspaces,
     current,
