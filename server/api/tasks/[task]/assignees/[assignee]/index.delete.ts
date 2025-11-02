@@ -107,7 +107,7 @@ export default defineEventHandler(async (event) : Promise<any> => {
         id: assigneeId
       }
     })
-    console.log(1)
+
     await prisma.inboxItem.create({
       data: {
         type: 'taskUnassigned',

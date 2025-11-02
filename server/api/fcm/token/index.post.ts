@@ -28,13 +28,7 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    console.log({
-        token: fcmToken,
-        userId: decodedToken.id,
-        deviceId,
-        platform,
-        browser
-      })
+
     const savedToken = await prisma.fcmToken.create({
       data: {
         token: fcmToken,

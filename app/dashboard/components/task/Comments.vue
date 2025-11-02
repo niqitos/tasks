@@ -168,7 +168,6 @@ const submitComment = async (parentId: string | null = null) : Promise<any> => {
   replyingTo.value = null
 
   if (parentId) {
-    console.log(comments.value.find((c: any) => c.id === parentId))
     comments.value.find((c: any) => c.id === parentId).replies.push(response)
   } else {
     comments.value.push(response)

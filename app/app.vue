@@ -35,31 +35,31 @@ const setupPusher = () => {
   bind(channel, 'task.updated', (data: any) => {
     inboxStore.getInbox()
 
-    console.log(data)
+    // console.log(data)
   })
 
   bind(channel, 'task.assigned', (data: any) => {
     inboxStore.getInbox()
 
-    console.log(data)
+    // console.log(data)
   })
 
   bind(channel, 'task.unassigned', (data: any) => {
     inboxStore.getInbox()
 
-    console.log(data)
+    // console.log(data)
   })
 
   bind(channel, 'task.comment.created', (data: any) => {
     inboxStore.getInbox()
 
-    console.log(data)
+    // console.log(data)
   })
 
   bind(channel, 'workspace.created', (data: any) => {
     inboxStore.getInbox()
 
-    console.log(data)
+    // console.log(data)
   })
 
   bind(channel, 'workspace.member.added', async (data: any) => {

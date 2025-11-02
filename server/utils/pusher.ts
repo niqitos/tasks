@@ -30,7 +30,7 @@ export const sendPusherNotification = async (
       ...data,
       timestamp: new Date().toISOString()
     })
-    console.log(trigger)
+
     return {
       success: true
     }

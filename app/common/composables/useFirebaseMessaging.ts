@@ -31,7 +31,7 @@ export const useFirebaseMessaging = () => {
       const hasPermission = await requestPermission()
 
       if (!hasPermission) {
-        console.log('Notification permission denied')
+        // console.log('Notification permission denied')
         return null
       }
       const token = await getToken($messaging, {
@@ -54,7 +54,7 @@ export const useFirebaseMessaging = () => {
     }
 
     onMessage($messaging, (payload) => {
-      console.log('Foreground message received:', payload)
+      // console.log('Foreground message received:', payload)
       callback(payload)
     })
   }
